@@ -20,6 +20,7 @@ export default async function handler(req, res) {
     await db.collection('urls').doc(shortCode).set({
       originalUrl: url,
       shortCode,
+      createdBy: 'anonymous',
       createdAt: new Date(),
       expiresAt: expirationDate,
     });
