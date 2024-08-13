@@ -18,6 +18,15 @@ export default function Home() {
         body: JSON.stringify({ url: longUrl }),
       });
 
+      if (response.status === 429) {
+        const { hourlyLimit, hourlyCount } = await response.json()
+        if (hourlyCount >= hourlyLimit) {
+          throw new Error('Exceeded hourly limit. Please wait for an hour and try again');
+        } else {
+          throw new Error('Exceeded daily limit. Please wait for a day and try again')
+        }
+      }
+
       if (!response.ok) {
         throw new Error('Failed to shorten URL');
       }
@@ -25,7 +34,7 @@ export default function Home() {
       const data = await response.json();
       setShortUrl(data.shortUrl);
     } catch (err) {
-      setError('An error occurred while shortening the URL');
+      setError(err.message);
     }
   };
 
@@ -63,7 +72,7 @@ export default function Home() {
             </a>
           </div>
         )}
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500"><b>Error: </b> {error}</p>}
       </main>
     </div>
   );
