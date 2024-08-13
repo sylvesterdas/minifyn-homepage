@@ -10,6 +10,21 @@ const nextConfig = {
     // Will be available on both server and client
     BASE_URL: process.env.BASE_URL,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        has: [
+          {
+            type: 'host',
+            value: 'www.mnfy.in',
+          },
+        ],
+        destination: 'https://www.minifyn.com',
+        permanent: false,
+      },
+    ];
+  }
 };
 
 export default nextConfig;
