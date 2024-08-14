@@ -1,0 +1,35 @@
+{
+  "bannerTitle": "Simplify Your Links",
+  "bannerSubtitle": "Shorten, share, and track your links with MiniFyn",
+  "features": {
+    "quickLinkShortening": {
+      "title": "Quick Link Shortening",
+      "description": "Create short, memorable links in seconds."
+    },
+    "detailedAnalytics": {
+      "title": "Detailed Analytics",
+      "description": "Track clicks and understand your audience."
+    },
+    "secureAndReliable": {
+      "title": "Secure and Reliable",
+      "description": "Your links are safe and always accessible."
+    },
+    "qrCodeGeneration": {
+      "title": "QR Code Generation",
+      "description": "Create QR codes for easy mobile sharing."
+    },
+    "bulkUrlShortening": {
+      "title": "Bulk URL Shortening",
+      "description": "Shorten multiple URLs at once for efficiency."
+    }
+  },
+  "navLinks": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing"
+  },
+  "cta": {
+    "login": "Login",
+    "signup": "Signup"
+  }
+}

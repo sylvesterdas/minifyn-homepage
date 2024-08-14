@@ -1,0 +1,35 @@
+{
+  "bannerTitle": "अपने लिंक को सरल बनाएं",
+  "bannerSubtitle": "MiniFyn के साथ लिंक को छोटा करें, शेयर करें और ट्रैक करें",
+  "features": {
+    "quickLinkShortening": {
+      "title": "त्वरित लिंक शॉर्टनिंग",
+      "description": "सेकंडों में छोटे, याद रखने योग्य लिंक बनाएं।"
+    },
+    "detailedAnalytics": {
+      "title": "विस्तृत एनालिटिक्स",
+      "description": "क्लिक्स को ट्रैक करें और अपने दर्शकों को समझें।"
+    },
+    "secureAndReliable": {
+      "title": "सुरक्षित और विश्वसनीय",
+      "description": "आपके लिंक सुरक्षित और हमेशा सुलभ हैं।"
+    },
+    "qrCodeGeneration": {
+      "title": "QR कोड जनरेशन",
+      "description": "आसान मोबाइल शेयरिंग के लिए QR कोड बनाएं।"
+    },
+    "bulkUrlShortening": {
+      "title": "बल्क URL शॉर्टनिंग",
+      "description": "दक्षता के लिए एक साथ कई URL को छोटा करें।"
+    }
+  },
+  "navLinks": {
+    "home": "होम",
+    "features": "फीचर्स",
+    "pricing": "मूल्य निर्धारण"
+  },
+  "cta": {
+    "login": "लॉगिन",
+    "signup": "साइन अप"
+  }
+}

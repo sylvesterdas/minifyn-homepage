@@ -1,79 +1,70 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Navbar from '../components/Navbar';
+import UrlShortener from '../components/UrlShortener';
+import QRCodeGenerator from '../components/QRCodeGenerator';
+import UsageLimits from '../components/UsageLimits';
+import FeaturesSection from '../components/FeaturesSection';
+import Footer from '../components/Footer';
 
 export default function Home() {
-  const [longUrl, setLongUrl] = useState('');
-  const [shortUrl, setShortUrl] = useState('');
-  const [error, setError] = useState('');
-
-  const shortenUrl = async (e) => {
-    e.preventDefault();
-    setError('');
-    setShortUrl('');
-
-    try {
-      const response = await fetch('/api/shorten', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: longUrl }),
-      });
-
-      if (response.status === 429) {
-        const { hourlyLimit, hourlyCount } = await response.json()
-        if (hourlyCount >= hourlyLimit) {
-          throw new Error('Exceeded hourly limit. Please wait for an hour and try again');
-        } else {
-          throw new Error('Exceeded daily limit. Please wait for a day and try again')
-        }
-      }
-
-      if (!response.ok) {
-        throw new Error('Failed to shorten URL');
-      }
-
-      const data = await response.json();
-      setShortUrl(data.shortUrl);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+  const [activeTab, setActiveTab] = useState('url');
+  const userType = 'anonymous'; // This could be 'anonymous', 'free', or 'pro'
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="font-sans">
       <Head>
-        <title>Minifyn URL Shortener</title>
-        <meta name="description" content="Shorten your long URLs with Minifyn" />
+        <title>MiniFyn - Simplify Your Links</title>
+        <meta name="description" content="Shorten, share, and track your links with MiniFyn" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navbar />
+
       <main>
-        <h1 className="text-4xl font-bold mb-8">Minifyn URL Shortener</h1>
-        <form onSubmit={shortenUrl} className="mb-8">
-          <input
-            type="url"
-            value={longUrl}
-            onChange={(e) => setLongUrl(e.target.value)}
-            placeholder="Enter a long URL"
-            required
-            className="w-full p-2 border rounded"
-          />
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Shorten URL
-          </button>
-        </form>
-        {shortUrl && (
-          <div className="bg-green-100 p-4 rounded">
-            <p>Your shortened URL:</p>
-            <a href={shortUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-              {shortUrl}
-            </a>
+        <div className="bg-gradient-to-br from-primary via-secondary to-teal relative overflow-hidden">
+          <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 relative z-10">
+            <div className="md:flex md:items-center md:justify-between">
+              <div className="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
+                <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">Simplify Your Links</h1>
+                <p className="text-xl mb-4 text-light-gray">Shorten, share, and track your links with MiniFyn</p>
+              </div>
+              <div className="md:w-1/2 md:max-w-md mx-auto">
+                <div className="bg-white bg-opacity-10 rounded-lg shadow-lg backdrop-blur-sm overflow-hidden">
+                  <div className="flex border-b border-white border-opacity-20">
+                    <button
+                      className={`flex-1 py-2 px-4 focus:outline-none ${activeTab === 'url' ? 'bg-white bg-opacity-20' : ''}`}
+                      onClick={() => setActiveTab('url')}
+                    >
+                      URL Shortener
+                    </button>
+                    <button
+                      className={`flex-1 py-2 px-4 focus:outline-none ${activeTab === 'qr' ? 'bg-white bg-opacity-20' : ''}`}
+                      onClick={() => setActiveTab('qr')}
+                    >
+                      QR Code
+                    </button>
+                  </div>
+                  <div className="p-6 h-[370px] overflow-y-auto">
+                    {activeTab === 'url' ? (
+                      <>
+                        <UrlShortener />
+                        <UsageLimits userType={userType} />
+                      </>
+                    ) : (
+                      <QRCodeGenerator />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-        {error && <p className="text-red-500"><b>Error: </b> {error}</p>}
+        </div>
+
+        <FeaturesSection />
       </main>
+
+      <Footer />
     </div>
   );
 }
