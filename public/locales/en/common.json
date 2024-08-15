@@ -31,5 +31,19 @@
   "cta": {
     "login": "Login",
     "signup": "Signup"
-  }
+  },
+  "whyChooseMiniFyn": "Why Choose MiniFyn?",
+  "copyright": "© {{year}} MiniFyn. All rights reserved.",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+  "enterLongUrl": "Enter your long URL",
+  "shortenUrl": "Shorten URL",
+  "shortenedUrlWillAppearHere": "Your shortened URL will appear here",
+  "copy": "Copy",
+  "copiedToClipboard": "Copied to clipboard!",
+  "urlShortener": "URL Shortener",
+  "qrCode": "QR Code",
+  "errorShortening": "An error occurred while shortening the URL. Please try again.",
+  "shortening": "Shortening...",
+  "copyToClipboard": "Copy to clipboard"
 }

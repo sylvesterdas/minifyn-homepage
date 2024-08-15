@@ -31,5 +31,19 @@
   "cta": {
     "login": "लॉगिन",
     "signup": "साइन अप"
-  }
+  },
+  "whyChooseMiniFyn": "MiniFyn को क्यों चुनें?",
+  "copyright": "© {{year}} MiniFyn. सर्वाधिकार सुरक्षित।",
+  "privacyPolicy": "गोपनीयता नीति",
+  "termsOfService": "सेवा की शर्तें",
+  "enterLongUrl": "अपना लंबा URL दर्ज करें",
+  "shortenUrl": "URL छोटा करें",
+  "shortenedUrlWillAppearHere": "आपका छोटा किया गया URL यहां दिखाई देगा",
+  "copy": "कॉपी करें",
+  "copiedToClipboard": "क्लिपबोर्ड पर कॉपी किया गया!",
+  "urlShortener": "URL शॉर्टनर",
+  "qrCode": "QR कोड",
+  "errorShortening": "URL को छोटा करने में एक त्रुटि हुई। कृपया पुनः प्रयास करें।",
+  "shortening": "छोटा कर रहा है...",
+  "copyToClipboard": "क्लिपबोर्ड पर कॉपी करें"
 }
