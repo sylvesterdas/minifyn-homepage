@@ -1,4 +1,4 @@
-import { db } from '../lib/firebase-admin';
+import { kv } from '@vercel/kv';
 import InvalidUrl from '../components/InvalidUrl';
 import AdRedirect from '../components/AdRedirect';
 
@@ -6,20 +6,19 @@ export async function getServerSideProps(context) {
   const { shortCode } = context.params;
 
   try {
-    const docRef = db.collection('urls').doc(shortCode);
-    const doc = await docRef.get();
+    const data = await kv.get(`url:${shortCode}`);
 
-    if (!doc.exists) {
+    if (!data) {
       return { props: { scenario: 'notFound' } };
     }
 
-    const data = doc.data();
+    const expiresAt = new Date(data.expiresAt);
     
-    if (data.expiresAt.toDate() < new Date()) {
+    if (expiresAt < new Date()) {
       return { props: { scenario: 'notFound' } };
     }
 
-    const isAnonymous = data.createdBy === 'anonymous'; // Assuming you have this field
+    const isAnonymous = data.createdBy === 'anonymous';
     const redirectDelay = isAnonymous ? 7 : 1;
 
     return {

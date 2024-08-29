@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid';
-import { db } from '../../lib/firebase-admin';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,13 +16,13 @@ export default async function handler(req, res) {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 30);
 
-    await db.collection('urls').doc(shortCode).set({
-      originalUrl: url,
-      shortCode,
-      createdBy: 'anonymous',
-      createdAt: new Date(),
-      expiresAt: expirationDate,
-    });
+    // await db.collection('urls').doc(shortCode).set({
+    //   originalUrl: url,
+    //   shortCode,
+    //   createdBy: 'anonymous',
+    //   createdAt: new Date(),
+    //   expiresAt: expirationDate,
+    // });
 
     res.status(200).json({ shortUrl: `${process.env.BASE_URL}/${shortCode}` });
   } catch (error) {
