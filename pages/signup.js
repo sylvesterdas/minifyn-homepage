@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -64,7 +63,7 @@ export default function Signup() {
     try {
       const recaptchaToken = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'signup' });
 
-      const response = await fetch('/api/signup', {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, recaptchaToken }),
@@ -77,6 +76,7 @@ export default function Signup() {
         setError(data.message || t('signupError'));
       }
     } catch (error) {
+      console.error(error)
       setError(t('signupError'));
     }
   };
@@ -84,11 +84,6 @@ export default function Signup() {
   if (confirmationSent) {
     return (
       <div className="min-h-screen flex flex-col bg-light-gray">
-        <header className="w-full bg-white shadow-md p-4">
-          <Link href="/">
-            <Image src="/favicon.ico" alt="Company Logo" width={50} height={50} style={{ width: '50px', height: '50px' }} />
-          </Link>
-        </header>
         <div className="flex-grow flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-md w-96 text-center">
             <h2 className="text-2xl font-bold mb-4 text-primary">{t('confirmationSent')}</h2>
@@ -104,11 +99,6 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex flex-col bg-light-gray">
-      <header className="w-full bg-white shadow-md p-4">
-        <Link href="/">
-          <Image src="/favicon.ico" alt="Company Logo" width={50} height={50} style={{ width: '50px', height: '50px' }} />
-        </Link>
-      </header>
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-md w-96">
           <h1 className="text-2xl font-bold mb-6 text-center text-primary">{t('signup')}</h1>
@@ -125,6 +115,7 @@ export default function Signup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="username"
             />
           </div>
           <div className="mb-4">
@@ -138,6 +129,7 @@ export default function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
             <PasswordStrengthMeter password={password} />
           </div>
@@ -152,6 +144,7 @@ export default function Signup() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
           </div>
           <div className="mb-6 flex items-center">

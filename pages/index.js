@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Navbar from '../components/Navbar';
 import UrlShortener from '../components/UrlShortener';
 import QRCodeGenerator from '../components/QRCodeGenerator';
 import UsageLimits from '../components/UsageLimits';
@@ -11,9 +10,8 @@ import Footer from '../components/Footer';
 import { TRANSLATION_KEYS, FEATURE_KEYS } from '../constants/text';
 import StructuredData from '../components/StructuredData';
 
-export default function Home() {
+export default function Home({ user }) {
   const [activeTab, setActiveTab] = useState('url');
-  const userType = 'anonymous';
   const { t } = useTranslation('common');
 
   const pageTitle = `MiniFyn - ${t(TRANSLATION_KEYS.BANNER_TITLE)}`;
@@ -52,8 +50,6 @@ export default function Home() {
           <meta name="twitter:image" content="https://www.minifyn.com/twitter-image.jpg" />
         </Head>
 
-        <Navbar />
-
         <main>
           <div className="bg-gradient-to-br from-primary via-secondary to-teal relative overflow-hidden">
             <div className="max-w-6xl mx-auto px-4 py-8 md:py-16 relative z-10">
@@ -82,7 +78,7 @@ export default function Home() {
                       {activeTab === 'url' ? (
                         <>
                           <UrlShortener />
-                          <UsageLimits userType={userType} />
+                          <UsageLimits userType={user ? 'authenticated' : 'anonymous'} />
                         </>
                       ) : (
                         <QRCodeGenerator />

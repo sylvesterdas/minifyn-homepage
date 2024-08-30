@@ -19,7 +19,7 @@ const UsageLimits = ({ userType = 'anonymous' }) => {
     },
   };
 
-  const currentLimits = limits[userType];
+  const currentLimits = limits[userType] ?? limits.anonymous;
 
   return (
     <div className="mt-4 p-4 bg-white bg-opacity-10 rounded-lg text-white text-sm">

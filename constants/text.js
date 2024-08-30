@@ -9,13 +9,15 @@ export const TRANSLATION_KEYS = {
     BULK_URL_SHORTENING: 'features.bulkUrlShortening',
   },
   NAV_LINKS: {
-    HOME: 'navLinks.home',
-    FEATURES: 'navLinks.features',
-    PRICING: 'navLinks.pricing',
+    HOME: 'nav.home',
+    FEATURES: 'nav.features',
+    PRICING: 'nav.pricing',
+    DASHBOARD: 'nav.dashboard',
   },
   CTA: {
     LOGIN: 'cta.login',
     SIGNUP: 'cta.signup',
+    LOGOUT: 'cta.logout',
   },
 };
 

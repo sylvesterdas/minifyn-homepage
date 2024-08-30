@@ -23,14 +23,16 @@
       "description": "Shorten multiple URLs at once for efficiency."
     }
   },
-  "navLinks": {
+  "nav": {
     "home": "Home",
     "features": "Features",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "dashboard": "Dashboard"
   },
   "cta": {
-    "login": "Login",
-    "signup": "Signup"
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out"
   },
   "whyChooseMiniFyn": "Why Choose MiniFyn?",
   "copyright": "© {{year}} MiniFyn. All rights reserved.",

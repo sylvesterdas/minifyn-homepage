@@ -17,7 +17,7 @@ exports.migrate = async (db, opt) => {
       notNull: true,
       unique: true,
     },
-    email: {
+    password: {
       type: type.STRING,
       length: 255,
       notNull: true

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -16,7 +15,7 @@ export default function ForgotPassword() {
     setMessage('');
 
     try {
-      const response = await fetch('/api/forgot-password', {
+      const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -35,11 +34,6 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen flex flex-col bg-light-gray">
-      <header className="w-full bg-white shadow-md p-4">
-        <Link href="/">
-          <Image src="/favicon.ico" alt="Company Logo" width={50} height={50} style={{ width: '50px', height: '50px' }} />
-        </Link>
-      </header>
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-md w-96">
           <h1 className="text-2xl font-bold mb-6 text-center text-primary">{t('forgotPassword')}</h1>
@@ -57,6 +51,7 @@ export default function ForgotPassword() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="username"
               />
             </div>
             <button

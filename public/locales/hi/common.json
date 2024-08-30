@@ -23,14 +23,16 @@
       "description": "दक्षता के लिए एक साथ कई URL को छोटा करें।"
     }
   },
-  "navLinks": {
+  "nav": {
     "home": "होम",
-    "features": "फीचर्स",
-    "pricing": "मूल्य निर्धारण"
+    "features": "सुविधाएँ",
+    "pricing": "मूल्य निर्धारण",
+    "dashboard": "डैशबोर्ड"
   },
   "cta": {
-    "login": "लॉगिन",
-    "signup": "साइन अप"
+    "login": "लॉग इन",
+    "signup": "साइन अप",
+    "logout": "लॉग आउट"
   },
   "whyChooseMiniFyn": "MiniFyn को क्यों चुनें?",
   "copyright": "© {{year}} MiniFyn. सर्वाधिकार सुरक्षित।",

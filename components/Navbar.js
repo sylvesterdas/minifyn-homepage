@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { TRANSLATION_KEYS } from '../constants/text';
+import { logout } from '../lib/authUtils';
+import LogoWithName from './LogoWithName';
 
-const Navbar = () => {
+const Navbar = ({ user, setUser }) => {
   const router = useRouter();
   const { t } = useTranslation('common');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,21 +15,37 @@ const Navbar = () => {
     router.push(router.pathname, router.asPath, { locale });
   };
 
+  const handleLogout = () => {
+    logout(setUser);
+    router.push('/');
+  };
+
+  const AuthLinks = () => (
+    user ? (
+      <>
+        <Link href="/dashboard" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.DASHBOARD)}</Link>
+        <button onClick={handleLogout} className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.CTA.LOGOUT)}</button>
+      </>
+    ) : (
+      <>
+        <Link href="/login" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.CTA.LOGIN)}</Link>
+        <Link href="/signup" className="bg-secondary text-white px-3 py-2 rounded hover:bg-blue-600 transition duration-300">{t(TRANSLATION_KEYS.CTA.SIGNUP)}</Link>
+      </>
+    )
+  );
+
   return (
     <nav className="bg-white border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0">
-              <span className="font-bold text-primary text-lg">MiniFyn</span>
-            </Link>
+            <LogoWithName />
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.HOME)}</Link>
             <Link href="/features" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.FEATURES)}</Link>
             <Link href="/pricing" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.PRICING)}</Link>
-            <Link href="/login" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.CTA.LOGIN)}</Link>
-            <Link href="/signup" className="bg-secondary text-white px-3 py-2 rounded hover:bg-blue-600 transition duration-300">{t(TRANSLATION_KEYS.CTA.SIGNUP)}</Link>
+            <AuthLinks />
             <select 
               onChange={(e) => changeLanguage(e.target.value)}
               value={router.locale}
@@ -55,8 +73,17 @@ const Navbar = () => {
             <Link href="/" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.NAV_LINKS.HOME)}</Link>
             <Link href="/features" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.NAV_LINKS.FEATURES)}</Link>
             <Link href="/pricing" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.NAV_LINKS.PRICING)}</Link>
-            <Link href="/login" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.CTA.LOGIN)}</Link>
-            <Link href="/signup" className="block px-3 py-2 text-base font-medium bg-secondary text-white hover:bg-blue-600">{t(TRANSLATION_KEYS.CTA.SIGNUP)}</Link>
+            {user ? (
+              <>
+                <Link href="/dashboard" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.NAV_LINKS.DASHBOARD)}</Link>
+                <button onClick={handleLogout} className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.CTA.LOGOUT)}</button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">{t(TRANSLATION_KEYS.CTA.LOGIN)}</Link>
+                <Link href="/signup" className="block px-3 py-2 text-base font-medium bg-secondary text-white hover:bg-blue-600">{t(TRANSLATION_KEYS.CTA.SIGNUP)}</Link>
+              </>
+            )}
             <div className="px-3 py-2">
               <select 
                 onChange={(e) => changeLanguage(e.target.value)}
