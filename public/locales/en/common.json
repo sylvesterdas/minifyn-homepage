@@ -47,5 +47,15 @@
   "qrCode": "QR Code",
   "errorShortening": "An error occurred while shortening the URL. Please try again.",
   "shortening": "Shortening...",
-  "copyToClipboard": "Copy to clipboard"
+  "copyToClipboard": "Copy to clipboard",
+  "invalidUrl": "Invalid URL",
+  "urlNotFound": "The requested URL was not found.",
+  "urlExpired": "This URL has expired.",
+  "errorOccurred": "An error occurred while processing your request.",
+  "backToHome": "Back to Home",
+  "redirecting": "Redirecting...",
+  "redirectCountdown": "You will be redirected in {{seconds}} seconds.",
+  "anonymousAdMessage": "Please wait while we process your request.",
+  "clickCount": "This link has been clicked {{count}} times.",
+  "clickHereIfNotRedirected": "Click here if you're not redirected automatically."
 }

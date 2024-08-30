@@ -1,33 +1,42 @@
-import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
 
-export default function AdRedirect({ originalUrl, isAnonymous, redirectDelay }) {
+const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, t }) => {
+  const [secondsLeft, setSecondsLeft] = useState(redirectDelay);
+
+  useEffect(() => {
+    if (secondsLeft > 0) {
+      const timerId = setTimeout(() => setSecondsLeft(secondsLeft - 1), 1000);
+      return () => clearTimeout(timerId);
+    } else {
+      window.location.href = originalUrl;
+    }
+  }, [secondsLeft, originalUrl]);
+
   return (
-    <>
-      <Head>
-        <title>Redirecting - Minifyn</title>
-        <meta httpEquiv="refresh" content={`${redirectDelay};url=${originalUrl}`} />
-      </Head>
-      <div className="min-h-screen bg-gray-100">
-        <nav className="bg-white shadow-md">
-          <div className="container mx-auto px-6 py-3">
-            <a href="https://www.minifyn.com/" target="_blank" rel="noopener noreferrer">
-              <img src="/favicon.ico" alt="Minifyn Logo" className="h-8" />
-            </a>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md text-center">
+        <h1 className="text-2xl font-bold mb-4">{t('redirecting')}</h1>
+        <p className="mb-4">
+          {t('redirectCountdown', { seconds: secondsLeft })}
+        </p>
+        {isAnonymous && (
+          <div className="mb-4">
+            <p>{t('anonymousAdMessage')}</p>
+            {/* Add your ad component here */}
           </div>
-        </nav>
-        <div className="container mx-auto px-6 py-8">
-          <h1 className="text-3xl font-bold mb-4">Redirecting...</h1>
-          {isAnonymous && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4">Advertisement</h2>
-              {/* Add your ad banner here */}
-              <div className="bg-gray-200 h-60 flex items-center justify-center">
-                <p className="text-gray-600">Ad Banner Placeholder</p>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
+        <p className="text-sm text-gray-500">
+          {t('clickCount', { count: clicks })}
+        </p>
+        <a
+          href={originalUrl}
+          className="mt-4 inline-block text-blue-500 hover:underline"
+        >
+          {t('clickHereIfNotRedirected')}
+        </a>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default AdRedirect;

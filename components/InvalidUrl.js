@@ -1,19 +1,31 @@
-import Head from 'next/head';
+import Link from 'next/link';
+import React from 'react';
 
-export default function InvalidUrl() {
+const InvalidUrl = ({ scenario, t }) => {
+  let message;
+  switch (scenario) {
+    case 'notFound':
+      message = t('urlNotFound');
+      break;
+    case 'expired':
+      message = t('urlExpired');
+      break;
+    case 'error':
+    default:
+      message = t('errorOccurred');
+  }
+
   return (
-    <>
-      <Head>
-        <title>Invalid URL - Minifyn</title>
-        <meta httpEquiv="refresh" content="5;url=https://www.minifyn.com/" />
-      </Head>
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Invalid URL</h1>
-          <p className="text-xl">This URL does not exist or has expired.</p>
-          <p className="mt-4">Redirecting to homepage in 5 seconds...</p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-4 text-red-500">{t('invalidUrl')}</h1>
+        <p className="text-gray-700">{message}</p>
+        <Link href="/" className="mt-4 inline-block text-blue-500 hover:underline">
+          {t('backToHome')}
+        </Link>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default InvalidUrl;
