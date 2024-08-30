@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 
 const UrlShortener = ({ className = '' }) => {
@@ -8,28 +8,43 @@ const UrlShortener = ({ className = '' }) => {
   const [error, setError] = useState('');
   const { t } = useTranslation('common');
 
+  useEffect(() => {
+    // Load reCAPTCHA script
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
+      const recaptchaToken = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'shorten_url' });
+
       const response = await fetch('/api/shorten', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url, recaptchaToken }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to shorten URL');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to shorten URL');
       }
 
       const data = await response.json();
       setShortUrl(data.shortUrl);
     } catch (error) {
-      setError(t('errorShortening'));
+      console.error('Error shortening URL:', error);
+      setError(error.message || t('errorShortening'));
     } finally {
       setIsLoading(false);
     }

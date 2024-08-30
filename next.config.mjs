@@ -6,10 +6,12 @@ const nextConfig = {
   i18n: i18nConfig.i18n,
   serverRuntimeConfig: {
     // Will only be available on the server side
+    NEXT_RECAPTCHA_SECRET_KEY: process.env.NEXT_RECAPTCHA_SECRET_KEY
   },
   publicRuntimeConfig: {
     // Will be available on both server and client
     BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
   },
   async redirects() {
     return [
