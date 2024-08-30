@@ -1,6 +1,6 @@
 import db from '../../../lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import sendEmail from '../../../lib/sendEmail'; // You'll need to implement this
+// import sendEmail from '../../../lib/sendEmail'; // You'll need to implement this
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -36,11 +36,11 @@ export default async function handler(req, res) {
 
     // Send reset email
     const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${resetToken}`;
-    await sendEmail({
-      to: email,
-      subject: 'Password Reset',
-      text: `Please use the following link to reset your password: ${resetUrl}`,
-    });
+    // await sendEmail({
+    //   to: email,
+    //   subject: 'Password Reset',
+    //   text: `Please use the following link to reset your password: ${resetUrl}`,
+    // });
 
     res.status(200).json({ message: 'If the email exists, a reset link has been sent.' });
   } catch (error) {
