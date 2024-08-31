@@ -78,7 +78,7 @@ export default function Home({ user }) {
                       {activeTab === 'url' ? (
                         <>
                           <UrlShortener />
-                          <UsageLimits userType={user ? 'authenticated' : 'anonymous'} />
+                          <UsageLimits userType={user ? (user.accountType ?? 'free') : 'anonymous'} />
                         </>
                       ) : (
                         <QRCodeGenerator />

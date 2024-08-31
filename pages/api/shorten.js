@@ -14,21 +14,25 @@ export default async function handler(req, res) {
     }
 
     // Verify reCAPTCHA
-    const verifyUrl = new URL('https://www.google.com/recaptcha/api/siteverify')
+    const verifyUrl = new URL('https://www.google.com/recaptcha/api/siteverify');
 
-    const verifyUrlParams = new Map()
-    verifyUrlParams.set('secret', process.env.NEXT_RECAPTCHA_SECRET_KEY)
-    verifyUrlParams.set('response', recaptchaToken)
+    const verifyUrlParams = new URLSearchParams({
+      secret: process.env.NEXT_RECAPTCHA_SECRET_KEY,
+      response: recaptchaToken,
+      remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+    });
+
+    verifyUrl.search = verifyUrlParams.toString();
 
     const recaptchaResponse = await fetch(verifyUrl, {
-      body: JSON.stringify(Object.fromEntries(verifyUrlParams)),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       method: 'POST'
     });
 
     const recaptchaData = await recaptchaResponse.json();
 
     if (!recaptchaData.success) {
-      // console.error('reCAPTCHA verification failed:', recaptchaData['error-codes']);
+      console.error('reCAPTCHA verification failed:', recaptchaData['error-codes'], Object.fromEntries(verifyUrlParams));
       return res.status(400).json({ error: 'reCAPTCHA verification failed', details: recaptchaData['error-codes'] });
     }
 
