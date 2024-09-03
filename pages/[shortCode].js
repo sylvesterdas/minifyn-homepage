@@ -2,19 +2,17 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import InvalidUrl from '../components/InvalidUrl';
 import AdRedirect from '../components/AdRedirect';
-import db from '../lib/db';
+import { getShortUrl } from '../lib/cache';
+import { incrementClicks, getClickCount } from '../lib/analytics';
 
 export async function getServerSideProps(context) {
   const { shortCode } = context.params;
   const { locale } = context;
 
   try {
-    const result = await db.query(
-      'SELECT original_url, created_at, expires_at, clicks FROM short_urls WHERE short_code = $1',
-      [shortCode]
-    );
+    const urlData = await getShortUrl(shortCode);
 
-    if (result.rows.length === 0) {
+    if (!urlData) {
       return { 
         props: { 
           ...(await serverSideTranslations(locale, ['common'])),
@@ -23,10 +21,9 @@ export async function getServerSideProps(context) {
       };
     }
 
-    const data = result.rows[0];
-    const expiresAt = new Date(data.expires_at);
+    const { original_url, created_at, expires_at, is_active, subscription_type } = urlData;
     
-    if (expiresAt < new Date()) {
+    if (!is_active || (expires_at && new Date(expires_at) < new Date())) {
       return { 
         props: { 
           ...(await serverSideTranslations(locale, ['common'])),
@@ -36,23 +33,24 @@ export async function getServerSideProps(context) {
     }
 
     // Increment the click count
-    await db.query(
-      'UPDATE short_urls SET clicks = clicks + 1 WHERE short_code = $1',
-      [shortCode]
-    );
+    await incrementClicks(shortCode, context.req);
 
-    const createdAt = new Date(data.created_at);
-    const isAnonymous = createdAt > new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const createdAt = new Date(created_at);
+    const isAnonymous = subscription_type === 'LinkFree User';
     const redirectDelay = isAnonymous ? 7 : 1;
+
+    const clicks = await getClickCount(shortCode);
 
     return {
       props: {
         ...(await serverSideTranslations(locale, ['common'])),
         scenario: 'redirect',
-        originalUrl: data.original_url,
+        originalUrl: original_url,
         isAnonymous,
         redirectDelay,
-        clicks: data.clicks + 1
+        clicks,
+        title: urlData.title,
+        description: urlData.description
       }
     };
   } catch (error) {
@@ -66,7 +64,7 @@ export async function getServerSideProps(context) {
   }
 }
 
-function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks }) {
+function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, title, description }) {
   const { t } = useTranslation('common');
 
   if (scenario === 'notFound' || scenario === 'expired') {
@@ -78,7 +76,15 @@ function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks })
   }
 
   if (scenario === 'redirect') {
-    return <AdRedirect originalUrl={originalUrl} isAnonymous={isAnonymous} redirectDelay={redirectDelay} clicks={clicks} t={t} />;
+    return <AdRedirect 
+      originalUrl={originalUrl} 
+      isAnonymous={isAnonymous} 
+      redirectDelay={redirectDelay} 
+      clicks={clicks} 
+      title={title}
+      description={description}
+      t={t} 
+    />;
   }
 
   return null;
