@@ -1,15 +1,12 @@
 'use strict';
 
 exports.migrate = async (db, opt) => {
-  const type = opt.dbm.dataType;
   await db.createTable('reset_tokens', {
     id: {
       type: 'uuid',
       primaryKey: true,
       notNull: true,
-      defaultValue: {
-        raw: 'gen_random_uuid()'
-      },
+      defaultValue: { raw: 'gen_random_uuid()' }
     },
     token: {
       type: 'string',
@@ -30,16 +27,18 @@ exports.migrate = async (db, opt) => {
         mapping: 'id'
       }
     },
-    expiry: {
+    expires_at: {
       type: 'timestamp with time zone',
       notNull: true
     },
     created_at: {
       type: 'timestamp with time zone',
       notNull: true,
-      defaultValue: new String('now()')
+      defaultValue: { raw: 'now()' }
     }
   });
+
+  await db.addIndex('reset_tokens', 'idx_reset_tokens_user_id', ['user_id']);
 };
 
 exports._meta = {
