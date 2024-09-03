@@ -21,10 +21,10 @@ export default async function handler(req, res) {
     }
 
     const user = rows[0];
-
+    
     // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }

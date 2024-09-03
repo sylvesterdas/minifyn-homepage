@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
     // Get default subscription type (LinkFree User)
     const getDefaultSubscriptionQuery = db.sql`
-      SELECT id FROM subscription_types WHERE name = 'LinkFree User' LIMIT 1
+      SELECT id FROM subscription_types WHERE name = 'free' LIMIT 1
     `;
     const { rows: subscriptionRows } = await db.query(getDefaultSubscriptionQuery);
     if (subscriptionRows.length === 0) {
