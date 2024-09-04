@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import Navbar from '../components/Navbar';
-import { isAuthenticated } from '../lib/authUtils';
+import { isAuthenticated, getUserFromToken } from '../lib/authUtils';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
@@ -9,18 +9,16 @@ function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check authentication status when the component mounts
     const authStatus = isAuthenticated();
     if (authStatus) {
-      // If authenticated, set the user state
-      // You might want to fetch user details from an API here
-      setUser({ id: 'user-id', email: 'user@example.com' });
+      const userData = getUserFromToken();
+      setUser(userData);
     }
     setIsLoading(false);
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Or a more sophisticated loading component
+    return <div>Loading...</div>;
   }
 
   return (

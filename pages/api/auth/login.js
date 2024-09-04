@@ -12,7 +12,10 @@ export default async function handler(req, res) {
   try {
     // Fetch user from Postgres
     const query = db.sql`
-      SELECT * FROM users WHERE email = ${email}
+      SELECT u.*, st.name as "accountType" FROM users u
+      INNER JOIN subscription_types st
+        ON st.id = u.subscription_type_id
+      WHERE u.email = ${email}
     `;
     const { rows } = await db.query(query);
 
@@ -31,7 +34,7 @@ export default async function handler(req, res) {
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.id, email: user.email, accountType: user.accountType },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );

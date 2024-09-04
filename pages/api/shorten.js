@@ -1,6 +1,8 @@
-import { nanoid } from 'nanoid';
-import db from '../../lib/db';
-import { getShortUrl, createShortUrl } from '../../lib/cache';
+import { handleShortenRequest } from '../../lib/urlShortener';
+import { verifyCaptcha } from '../../lib/captcha';
+import { checkRateLimit } from '../../lib/rateLimit';
+import { getUserSubscription } from '../../lib/subscriptions';
+import { createShortUrl } from '../../lib/cache';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -15,92 +17,31 @@ export default async function handler(req, res) {
     }
 
     // Verify reCAPTCHA
-    const verifyUrl = new URL('https://www.google.com/recaptcha/api/siteverify');
+    await verifyCaptcha(recaptchaToken, req);
 
-    const verifyUrlParams = new URLSearchParams({
-      secret: process.env.NEXT_RECAPTCHA_SECRET_KEY,
-      response: recaptchaToken,
-      remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+    // Check rate limit
+    const { hourlyCount, dailyCount } = await checkRateLimit(req);
+
+    // Get user subscription
+    const { userId, subscriptionTypeId, hourlyLimit, dailyLimit } = await getUserSubscription(req);
+
+    // Handle shortening request
+    const result = await handleShortenRequest({
+      url,
+      customAlias,
+      title,
+      description,
+      userId,
+      subscriptionTypeId,
+      hourlyCount,
+      dailyCount,
+      hourlyLimit,
+      dailyLimit
     });
 
-    verifyUrl.search = verifyUrlParams.toString();
-
-    const recaptchaResponse = await fetch(verifyUrl, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      method: 'POST'
-    });
-
-    const recaptchaData = await recaptchaResponse.json();
-
-    if (!recaptchaData.success) {
-      console.error('reCAPTCHA verification failed:', recaptchaData['error-codes'], Object.fromEntries(verifyUrlParams));
-      return res.status(400).json({ error: 'reCAPTCHA verification failed', details: recaptchaData['error-codes'] });
-    }
-
-    const userId = req.user ? req.user.id : null; // Replace with actual user ID from your auth system
-    let subscriptionTypeId = null;
-
-    if (userId) {
-      // User is logged in, fetch their subscription type
-      const getUserSubscriptionQuery = db.sql`
-        SELECT st.id
-        FROM user_subscriptions us
-        JOIN subscription_types st ON us.subscription_type_id = st.id
-        WHERE us.user_id = ${userId} AND us.status = 'active'
-        ORDER BY us.created_at DESC
-        LIMIT 1
-      `;
-      const { rows } = await db.query(getUserSubscriptionQuery);
-      if (rows.length > 0) {
-        subscriptionTypeId = rows[0].id;
-      } else {
-        // If no active subscription found, use the 'free' subscription
-        const getFreeSubscriptionQuery = db.sql`
-          SELECT id FROM subscription_types WHERE name = 'free' LIMIT 1
-        `;
-        const { rows: freeRows } = await db.query(getFreeSubscriptionQuery);
-        if (freeRows.length === 0) {
-          throw new Error('Free subscription type not found');
-        }
-        subscriptionTypeId = freeRows[0].id;
-      }
-    } else {
-      // Anonymous user, use the 'free' subscription
-      const getFreeSubscriptionQuery = db.sql`
-        SELECT id FROM subscription_types WHERE name = 'free' LIMIT 1
-      `;
-      const { rows } = await db.query(getFreeSubscriptionQuery);
-      if (rows.length === 0) {
-        throw new Error('Free subscription type not found');
-      }
-      subscriptionTypeId = rows[0].id;
-    }
-
-    const shortCode = customAlias || nanoid(8);
-    const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 60); // 60 days expiration for free users
-
-    // Check if custom alias is available
-    if (customAlias) {
-      const existingUrl = await getShortUrl(customAlias);
-      if (existingUrl) {
-        return res.status(400).json({ error: 'Custom alias already in use' });
-      }
-    }
-
-    try {
-      await createShortUrl(shortCode, url, userId, subscriptionTypeId, title, description, !!customAlias, expirationDate);
-    } catch (error) {
-      if (error.code === '23505') { // unique_violation
-        // If we get a duplicate key error, we can try again with a new short_code
-        return handler(req, res);
-      }
-      throw error;
-    }
-
-    res.status(200).json({ shortUrl: `${process.env.BASE_URL}/${shortCode}` });
+    res.status(200).json(result);
   } catch (error) {
     console.error('Error in URL shortening:', error);
-    res.status(500).json({ error: 'Failed to create short URL' });
+    res.status(error.status || 500).json({ error: error.message || 'Failed to create short URL' });
   }
 }

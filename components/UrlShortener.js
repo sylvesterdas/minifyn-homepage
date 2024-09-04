@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
+import { getToken } from '../lib/authUtils';
 
 const UrlShortener = ({ className = '' }) => {
   const [url, setUrl] = useState('');
@@ -26,11 +27,12 @@ const UrlShortener = ({ className = '' }) => {
 
     try {
       const recaptchaToken = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'shorten_url' });
-
+      const token = getToken();
       const response = await fetch('/api/shorten', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ url, recaptchaToken }),
       });
@@ -80,23 +82,23 @@ const UrlShortener = ({ className = '' }) => {
         </button>
       </form>
       {error && <p className="mt-2 text-red-500">{error}</p>}
-      {shortUrl && (
         <div className="mt-4 p-2 bg-white bg-opacity-20 rounded flex justify-between items-center">
           <span className="text-white truncate flex-grow">
-            {shortUrl}
+            {shortUrl || t('shortPlaceholder')}
           </span>
-          <button
-            onClick={copyToClipboard}
-            className="ml-2 p-2 bg-secondary text-white rounded hover:bg-opacity-90 transition-colors"
-            title={t('copyToClipboard')}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-            </svg>
-          </button>
+          {shortUrl && (
+            <button
+              onClick={copyToClipboard}
+              className="ml-2 p-2 bg-secondary text-white rounded hover:bg-opacity-90 transition-colors"
+              title={t('copyToClipboard')}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+              </svg>
+            </button>
+          )}
         </div>
-      )}
     </div>
   );
 };

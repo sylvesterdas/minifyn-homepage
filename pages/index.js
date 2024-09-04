@@ -74,7 +74,7 @@ export default function Home({ user }) {
                         {t('qrCode')}
                       </button>
                     </div>
-                    <div className="p-4 sm:p-6 h-[370px] overflow-y-auto">
+                    <div className="p-4 sm:p-6 h-96 overflow-y-auto">
                       {activeTab === 'url' ? (
                         <>
                           <UrlShortener />

@@ -9,7 +9,7 @@ const UsageLimits = ({ userType = 'anonymous' }) => {
     },
     free: {
       links: 50,
-      validity: '30 days',
+      validity: '28 days',
       analytics: 'Basic',
     },
     pro: {
@@ -25,7 +25,7 @@ const UsageLimits = ({ userType = 'anonymous' }) => {
     <div className="mt-4 p-4 bg-white bg-opacity-10 rounded-lg text-white text-sm">
       <h3 className="font-semibold mb-2">Current Usage Limits:</h3>
       <ul className="list-disc list-inside space-y-1">
-        <li>Links per month: {currentLimits.links}</li>
+        <li>Links per day: {currentLimits.links}</li>
         <li>Link validity: {currentLimits.validity}</li>
         {currentLimits.analytics && <li>Analytics: {currentLimits.analytics}</li>}
       </ul>
