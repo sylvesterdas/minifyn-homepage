@@ -13,8 +13,8 @@ const Footer = () => {
             <p className="text-sm text-gray-600">{t('copyright', { year: new Date().getFullYear() })}</p>
           </div>
           <div className="flex space-x-4">
-            <Link href="/privacy" className="text-sm text-gray-600 hover:text-gray-900">{t('privacyPolicy')}</Link>
-            <Link href="/terms" className="text-sm text-gray-600 hover:text-gray-900">{t('termsOfService')}</Link>
+            <Link href="/privacy-policy" className="text-sm text-gray-600 hover:text-gray-900">{t('privacyPolicy')}</Link>
+            <Link href="/terms-of-service" className="text-sm text-gray-600 hover:text-gray-900">{t('termsOfService')}</Link>
           </div>
         </div>
       </div>

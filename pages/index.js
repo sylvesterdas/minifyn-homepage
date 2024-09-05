@@ -6,7 +6,6 @@ import UrlShortener from '../components/UrlShortener';
 import QRCodeGenerator from '../components/QRCodeGenerator';
 import UsageLimits from '../components/UsageLimits';
 import FeaturesSection from '../components/FeaturesSection';
-import Footer from '../components/Footer';
 import { TRANSLATION_KEYS, FEATURE_KEYS } from '../constants/text';
 import StructuredData from '../components/StructuredData';
 
@@ -95,8 +94,6 @@ export default function Home({ user }) {
             description: t(`${TRANSLATION_KEYS.FEATURES[key]}.description`),
           }))} />
         </main>
-
-        <Footer />
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { isAuthenticated, getUserFromToken } from '../lib/authUtils';
 import '../styles/globals.css';
 
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <Navbar user={user} setUser={setUser} />
       <Component {...pageProps} user={user} setUser={setUser} />
+      <Footer />
     </>
   );
 }
