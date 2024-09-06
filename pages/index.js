@@ -2,12 +2,13 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import UrlShortener from '../components/UrlShortener';
-import QRCodeGenerator from '../components/QRCodeGenerator';
-import UsageLimits from '../components/UsageLimits';
-import FeaturesSection from '../components/FeaturesSection';
-import { TRANSLATION_KEYS, FEATURE_KEYS } from '../constants/text';
-import StructuredData from '../components/StructuredData';
+import UrlShortener from '@/components/UrlShortener';
+import QRCodeGenerator from '@/components/QRCodeGenerator';
+import UsageLimits from '@/components/UsageLimits';
+import FeaturesSection from '@/components/FeaturesSection';
+import { TRANSLATION_KEYS, FEATURE_KEYS } from '@/constants/text';
+import StructuredData from '@/components/StructuredData';
+import PricingOverview from '@/components/PricingOverview';
 
 export default function Home({ user }) {
   const [activeTab, setActiveTab] = useState('url');
@@ -93,6 +94,10 @@ export default function Home({ user }) {
             title: t(`${TRANSLATION_KEYS.FEATURES[key]}.title`),
             description: t(`${TRANSLATION_KEYS.FEATURES[key]}.description`),
           }))} />
+
+          <hr class="mx-10 shadow" />
+
+          <PricingOverview />
         </main>
       </div>
     </>
@@ -104,7 +109,7 @@ export async function getStaticProps({ locale }) {
   
   return {
     props: {
-      ...(await serverSideTranslations(resolvedLocale, ['common'])),
+      ...(await serverSideTranslations(resolvedLocale, ['common', 'pricing'])),
     },
   };
 }

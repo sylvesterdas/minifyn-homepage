@@ -1,0 +1,13 @@
+{
+  "overview": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that fits your needs"
+  },
+  "cta": {
+    "free": "Get Started",
+    "pro": "Upgrade to Pro",
+    "proComingSoon": "Coming Soon",
+    "dashboard": "Dashboard"
+  },
+  "detailedComparison": "See detailed plan comparison"
+}

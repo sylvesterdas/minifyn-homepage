@@ -1,0 +1,12 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {{name}}",
+    "totalLinks": "Total Links",
+    "totalClicks": "Total Clicks",
+    "activePlan": "Active Plan",
+    "recentLinks": "Recent Links",
+    "clicks": "clicks",
+    "created": "Created"
+  }
+}

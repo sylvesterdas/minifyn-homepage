@@ -1,0 +1,12 @@
+{
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "welcome": "स्वागत है, {{name}}",
+    "totalLinks": "कुल लिंक",
+    "totalClicks": "कुल क्लिक्स",
+    "activePlan": "सक्रिय योजना",
+    "recentLinks": "हाल के लिंक",
+    "clicks": "क्लिक्स",
+    "created": "बनाया गया"
+  }
+}

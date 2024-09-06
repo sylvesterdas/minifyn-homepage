@@ -1,8 +1,7 @@
-import { handleShortenRequest } from '../../lib/urlShortener';
-import { verifyCaptcha } from '../../lib/captcha';
-import { checkRateLimit } from '../../lib/rateLimit';
-import { getUserSubscription } from '../../lib/subscriptions';
-import { createShortUrl } from '../../lib/cache';
+import { handleShortenRequest } from '@/lib/urlShortener';
+import { verifyCaptcha } from '@/lib/captcha';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { getUserSubscription } from '@/lib/subscriptions';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -20,7 +19,7 @@ export default async function handler(req, res) {
     await verifyCaptcha(recaptchaToken, req);
 
     // Check rate limit
-    const { hourlyCount, dailyCount } = await checkRateLimit(req);
+    const { hourlyCount, dailyCount } = checkRateLimit(req);
 
     // Get user subscription
     const { userId, subscriptionTypeId, hourlyLimit, dailyLimit } = await getUserSubscription(req);
