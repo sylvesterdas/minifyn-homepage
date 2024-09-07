@@ -6,6 +6,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useAuth } from '../hooks/useAuth';
 import { getToken } from '@/lib/authUtils';
+import Loading from '../components/Loading';
 
 const DashboardCard = ({ title, value, icon }) => (
   <div className="bg-white rounded-lg shadow-md p-6">
@@ -52,7 +53,7 @@ const Dashboard = () => {
   }, [authLoading]);
 
   if (authLoading || loading) {
-    return <div>Loading...</div>;
+    return <Loading message="Loading dashboard data..." />;
   }
 
   if (!user) {

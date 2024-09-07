@@ -3,6 +3,7 @@ import { appWithTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import PublicLayout from '../components/PublicLayout';
 import DashboardLayout from '../components/DashboardLayout';
+import Loading from '../components/Loading';
 import { isAuthenticated, getUserFromToken } from '../lib/authUtils';
 import '../styles/globals.css';
 
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading message="Initializing application..." />;
   }
 
   const isDashboardRoute = router.pathname.startsWith('/dashboard');
