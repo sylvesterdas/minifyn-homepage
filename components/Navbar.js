@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -10,6 +10,15 @@ const Navbar = ({ user, setUser }) => {
   const router = useRouter();
   const { t } = useTranslation('common');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const changeLanguage = (locale) => {
     router.push(router.pathname, router.asPath, { locale });
@@ -34,8 +43,12 @@ const Navbar = ({ user, setUser }) => {
     )
   );
 
+  const navbarClasses = `sticky top-0 z-50 transition-all duration-300 ${
+    isScrolled ? 'bg-white bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-white'
+  }`;
+
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <nav className={navbarClasses}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
