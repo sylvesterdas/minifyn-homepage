@@ -14,9 +14,6 @@ export default function Home({ user }) {
   const [activeTab, setActiveTab] = useState('url');
   const { t } = useTranslation('common');
 
-  const pageTitle = `MiniFyn - ${t(TRANSLATION_KEYS.BANNER_TITLE)}`;
-  const pageDescription = t(TRANSLATION_KEYS.BANNER_SUBTITLE);
-
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -34,19 +31,19 @@ export default function Home({ user }) {
       <StructuredData data={structuredData} />
       <div className="font-sans text-sm sm:text-base">
         <Head>
-          <title>{pageTitle}</title>
-          <meta name="description" content={pageDescription} />
+          <title>MiniFyn - Simplify Your Links</title>
+          <meta name="description" content="Shorten, share, and track your links with MiniFyn" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="canonical" href="https://www.minifyn.com" />
-          <meta property="og:title" content={pageTitle} />
-          <meta property="og:description" content={pageDescription} />
+          <meta property="og:title" content="MiniFyn - Simplify Your Links" />
+          <meta property="og:description" content="Shorten, share, and track your links with MiniFyn" />
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://www.minifyn.com" />
           <meta property="og:image" content="https://www.minifyn.com/og-image.jpg" />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={pageTitle} />
-          <meta name="twitter:description" content={pageDescription} />
+          <meta name="twitter:title" content="MiniFyn - Simplify Your Links" />
+          <meta name="twitter:description" content="Shorten, share, and track your links with MiniFyn" />
           <meta name="twitter:image" content="https://www.minifyn.com/twitter-image.jpg" />
           <meta name="google-adsense-account" content="ca-pub-4781198854082500" />
         </Head>
