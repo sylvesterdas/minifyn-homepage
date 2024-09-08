@@ -48,6 +48,7 @@ export default function Home({ user }) {
           <meta name="twitter:title" content={pageTitle} />
           <meta name="twitter:description" content={pageDescription} />
           <meta name="twitter:image" content="https://www.minifyn.com/twitter-image.jpg" />
+          <meta name="google-adsense-account" content="ca-pub-4781198854082500" />
         </Head>
 
         <main>
