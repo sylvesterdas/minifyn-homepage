@@ -9,7 +9,6 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -18,12 +17,7 @@ function MyApp({ Component, pageProps }) {
       const userData = getUserFromToken();
       setUser(userData);
     }
-    setIsLoading(false);
   }, []);
-
-  if (isLoading) {
-    return <Loading message="Initializing application..." />;
-  }
 
   const isDashboardRoute = router.pathname.startsWith('/dashboard');
   const Layout = isDashboardRoute ? DashboardLayout : PublicLayout;

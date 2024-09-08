@@ -93,7 +93,7 @@ export default function Home({ user }) {
             description: t(`${TRANSLATION_KEYS.FEATURES[key]}.description`),
           }))} />
 
-          <hr class="mx-10 shadow" />
+          <hr className="mx-10 shadow" />
 
           <PricingOverview />
         </main>
