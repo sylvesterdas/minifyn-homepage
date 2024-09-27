@@ -1,63 +1,45 @@
-/* eslint-disable react/no-unescaped-entities */
-import Head from 'next/head';
+import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 
-const TermsOfService = () => {
+const TermsAndConditionsPage = ({ date }) => {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
       <Head>
-        <title>Terms of Service - MiniFyn</title>
-        <meta name="description" content="MiniFyn Terms of Service" />
+        <title>Terms and Conditions - MiniFyn</title>
+        <meta name="description" content="Read MiniFyn's terms and conditions for using our URL shortening service." />
       </Head>
-
-      <h1 className="text-3xl font-bold mb-6">Terms of Service</h1>
-
-      <p className="mb-4">Last updated: 05/09/2024</p>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">1. Acceptance of Terms</h2>
-        <p>By accessing or using MiniFyn's services, you agree to be bound by these Terms of Service.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">2. Description of Service</h2>
-        <p>MiniFyn provides URL shortening services. We reserve the right to modify or discontinue the service at any time.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">3. User Responsibilities</h2>
-        <p>You are responsible for all activity that occurs under your account. You agree not to use the service for any illegal or unauthorized purpose.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">4. Intellectual Property</h2>
-        <p>The service and its original content, features, and functionality are owned by MiniFyn and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">5. Limitation of Liability</h2>
-        <p>MiniFyn shall not be liable for any indirect, incidental, special, consequential or punitive damages resulting from your use of the service.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">6. Changes to Terms</h2>
-        <p>We reserve the right to modify these Terms at any time. Your continued use of the service after any such changes constitutes your acceptance of the new Terms.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">7. Contact</h2>
-        <p>If you have any questions about these Terms, please contact us at: dasswizard@gmail.com</p>
-      </section>
-    </div>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
+        <p className="mb-4">Last updated: {date}</p>
+        <h2 className="text-2xl font-bold mb-2">1. Acceptance of Terms</h2>
+        <p className="mb-4">By using MiniFyn, you agree to these Terms and Conditions. If you disagree, please do not use our service.</p>
+        <h2 className="text-2xl font-bold mb-2">2. Description of Service</h2>
+        <p className="mb-4">MiniFyn provides URL shortening and analytics services. We reserve the right to modify or discontinue the service at any time.</p>
+        <h2 className="text-2xl font-bold mb-2">3. User Responsibilities</h2>
+        <p className="mb-4">You are responsible for all activity that occurs under your account. Do not use MiniFyn for any illegal or unauthorized purpose.</p>
+        <h2 className="text-2xl font-bold mb-2">4. Intellectual Property</h2>
+        <p className="mb-4">The MiniFyn service and its original content are and will remain the exclusive property of MiniFyn.</p>
+        <h2 className="text-2xl font-bold mb-2">5. Limitation of Liability</h2>
+        <p className="mb-4">MiniFyn shall not be liable for any indirect, incidental, special, consequential or punitive damages resulting from your use of the service.</p>
+        <h2 className="text-2xl font-bold mb-2">6. Changes to Terms</h2>
+        <p className="mb-4">We reserve the right to modify these Terms at any time. Please review these terms periodically.</p>
+        <h2 className="text-2xl font-bold mb-2">7. Governing Law</h2>
+        <p className="mb-4">These Terms shall be governed by the laws of India.</p>
+        <h2 className="text-2xl font-bold mb-2">8. Contact Us</h2>
+        <p>If you have any questions about these Terms, please contact us at legal@minifyn.com.</p>
+      </div>
+    </>
   );
 };
 
-export default TermsOfService;
+export default TermsAndConditionsPage;
 
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
+      date: moment().format('YYYY-MM-DD')
     },
   };
 }
