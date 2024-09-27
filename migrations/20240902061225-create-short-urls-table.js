@@ -14,6 +14,7 @@ exports.migrate = async (db, opt) => {
     },
     user_id: {
       type: 'uuid',
+      notNull: false,
       foreignKey: {
         name: 'short_urls_user_fk',
         table: 'users',
@@ -26,7 +27,7 @@ exports.migrate = async (db, opt) => {
     },
     subscription_type_id: {
       type: 'uuid',
-      notNull: true,
+      notNull: false,
       foreignKey: {
         name: 'short_urls_subscription_type_fk',
         table: 'subscription_types',

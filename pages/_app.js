@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { AuthProvider } from '../contexts/AuthContext';
 import { appWithTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import PublicLayout from '../components/PublicLayout';
@@ -7,16 +7,7 @@ import { isAuthenticated, getUserFromToken } from '../lib/authUtils';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-  const [user, setUser] = useState(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const authStatus = isAuthenticated();
-    if (authStatus) {
-      const userData = getUserFromToken();
-      setUser(userData);
-    }
-  }, []);
 
   const isDashboardRoute = router.pathname.startsWith('/dashboard');
   const Layout = isDashboardRoute ? DashboardLayout : PublicLayout;

@@ -1,6 +1,6 @@
-import db from '../../../lib/db';
+import db from '@/lib/db';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { createSession } from '@/lib/auth'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -32,14 +32,14 @@ export default async function handler(req, res) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, accountType: user.accountType },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const sessionId = await createSession(user);
 
-    res.status(200).json({ token, user: { id: user.id, email: user.email } });
+    res.setHeader('Set-Cookie', `sessionId=${sessionId}; HttpOnly; Path=/; Max-Age=${30 * 24 * 60 * 60}; SameSite=Strict${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
+    res.status(200).json({ user: {
+      id: user.id,
+      name: user.full_name || user.email,
+      subscriptionType: user.accountType
+    }});
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal server error' });

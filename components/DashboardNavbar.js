@@ -2,15 +2,16 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { logout } from '../lib/authUtils';
+import { useAuth } from '@/contexts/AuthContext';
 
-const DashboardNavbar = ({ user, setUser, setSidebarOpen }) => {
+const DashboardNavbar = ({ setSidebarOpen }) => {
+  const { logout } = useAuth();
   const router = useRouter();
   const { t } = useTranslation('common');
 
-  const handleLogout = () => {
-    logout(setUser);
-    router.push('/');
+  const handleLogout = async () => {
+    await logout();
+    await router.push('/');
   };
 
   return (

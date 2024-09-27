@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
-import { getToken } from '../lib/authUtils';
 
 const UrlShortener = ({ className = '' }) => {
   const [url, setUrl] = useState('');
@@ -27,13 +26,9 @@ const UrlShortener = ({ className = '' }) => {
 
     try {
       const recaptchaToken = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'shorten_url' });
-      const token = getToken();
       const response = await fetch('/api/shorten', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, recaptchaToken }),
       });
 

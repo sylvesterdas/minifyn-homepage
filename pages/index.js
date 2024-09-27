@@ -8,10 +8,12 @@ import UsageLimits from '@/components/UsageLimits';
 import FeaturesSection from '@/components/FeaturesSection';
 import { TRANSLATION_KEYS, FEATURE_KEYS } from '@/constants/text';
 import PricingOverview from '@/components/PricingOverview';
+import { useAuth } from '@/contexts/AuthContext';
 
-export default function Home({ user }) {
+export default function Home() {
   const [activeTab, setActiveTab] = useState('url');
   const { t } = useTranslation('common');
+  const { user } = useAuth();
 
   return (
     <>
@@ -45,7 +47,7 @@ export default function Home({ user }) {
                       {activeTab === 'url' ? (
                         <>
                           <UrlShortener />
-                          <UsageLimits userType={user ? (user.accountType ?? 'free') : 'anonymous'} />
+                          <UsageLimits userType={user?.subscriptionType ?? 'anonymous'} />
                         </>
                       ) : (
                         <QRCodeGenerator />
@@ -71,7 +73,7 @@ export default function Home({ user }) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
   const resolvedLocale = locale || 'en';
   
   return {

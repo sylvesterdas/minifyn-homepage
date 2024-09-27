@@ -23,7 +23,6 @@ export default async function handler(req, res) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Get default subscription type (LinkFree User)
     const getDefaultSubscriptionQuery = db.sql`
       SELECT id FROM subscription_types WHERE name = 'free' LIMIT 1
     `;

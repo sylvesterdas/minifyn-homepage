@@ -3,14 +3,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { TRANSLATION_KEYS } from '../constants/text';
-import { logout } from '../lib/authUtils';
+import { useAuth } from '@/contexts/AuthContext';
 import LogoWithName from './LogoWithName';
 
-const Navbar = ({ user, setUser }) => {
+const Navbar = () => {
+  const { user, logout } = useAuth();
   const router = useRouter();
   const { t } = useTranslation('common');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,9 +26,9 @@ const Navbar = ({ user, setUser }) => {
     router.push(router.pathname, router.asPath, { locale });
   };
 
-  const handleLogout = () => {
-    logout(setUser);
-    router.push('/');
+  const handleLogout = async () => {
+    await logout();
+    return router.push('/');
   };
 
   const AuthLinks = () => (

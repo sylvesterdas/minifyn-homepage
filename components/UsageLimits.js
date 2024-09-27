@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-const UsageLimits = ({ userType = 'anonymous' }) => {
+const UsageLimits = ({ userType }) => {
   const limits = {
     anonymous: {
       links: 5,
@@ -19,6 +19,7 @@ const UsageLimits = ({ userType = 'anonymous' }) => {
     },
   };
 
+  console.log(userType)
   const currentLimits = limits[userType] ?? limits.anonymous;
 
   return (

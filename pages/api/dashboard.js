@@ -1,17 +1,21 @@
 import db from '@/lib/db';
-import { getUserFromToken } from '@/lib/authUtils';
+import { getSession } from '@/lib/auth';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const token = req.headers.authorization?.replace('Bearer ', '');
-      const user = getUserFromToken(token)
-
-      if (!user) {
+      const sessionId = req.cookies.sessionId;
+      if (!sessionId) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const userId = user.userId;
+      const session = await getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      console.log(userId)
 
       // Fetch total links and clicks
       const { rows: [stats] } = await db.query(db.sql`
@@ -41,15 +45,19 @@ export default async function handler(req, res) {
         LIMIT 5
       `);
 
-      res.status(200).json({
+      console.log(stats, subscription, recentLinks)
+
+      const data = {
         totalLinks: stats.total_links,
         totalClicks: stats.total_clicks,
-        activePlan: subscription?.active_plan || 'Free',
+        activePlan: subscription?.active_plan || 'free',
         recentLinks: recentLinks.map(link => ({
           ...link,
           shortUrl: `${process.env.BASE_URL}/${link.short_url}`
         }))
-      });
+      };
+
+      res.status(200).json(data);
     } catch (error) {
       console.error('Database query error:', error);
       res.status(500).json({ error: 'Error fetching dashboard data' });
