@@ -157,7 +157,7 @@ export default function Signup() {
               required
             />
             <label htmlFor="agreeTerms" className="text-sm text-dark-gray">
-              {t('termsAgree')} <Link href="/terms" className="text-secondary hover:underline">{t('termsAndConditions')}</Link>
+              {t('termsAgree')} <Link href="/terms-and-conditions" className="text-secondary hover:underline">{t('termsAndConditions')}</Link>
             </label>
           </div>
           <button
