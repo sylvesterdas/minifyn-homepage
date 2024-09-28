@@ -46,6 +46,6 @@
 - Set up alerts for performance thresholds and error rates
 - Regularly review and optimize slow API endpoints
 - Implement caching strategies where appropriate (e.g., Redis for frequently accessed data)
-- Set up monitoring for third-party service dependencies (e.g., PayU integration)
+- Set up monitoring for third-party service dependencies (e.g., Razorpay integration)
 
 Remember to prioritize these improvements based on their impact and the current stage of your project. Regularly revisit and update this list as the project evolves.

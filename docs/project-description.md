@@ -13,7 +13,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * **Package Manager:** pnpm
 * **Deployment:** Vercel
 * **Authentication:** Implemented (email/password)
-* **Payment Processing:** PayU
+* **Payment Processing:** RazorPay
 * **Database Migration:** db-migrate
 
 ## Key Features
@@ -27,7 +27,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Tiered subscription plans (Free, Pro)
 * Detailed analytics for shortened URLs
 * API access for Pro users
-* PayU integration for secure payment processing
+* RazorPay integration for secure payment processing
 
 ## Subscription Plans
 
@@ -92,7 +92,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 6. Mobile-friendly navigation with hamburger menu
 7. User authentication (signup, login, password reset)
 8. User dashboard for managing shortened URLs
-9. Subscription management with PayU integration
+9. Subscription management with RazorPay integration
 10. Basic and advanced analytics for shortened URLs
 11. API access for Pro users
 
@@ -115,9 +115,8 @@ Refer to the ERD diagram for detailed relationships between these tables.
 
 * DATABASE_URL: PostgreSQL connection string
 * NEXT_PUBLIC_BASE_URL: Base URL for shortened links (e.g., 'https://mnfy.in')
-* PAYU_MERCHANT_KEY: PayU merchant key for transaction processing
-* PAYU_MERCHANT_SALT: PayU merchant salt for security
-* PAYU_MODE: PayU mode (test or production)
+* NEXT_RAZORPAY_KEY_ID: Razorpay key id for transaction processing
+* NEXT_RAZORPAY_KEY_SECRET: Razorpay key secret for security
 * JWT_SECRET: Secret for JSON Web Token generation and verification
 * NEXT_PUBLIC_API_URL: URL for the API endpoints
 
@@ -131,8 +130,8 @@ Refer to the ERD diagram for detailed relationships between these tables.
 6. Enhance API documentation and create SDKs for popular programming languages
 7. Implement A/B testing for landing pages
 8. Set up automated testing and CI/CD pipeline
-9. Migrate payment processing from Stripe to PayU
-10. Update subscription management logic for PayU integration
+9. Migrate payment processing from Stripe to Razorpay
+10. Update subscription management logic for Razorpay integration
 
 ## Development Commands
 
