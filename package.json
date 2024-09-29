@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "migrate": "db-migrate up"
@@ -22,8 +23,10 @@
     "next": "14.2.13",
     "next-auth": "^4.24.7",
     "next-i18next": "^15.3.1",
+    "next-sitemap": "^4.2.3",
     "pg": "^8.12.0",
     "qrcode.react": "^3.1.0",
+    "razorpay": "^2.9.4",
     "react": "^18",
     "react-dom": "^18",
     "react-i18next": "^15.0.1",

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.minifyn.com
+
+# Sitemaps
+Sitemap: https://www.minifyn.com/sitemap.xml
