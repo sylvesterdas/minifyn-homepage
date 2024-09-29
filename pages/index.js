@@ -7,28 +7,14 @@ import QRCodeGenerator from '@/components/QRCodeGenerator';
 import UsageLimits from '@/components/UsageLimits';
 import FeaturesSection from '@/components/FeaturesSection';
 import { TRANSLATION_KEYS, FEATURE_KEYS } from '@/constants/text';
-import StructuredData from '@/components/StructuredData';
 import PricingOverview from '@/components/PricingOverview';
 
 export default function Home({ user }) {
   const [activeTab, setActiveTab] = useState('url');
   const { t } = useTranslation('common');
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "MiniFyn",
-    "url": "https://www.minifyn.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.minifyn.com/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  };
-
   return (
     <>
-      <StructuredData data={structuredData} />
       <div className="font-sans text-sm sm:text-base">
         <Head>
           <title>MiniFyn - Simplify Your Links</title>

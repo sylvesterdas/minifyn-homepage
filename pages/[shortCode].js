@@ -4,6 +4,7 @@ import InvalidUrl from '../components/InvalidUrl';
 import AdRedirect from '../components/AdRedirect';
 import { getShortUrl } from '../lib/cache';
 import { incrementClicks, getClickCount } from '../lib/analytics';
+import { getUserCountry } from '../lib/geolocation';
 
 export async function getServerSideProps(context) {
   const { shortCode } = context.params;
@@ -11,6 +12,7 @@ export async function getServerSideProps(context) {
 
   try {
     const urlData = await getShortUrl(shortCode);
+    const userCountry = await getUserCountry(context.req); // Implement this function
 
     if (!urlData) {
       return { 
@@ -32,10 +34,8 @@ export async function getServerSideProps(context) {
       };
     }
 
-    // Increment the click count
     await incrementClicks(shortCode, context.req);
 
-    const createdAt = new Date(created_at);
     const isAnonymous = subscription_type === 'LinkFree User';
     const redirectDelay = isAnonymous ? 7 : 1;
 
@@ -50,7 +50,10 @@ export async function getServerSideProps(context) {
         redirectDelay,
         clicks,
         title: urlData.title,
-        description: urlData.description
+        description: urlData.description,
+        adClientId: process.env.GOOGLE_AD_CLIENT_ID, // Add this
+        adSlotId: process.env.GOOGLE_AD_SLOT_ID, // Add this
+        userCountry: userCountry
       }
     };
   } catch (error) {
@@ -64,7 +67,7 @@ export async function getServerSideProps(context) {
   }
 }
 
-function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, title, description }) {
+function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, title, description, adClientId, adSlotId }) {
   const { t } = useTranslation('common');
 
   if (scenario === 'notFound' || scenario === 'expired') {
@@ -83,6 +86,9 @@ function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, t
       clicks={clicks} 
       title={title}
       description={description}
+      adClientId={adClientId}
+      adSlotId={adSlotId}
+      userCountry={userCountry}
       t={t} 
     />;
   }

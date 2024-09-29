@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import AdConsent from './AdConsent';
 
-const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, t }) => {
+const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, title, description, adClientId, adSlotId, userCountry, t }) => {
   const [secondsLeft, setSecondsLeft] = useState(redirectDelay);
+  const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
     if (secondsLeft > 0) {
@@ -12,6 +14,24 @@ const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, t }) => {
     }
   }, [secondsLeft, originalUrl]);
 
+  useEffect(() => {
+    if (showAd && isAnonymous) {
+      // Load Google Ads script
+      const script = document.createElement('script');
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+      script.async = true;
+      script.setAttribute('data-ad-client', adClientId);
+      document.body.appendChild(script);
+
+      // Initialize ads
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, [showAd, isAnonymous, adClientId]);
+
+  const handleAdConsent = (consent) => {
+    setShowAd(consent);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
@@ -19,10 +39,15 @@ const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, t }) => {
         <p className="mb-4">
           {t('redirectCountdown', { seconds: secondsLeft })}
         </p>
-        {isAnonymous && (
+        {isAnonymous && showAd && (
           <div className="mb-4">
             <p>{t('anonymousAdMessage')}</p>
-            {/* Add your ad component here */}
+            <ins className="adsbygoogle"
+                 style={{ display: 'block' }}
+                 data-ad-client={adClientId}
+                 data-ad-slot={adSlotId}
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
           </div>
         )}
         <p className="text-sm text-gray-500">
@@ -35,6 +60,7 @@ const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, t }) => {
           {t('clickHereIfNotRedirected')}
         </a>
       </div>
+      {isAnonymous && <AdConsent onConsent={handleAdConsent} userCountry={userCountry} />}
     </div>
   );
 };
