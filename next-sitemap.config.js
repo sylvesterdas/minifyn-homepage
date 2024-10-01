@@ -7,6 +7,14 @@ module.exports = {
     {
       href: 'https://www.minifyn.com/hi',
       hreflang: 'hi',
-    }
+    },
+    {
+      href: 'https://mnfy.in.com',
+      hreflang: 'en',
+    },
+    {
+      href: 'https://mnfy.in.com/hi',
+      hreflang: 'hi',
+    },
   ],
 }
