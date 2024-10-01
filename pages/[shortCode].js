@@ -36,7 +36,7 @@ export async function getServerSideProps(context) {
 
     await incrementClicks(shortCode, context.req);
 
-    const isAnonymous = subscription_type === 'LinkFree User';
+    const isAnonymous = subscription_type === 'anonymous';
     const redirectDelay = isAnonymous ? 7 : 1;
 
     const clicks = await getClickCount(shortCode);
@@ -67,15 +67,11 @@ export async function getServerSideProps(context) {
   }
 }
 
-function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, title, description, adClientId, adSlotId }) {
+function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, title, description, adClientId, adSlotId, userCountry }) {
   const { t } = useTranslation('common');
 
-  if (scenario === 'notFound' || scenario === 'expired') {
-    return <InvalidUrl scenario={scenario} t={t} />;
-  }
-
-  if (scenario === 'error') {
-    return <InvalidUrl scenario="error" t={t} />;
+  if (scenario === 'notFound' || scenario === 'expired' || scenario === 'error') {
+    return <InvalidUrl scenario={scenario} t={t} adClientId={adClientId} adSlotId={adSlotId} userCountry={userCountry} />;
   }
 
   if (scenario === 'redirect') {

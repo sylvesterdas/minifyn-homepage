@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 const AdConsent = ({ onConsent, userCountry }) => {
   const [hasConsented, setHasConsented] = useState(false);
 
-  const requiresConsent = ['US', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'IE', 'DK', 'FI', 'NO', 'SE', 'AT', 'CH', 'PL'];
+  const requiresConsent = ['US', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'IE', 'DK', 'FI', 'NO', 'SE', 'AT', 'CH', 'PL', 'IN'];
 
   useEffect(() => {
-    if (!requiresConsent.includes(userCountry)) {
+    if (!requiresConsent.includes(userCountry) || userCountry === 'LOCAL' || userCountry === 'UNKNOWN') {
+      // Automatically consent for countries not requiring explicit consent,
+      // local development environments, and when country is unknown
       setHasConsented(true);
       onConsent(true);
     } else {
@@ -25,7 +27,7 @@ const AdConsent = ({ onConsent, userCountry }) => {
     onConsent(consent);
   };
 
-  if (hasConsented || !requiresConsent.includes(userCountry)) return null;
+  if (hasConsented || !requiresConsent.includes(userCountry) || userCountry === 'LOCAL' || userCountry === 'UNKNOWN') return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-100 p-4 shadow-md">
