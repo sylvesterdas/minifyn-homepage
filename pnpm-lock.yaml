@@ -41,6 +41,9 @@ importers:
       next-auth:
         specifier: ^4.24.7
         version: 4.24.7(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-google-adsense:
+        specifier: ^1.0.9
+        version: 1.0.9(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       next-i18next:
         specifier: ^15.3.1
         version: 15.3.1(i18next@23.12.3)(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.0.1(i18next@23.12.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -1431,6 +1434,13 @@ packages:
     peerDependenciesMeta:
       nodemailer:
         optional: true
+
+  next-google-adsense@1.0.9:
+    resolution: {integrity: sha512-iMNFw0IL6airoX6NRxgCV8GTsluQ0QoQ21dIXzmLQ85ThGfL5I9egSatp07FY0XggWBIiTofvuDBK7wq5s3jQg==}
+    hasBin: true
+    peerDependencies:
+      next: '>=11.0.0'
+      react: '>=17.0.0'
 
   next-i18next@15.3.1:
     resolution: {integrity: sha512-+pa2pZJb7B6k5PKW3TLVMmAodqkNaOBWVYlpWX56mgcEJz0UMW+MKSdKM9Z72CHp6Bp48g7OWwDnLqxXNp/84w==}
@@ -3687,6 +3697,11 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       uuid: 8.3.2
+
+  next-google-adsense@1.0.9(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
+    dependencies:
+      next: 14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
 
   next-i18next@15.3.1(i18next@23.12.3)(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.0.1(i18next@23.12.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
     dependencies:
