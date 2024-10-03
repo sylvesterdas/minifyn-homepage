@@ -1,4 +1,4 @@
-import { AdUnit } from 'next-google-adsense';
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 
 const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, title, description, adClientId, adSlotId, userCountry, t }) => {
@@ -9,16 +9,16 @@ const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, title, de
       const timerId = setTimeout(() => setSecondsLeft(secondsLeft - 1), 1000);
       return () => clearTimeout(timerId);
     } else {
-      // window.location.href = originalUrl;
+      window.location.href = originalUrl;
     }
   }, [secondsLeft, originalUrl]);
 
   return (
     <>
-      <AdUnit
-        slotId="1150759788"
-        layout="display"
-      />
+      <Head>
+        <script async="async" data-cfasync="false" src="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js"></script>
+      </Head>
+      <div id="container-f48093756a685fc7ffa6b1531a3f0768"></div>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
           <h1 className="text-2xl font-bold mb-4">{t('redirecting')}</h1>
