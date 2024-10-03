@@ -5,7 +5,6 @@ import PublicLayout from '../components/PublicLayout';
 import DashboardLayout from '../components/DashboardLayout';
 import { isAuthenticated, getUserFromToken } from '../lib/authUtils';
 import '../styles/globals.css';
-import { GoogleAdSense } from 'next-google-adsense';
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
@@ -24,7 +23,6 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <GoogleAdSense publisherId="pub-4781198854082500" />
       <Layout user={user} setUser={setUser}>
         <Component {...pageProps} user={user} setUser={setUser} />
       </Layout>

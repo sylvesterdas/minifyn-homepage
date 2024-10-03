@@ -17,6 +17,7 @@ const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, title, de
   return (
     <>
       <Head>
+        <link rel="preconnect" href="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js" />
         <script async="async" data-cfasync="false" src="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js"></script>
       </Head>
 
