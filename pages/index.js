@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Head from 'next/head';
+import SEO from '@/components/SEO';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import UrlShortener from '@/components/UrlShortener';
@@ -15,25 +15,8 @@ export default function Home({ user }) {
 
   return (
     <>
+      <SEO />
       <div className="font-sans text-sm sm:text-base">
-        <Head>
-          <title>MiniFyn - Simplify Your Links</title>
-          <meta name="description" content="Shorten, share, and track your links with MiniFyn" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="canonical" href="https://www.minifyn.com" />
-          <meta property="og:title" content="MiniFyn - Simplify Your Links" />
-          <meta property="og:description" content="Shorten, share, and track your links with MiniFyn" />
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://www.minifyn.com" />
-          <meta property="og:image" content="https://www.minifyn.com/og-image.jpg" />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="MiniFyn - Simplify Your Links" />
-          <meta name="twitter:description" content="Shorten, share, and track your links with MiniFyn" />
-          <meta name="twitter:image" content="https://www.minifyn.com/twitter-image.jpg" />
-          <meta name="google-adsense-account" content="ca-pub-4781198854082500" />
-        </Head>
-
         <main>
           <div className="bg-gradient-to-br from-primary via-secondary to-teal relative overflow-hidden">
             <div className="max-w-6xl mx-auto px-4 py-8 md:py-16 relative z-10">

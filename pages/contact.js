@@ -1,13 +1,14 @@
+import SEO from '@/components/SEO';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 const ContactPage = () => {
   return (
     <>
-      <Head>
-        <title>Contact MiniFyn - We&apos;re Here to Help</title>
-        <meta name="description" content="Get in touch with MiniFyn for support, feedback, or inquiries about our URL shortening service." />
-      </Head>
+      <SEO 
+        title='Contact MiniFyn - We&apos;re Here to Help'
+        description='Get in touch with MiniFyn for support, feedback, or inquiries about our URL shortening service.'
+        canonical='https://www.minifyn.com/contact'
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
         <p className="mb-4">We value your feedback and are here to assist you with any questions or concerns you may have about MiniFyn.</p>

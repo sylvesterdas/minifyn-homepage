@@ -1,14 +1,15 @@
+import SEO from '@/components/SEO';
 import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 const RefundAndCancellationPage = ({ date }) => {
   return (
     <>
-      <Head>
-        <title>Refund and Cancellation Policy - MiniFyn</title>
-        <meta name="description" content="Learn about MiniFyn's refund and cancellation policy for our URL shortening service." />
-      </Head>
+      <SEO 
+        title='Refund and Cancellation Policy - MiniFyn'
+        description='Learn about MiniFyn&apos;s refund and cancellation policy for our URL shortening service.'
+        canonical='https://www.minifyn.com/refund-and-cancellation'
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-4">Refund and Cancellation Policy</h1>
         <p className="mb-4">Last updated: {date}</p>

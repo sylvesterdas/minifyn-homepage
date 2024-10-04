@@ -1,14 +1,15 @@
+import SEO from '@/components/SEO';
 import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 const ShippingAndDeliveryPage = ({ date }) => {
   return (
     <>
-      <Head>
-        <title>Shipping and Delivery Policy - MiniFyn</title>
-        <meta name="description" content="Information about MiniFyn's shipping and delivery policy for our digital URL shortening service." />
-      </Head>
+      <SEO
+        title='Shipping and Delivery Policy - MiniFyn'
+        description='Information about MiniFyn&apos;s shipping and delivery policy for our digital URL shortening service.'
+        canonical='https://www.minifyn.com/shipping-and-delivery'
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-4">Shipping and Delivery Policy</h1>
         <p className="mb-4">Last updated: {date}</p>

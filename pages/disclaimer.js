@@ -1,14 +1,15 @@
+import SEO from '@/components/SEO';
 import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 const DisclaimerPage = ({ date }) => {
   return (
     <>
-      <Head>
-        <title>Disclaimer - MiniFyn</title>
-        <meta name="description" content="Read MiniFyn's disclaimer to understand the terms of using our URL shortening service." />
-      </Head>
+      <SEO 
+        title='Disclaimer - MiniFyn'
+        description='Read MiniFyn&apos;s disclaimer to understand the terms of using our URL shortening service.'
+        canonical='https://www.minifyn.com/disclaimer'
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-4">Disclaimer</h1>
         <p className="mb-4" suppressHydrationWarning>Last updated: {date}</p>

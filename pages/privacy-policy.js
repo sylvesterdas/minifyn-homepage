@@ -1,14 +1,15 @@
 // import moment from 'moment';
+import SEO from '@/components/SEO';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 const PrivacyPolicyPage = ({ date }) => {
   return (
     <>
-      <Head>
-        <title>Privacy Policy - MiniFyn</title>
-        <meta name="description" content="Read MiniFyn's privacy policy to understand how we collect, use, and protect your information in compliance with GDPR and other regulations." />
-      </Head>
+      <SEO 
+        title='Privacy Policy - MiniFyn'
+        description='Read MiniFyn&apos;s privacy policy to understand how we collect, use, and protect your information in compliance with GDPR and other regulations.'
+        canonical='https://www.minifyn.com/privacy-policy'
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
         <p className="mb-4" suppressHydrationWarning>Last updated: {date}</p>
@@ -89,7 +90,7 @@ export async function getServerSideProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
-      date: 'October 1, 2024.', // moment().format('YYYY-MM-DD')
+      date: 'October 1, 2024.',
     },
   };
 }

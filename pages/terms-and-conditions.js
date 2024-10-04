@@ -1,14 +1,15 @@
+import SEO from '@/components/SEO';
 import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 const TermsAndConditionsPage = ({ date }) => {
   return (
     <>
-      <Head>
-        <title>Terms and Conditions - MiniFyn</title>
-        <meta name="description" content="Read MiniFyn's terms and conditions for using our URL shortening service." />
-      </Head>
+      <SEO
+        title='Terms and Conditions - MiniFyn'
+        description='Read MiniFyn&apos;s terms and conditions for using our URL shortening service.'
+        canonical='https://www.minifyn.com/terms-and-conditions'
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
         <p className="mb-4">Last updated: {date}</p>
