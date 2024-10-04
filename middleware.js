@@ -5,11 +5,15 @@ import { mockKV } from './lib/mockKV';
 const kvStore = process.env.NODE_ENV === 'development' ? mockKV : kv;
 
 export const config = {
-  matcher: ['/api/shorten', '/api/reset-rate-limit'],
+  matcher: [
+    '/api/shorten',
+    '/api/reset-rate-limit',
+    '/((?!_next/static|favicon.ico).*)'
+  ],
 };
 
 // CORS configuration
-const PRODUCTION_ORIGINS = ['https://minifyn.com', 'https://mnfy.in'];
+const PRODUCTION_ORIGINS = ['https://www.minifyn.com', 'https://www.mnfy.in'];
 const DEV_ORIGIN = 'http://localhost:3000';
 
 const ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
@@ -43,12 +47,14 @@ function handleCORS(request) {
   responseHeaders.set('Access-Control-Allow-Methods', ALLOWED_METHODS.join(', '));
   responseHeaders.set('Access-Control-Allow-Headers', ALLOWED_HEADERS.join(', '));
   responseHeaders.set('Access-Control-Max-Age', MAX_AGE.toString());
+  responseHeaders.set('Vary', 'Origin');
 
   return responseHeaders;
 }
 
 export async function middleware(request) {
   const corsHeaders = handleCORS(request);
+  
   if (request.method === 'OPTIONS') {
     return new NextResponse(null, { status: 204, headers: corsHeaders });
   }
@@ -115,5 +121,10 @@ export async function middleware(request) {
     }
   }
 
-  return NextResponse.next();
+  // For all other routes, apply CORS headers
+  const response = NextResponse.next();
+  corsHeaders.forEach((value, key) => {
+    response.headers.set(key, value);
+  });
+  return response;
 }
