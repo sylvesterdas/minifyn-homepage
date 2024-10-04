@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     // Fetch user from Postgres
     const query = db.sql`
       SELECT u.*, st.name as "accountType" FROM users u
-      INNER JOIN subscription_types st
+      LEFT JOIN subscription_types st
         ON st.id = u.subscription_type_id
       WHERE u.email = ${email}
     `;

@@ -15,7 +15,6 @@ export default async function handler(req, res) {
       }
 
       const userId = session.userId;
-      console.log(userId)
 
       // Fetch total links and clicks
       const { rows: [stats] } = await db.query(db.sql`
@@ -44,8 +43,6 @@ export default async function handler(req, res) {
         ORDER BY created_at DESC
         LIMIT 5
       `);
-
-      console.log(stats, subscription, recentLinks)
 
       const data = {
         totalLinks: stats.total_links,

@@ -1,7 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
-const UsageLimits = ({ userType }) => {
+const UsageLimits = ({  }) => {
+  const { user } = useAuth()
+  const userType = user;
   const limits = {
     anonymous: {
       links: 5,
@@ -19,7 +22,6 @@ const UsageLimits = ({ userType }) => {
     },
   };
 
-  console.log(userType)
   const currentLimits = limits[userType] ?? limits.anonymous;
 
   return (

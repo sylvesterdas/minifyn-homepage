@@ -29,9 +29,7 @@ const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
         } md:translate-x-0 md:static md:inset-0`}
       >
         <div className="flex items-center justify-between flex-shrink-0 px-4 py-4">
-          <Link href="/">
-            <LogoWithName />
-          </Link>
+          <LogoWithName />
           <button
             className="md:hidden"
             onClick={() => setSidebarOpen(false)}
