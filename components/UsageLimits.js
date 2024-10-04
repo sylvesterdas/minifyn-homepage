@@ -1,7 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
-const UsageLimits = ({ userType = 'anonymous' }) => {
+const UsageLimits = ({  }) => {
+  const { user } = useAuth()
+  const userType = user;
   const limits = {
     anonymous: {
       links: 5,

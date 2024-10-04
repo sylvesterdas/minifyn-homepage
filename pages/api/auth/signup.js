@@ -6,12 +6,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { email, password, fullName } = req.body;
+  const { email, password, fullName, plan = 'free' } = req.body;
 
   try {
     // Check if user already exists
     const checkUserQuery = db.sql`
-      SELECT * FROM users WHERE email = ${email}
+      SELECT id FROM users WHERE email = ${email}
     `;
     const { rows } = await db.query(checkUserQuery);
 
@@ -23,9 +23,8 @@ export default async function handler(req, res) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Get default subscription type (LinkFree User)
     const getDefaultSubscriptionQuery = db.sql`
-      SELECT id FROM subscription_types WHERE name = 'free' LIMIT 1
+      SELECT id FROM subscription_types WHERE name = ${plan} LIMIT 1
     `;
     const { rows: subscriptionRows } = await db.query(getDefaultSubscriptionQuery);
     if (subscriptionRows.length === 0) {
@@ -35,7 +34,7 @@ export default async function handler(req, res) {
 
     // Create new user
     const insertUserQuery = db.sql`
-      INSERT INTO users (email, password_hash, full_name, is_verified, is_admin, created_at, updated_at)
+      INSERT INTO users (email, password_hash, full_name, is_verified, is_admin, created_at, "updatedAt")
       VALUES (${email}, ${hashedPassword}, ${fullName}, false, false, NOW(), NOW())
       RETURNING id, email
     `;
@@ -50,7 +49,10 @@ export default async function handler(req, res) {
 
     // TODO: Send confirmation email
 
-    res.status(201).json({ message: 'User created successfully', user: { id: newUser.id, email: newUser.email } });
+    res.status(201).json({
+      message: 'User created successfully',
+      user: { id: newUser.id, email: newUser.email }
+    });
   } catch (error) {
     console.error('Signup error:', error);
     res.status(500).json({ message: 'Internal server error' });

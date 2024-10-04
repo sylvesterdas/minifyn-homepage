@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { getToken } from '@/lib/authUtils';
 import Loading from '../components/Loading';
 
@@ -25,7 +24,6 @@ const Dashboard = () => {
   const { user, loading: authLoading } = useAuth();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -57,7 +55,6 @@ const Dashboard = () => {
   }
 
   if (!user) {
-    setTimeout(() => router.replace('/login'), 1000)
     return <div className="min-h-screen">Please log in to view your dashboard.</div>;
   }
 

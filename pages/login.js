@@ -3,37 +3,30 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useAuth } from '@/contexts/AuthContext';
 
-export default function Login({ setUser }) {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
   const { t } = useTranslation('auth');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-        router.push('/');
-      } else {
-        setError(data.message || t('loginError'));
-      }
+      await login({ email, password });
+      router.push('/dashboard');
     } catch (error) {
-      console.error('Login error:', error);
-      setError(t('loginError'));
+      console.error('Login failed:', error);
+      setError('Invalid email or password. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,6 +47,7 @@ export default function Login({ setUser }) {
                 className="w-full px-3 py-2 border border-medium-gray rounded-md focus:outline-none focus:ring-2 focus:ring-secondary"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
                 required
                 autoComplete="username"
               />
@@ -68,15 +62,17 @@ export default function Login({ setUser }) {
                 className="w-full px-3 py-2 border border-medium-gray rounded-md focus:outline-none focus:ring-2 focus:ring-secondary"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
                 required
                 autoComplete="current-password"
               />
             </div>
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full bg-secondary text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
             >
-              {t('loginButton')}
+              {isLoading ? '...' : t('loginButton')}
             </button>
           </form>
           <div className="mt-4 text-center text-sm">

@@ -52,6 +52,22 @@ function handleCORS(request) {
   return responseHeaders;
 }
 
+async function verifySession(request) {
+  const sessionId = request.cookies.get('sessionId')?.value;
+  if (!sessionId) return null;
+
+  const session = await getSession(sessionId);
+  return session;
+}
+
+async function getSession(sessionId) {
+  const session = await kv.get(`session:${sessionId}`);
+  if (session && session.expiresAt > Date.now()) {
+    return session;
+  }
+  return null;
+}
+
 export async function middleware(request) {
   const corsHeaders = handleCORS(request);
   

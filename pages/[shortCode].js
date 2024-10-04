@@ -3,8 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import InvalidUrl from '../components/InvalidUrl';
 import AdRedirect from '../components/AdRedirect';
 import { getShortUrl } from '../lib/cache';
-import { incrementClicks, getClickCount } from '../lib/analytics';
-import { getUserCountry } from '../lib/geolocation';
+import { incrementClicks } from '../lib/analytics';
 
 export async function getServerSideProps(context) {
   const { shortCode } = context.params;
@@ -23,7 +22,7 @@ export async function getServerSideProps(context) {
       };
     }
 
-    const { original_url, created_at, expires_at, is_active, subscription_type } = urlData;
+    const { original_url, expires_at, is_active, subscription_type } = urlData;
     
     if (!is_active || (expires_at && new Date(expires_at) < new Date())) {
       return { 
@@ -46,7 +45,6 @@ export async function getServerSideProps(context) {
         ...(await serverSideTranslations(locale, ['common'])),
         scenario: 'redirect',
         originalUrl: original_url,
-        isAnonymous,
         redirectDelay,
         clicks,
         title: urlData.title,
@@ -77,7 +75,6 @@ function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, t
   if (scenario === 'redirect') {
     return <AdRedirect 
       originalUrl={originalUrl} 
-      isAnonymous={isAnonymous} 
       redirectDelay={redirectDelay} 
       clicks={clicks} 
       title={title}

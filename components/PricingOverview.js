@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { isAuthenticated } from '@/lib/authUtils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isDisabled }) => {
   const router = useRouter();
@@ -46,6 +46,7 @@ const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isDisabled }) =
 
 const PricingOverview = () => {
   const { t } = useTranslation('pricing');
+  const { user } = useAuth();
 
   const pricingData = [
     {
@@ -57,8 +58,8 @@ const PricingOverview = () => {
         '60-day link validity',
         'Basic analytics'
       ],
-      ctaText: isAuthenticated() ? t('cta.dashboard') : t('cta.free'),
-      ctaRoute: isAuthenticated() ? '/dashboard' : '/signup',
+      ctaText: user ? t('cta.dashboard') : t('cta.free'),
+      ctaRoute: user ? '/dashboard' : '/signup',
       isDisabled: false
     },
     {

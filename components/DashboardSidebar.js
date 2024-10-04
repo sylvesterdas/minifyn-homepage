@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import LogoWithName from './LogoWithName';
 
 const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const router = useRouter();
@@ -28,9 +29,7 @@ const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
         } md:translate-x-0 md:static md:inset-0`}
       >
         <div className="flex items-center justify-between flex-shrink-0 px-4 py-4">
-          <Link href="/dashboard">
-            <span className="text-xl font-semibold">MiniFyn</span>
-          </Link>
+          <LogoWithName />
           <button
             className="md:hidden"
             onClick={() => setSidebarOpen(false)}
@@ -46,7 +45,7 @@ const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <Link 
               key={item.href}
               href={item.href}
-              className={`block py-2.5 px-4 rounded transition duration-200 ${
+              className={`block py-2.5 px-4 rounded transition duration-200 capitalize ${
                 router.pathname === item.href 
                   ? 'bg-blue-500 text-white' 
                   : 'text-gray-500 hover:bg-blue-50 hover:text-blue-500'

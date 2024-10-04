@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { url, recaptchaToken, customAlias, title, description } = req.body;
+    const { url, recaptchaToken, title, description } = req.body;
 
     if (!url || typeof url !== 'string' || !recaptchaToken) {
       return res.status(400).json({ error: 'Invalid input provided' });
@@ -27,7 +27,6 @@ export default async function handler(req, res) {
     // Handle shortening request
     const result = await handleShortenRequest({
       url,
-      customAlias,
       title,
       description,
       userId,
