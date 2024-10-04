@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.42",
+    "@types/react": "^18.3.11",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",

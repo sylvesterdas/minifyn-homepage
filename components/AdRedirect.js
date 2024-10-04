@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import LogoWithName from './LogoWithName';
 
-const AdRedirect = ({ originalUrl, isAnonymous, redirectDelay, clicks, title, description, adClientId, adSlotId, userCountry, t }) => {
+const AdRedirect = ({ originalUrl, redirectDelay }) => {
   const [secondsLeft, setSecondsLeft] = useState(redirectDelay);
 
   useEffect(() => {

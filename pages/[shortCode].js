@@ -11,7 +11,6 @@ export async function getServerSideProps(context) {
 
   try {
     const urlData = await getShortUrl(shortCode);
-    const userCountry = await getUserCountry(context.req); // Implement this function
 
     if (!urlData) {
       return { 
@@ -35,10 +34,19 @@ export async function getServerSideProps(context) {
 
     await incrementClicks(shortCode, context.req);
 
-    const isAnonymous = subscription_type === 'anonymous';
-    const redirectDelay = isAnonymous ? 7 : 1;
+    let redirectDelay = 7;
 
-    const clicks = await getClickCount(shortCode);
+    switch(subscription_type) {
+      case 'pro':
+        redirectDelay = 1;
+        break;
+      case 'free':
+        redirectDelay = 5;
+        break;
+      case 'anonymous':
+      default:
+        redirectDelay = 7;
+    }
 
     return {
       props: {
@@ -46,12 +54,10 @@ export async function getServerSideProps(context) {
         scenario: 'redirect',
         originalUrl: original_url,
         redirectDelay,
-        clicks,
         title: urlData.title,
         description: urlData.description,
         adClientId: process.env.GOOGLE_AD_CLIENT_ID, // Add this
         adSlotId: process.env.GOOGLE_AD_SLOT_ID, // Add this
-        userCountry: userCountry
       }
     };
   } catch (error) {

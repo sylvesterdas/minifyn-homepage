@@ -11,13 +11,21 @@ function MyApp({ Component, pageProps }) {
   const isDashboardRoute = router.pathname.startsWith('/dashboard');
   const Layout = isDashboardRoute ? DashboardLayout : PublicLayout;
 
-  return (
-    <AuthProvider>
+  if (router.route !== '/[shortCode]')
+    return (
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthProvider>
+    );
+  else {
+    return (
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </AuthProvider>
-  );
+    );
+  }
 }
 
 export default appWithTranslation(MyApp);
