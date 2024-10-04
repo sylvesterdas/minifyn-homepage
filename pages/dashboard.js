@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { getToken } from '@/lib/authUtils';
 import Loading from '../components/Loading';
+import { useRouter } from 'next/router';
 
 const DashboardCard = ({ title, value, icon }) => (
   <div className="bg-white rounded-lg shadow-md p-6">
@@ -24,6 +25,7 @@ const Dashboard = () => {
   const { user, loading: authLoading } = useAuth();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -46,7 +48,11 @@ const Dashboard = () => {
     };
 
     if (!authLoading) {
-      fetchDashboardData();
+      if (user) {
+        fetchDashboardData();
+      } else {
+        router.replace('/');
+      }
     }
   }, [authLoading]);
 
