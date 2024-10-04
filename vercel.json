@@ -7,10 +7,6 @@
     {
       "path": "/api/delete-expired-urls",
       "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/auth/cleanup-sessions",
-      "schedule": "0 0 * * *"
     }
   ]
 }
