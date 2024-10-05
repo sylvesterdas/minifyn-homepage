@@ -4,6 +4,7 @@ import InvalidUrl from '../components/InvalidUrl';
 import AdRedirect from '../components/AdRedirect';
 import { getShortUrl } from '../lib/cache';
 import { incrementClicks } from '../lib/analytics';
+import moment from 'moment';
 
 export async function getServerSideProps(context) {
   const { shortCode } = context.params;
@@ -22,8 +23,8 @@ export async function getServerSideProps(context) {
     }
 
     const { original_url, expires_at, is_active, subscription_type } = urlData;
-    
-    if (!is_active || (expires_at && new Date(expires_at) < new Date())) {
+
+    if (!is_active || moment().isAfter(expires_at)) {
       return { 
         props: { 
           ...(await serverSideTranslations(locale, ['common'])),
@@ -75,7 +76,7 @@ function Redirect({ scenario, originalUrl, isAnonymous, redirectDelay, clicks, t
   const { t } = useTranslation('common');
 
   if (scenario === 'notFound' || scenario === 'expired' || scenario === 'error') {
-    return <InvalidUrl scenario={scenario} t={t} adClientId={adClientId} adSlotId={adSlotId} userCountry={userCountry} />;
+    return <InvalidUrl scenario={scenario} t={t} adClientId={adClientId} adSlotId={adSlotId} />;
   }
 
   if (scenario === 'redirect') {

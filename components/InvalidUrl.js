@@ -1,9 +1,18 @@
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import LogoWithName from './LogoWithName';
 
-const InvalidUrl = ({ scenario, t, adClientId, adSlotId, userCountry }) => {
-  const [showAd, setShowAd] = useState(userCountry === 'LOCAL' || userCountry === 'UNKNOWN');
+const InvalidUrl = ({ scenario, t }) => {
+  const [secondsLeft, setSecondsLeft] = useState(7);
+
+  useEffect(() => {
+    if (secondsLeft > 0) {
+      const timerId = setTimeout(() => setSecondsLeft(secondsLeft - 1), 1000);
+      return () => clearTimeout(timerId);
+    } else {
+      window.location.href = '/';
+    }
+  }, [secondsLeft]);
 
   let message;
   switch (scenario) {
@@ -18,47 +27,31 @@ const InvalidUrl = ({ scenario, t, adClientId, adSlotId, userCountry }) => {
       message = t('errorOccurred');
   }
 
-  useEffect(() => {
-    if (showAd) {
-      // Load Google Ads script
-      const script = document.createElement('script');
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-      script.async = true;
-      script.setAttribute('data-ad-client', adClientId);
-      document.body.appendChild(script);
-
-      // Initialize ads
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, [showAd, adClientId]);
-
-  const handleAdConsent = (consent) => {
-    setShowAd(consent);
-  };
-
   return (
     <>
       <Head>
         <title>Invalid URL - MiniFyn</title>
+        <link rel="preload" as="script" href="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js" />
+        <script async="async" data-cfasync="false" src="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js"></script>
       </Head>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-        {showAd && (
-          <div className="w-full max-w-md mb-8">
-            <ins className="adsbygoogle"
-                style={{ display: 'block' }}
-                data-ad-client={adClientId}
-                data-ad-slot={adSlotId}
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
+
+      <nav className="bg-white shadow-sm">
+        <div className="flex flex-wrap items-center px-8 py-4 justify-between">
+          <LogoWithName />
+          <div className='text-center flex-1'>
+            <h1 className="text-lg font-bold mb-2 text-red-500">{t('invalidUrl')}</h1>
+            <p className="text-gray-700">{message}</p>
           </div>
-        )}
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4 text-red-500">{t('invalidUrl')}</h1>
-          <p className="text-gray-700">{message}</p>
-          <Link href="/" className="mt-4 inline-block text-blue-500 hover:underline">
-            {t('backToHome')}
-          </Link>
+          <div className="navbar-nav ml-auto">
+            <p className="navbar-text">
+              {t('redirectingToHome', { seconds: secondsLeft })}
+            </p>
+          </div>
         </div>
+      </nav>
+
+      <div className="body">
+        <div id="container-f48093756a685fc7ffa6b1531a3f0768"></div>
       </div>
     </>
   );

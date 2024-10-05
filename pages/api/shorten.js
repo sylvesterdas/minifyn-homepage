@@ -2,6 +2,7 @@ import { handleShortenRequest } from '@/lib/urlShortener';
 import { verifyCaptcha } from '@/lib/captcha';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { getUserSubscription } from '@/lib/subscriptions';
+import { getSession } from '@/lib/auth';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,6 +10,17 @@ export default async function handler(req, res) {
   }
 
   try {
+    let userId;
+    
+    const sessionId = req.cookies.sessionId;
+    if (sessionId) {
+      const session = await getSession(sessionId);
+      
+      if (session.userId) {
+        userId = session.userId;
+      }
+    }
+
     const { url, recaptchaToken, title, description } = req.body;
 
     if (!url || typeof url !== 'string' || !recaptchaToken) {
@@ -22,7 +34,7 @@ export default async function handler(req, res) {
     const { hourlyCount, dailyCount } = checkRateLimit(req);
 
     // Get user subscription
-    const { userId, subscriptionTypeId, hourlyLimit, dailyLimit } = await getUserSubscription(req);
+    const { subscriptionTypeId, hourlyLimit, dailyLimit } = await getUserSubscription(userId);
 
     // Handle shortening request
     const result = await handleShortenRequest({
