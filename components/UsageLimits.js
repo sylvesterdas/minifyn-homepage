@@ -4,21 +4,22 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const UsageLimits = ({  }) => {
   const { user } = useAuth()
-  const userType = user;
+  const userType = user?.subscriptionType;
   const limits = {
     anonymous: {
       links: 5,
       validity: '24 hours',
+      analytics: 'NA'
     },
     free: {
-      links: 50,
-      validity: '28 days',
+      links: 10,
+      validity: '60 days',
       analytics: 'Basic',
     },
     pro: {
-      links: 'Unlimited',
-      validity: 'Unlimited',
-      analytics: 'Advanced',
+      links: 250,
+      validity: '1 year',
+      analytics: 'Full',
     },
   };
 
