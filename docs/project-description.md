@@ -38,14 +38,13 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
   * Basic link analytics
   * Limited API access
 * Limits:
-  * 10 URLs per hour
-  * 50 URLs per day
+  * 10 URLs per day
   * 60-day link validity
   * 500 API calls per month
 
 ### Pro Account
 * Name: "LinkPro User"
-* Price: ₹499/month or ₹4,999/year (Save ₹989)
+* Price: ₹99/month or ₹999/year (Save ₹189)
 * Features:
   * All Free account features
   * Advanced link analytics
@@ -53,8 +52,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
   * Bulk URL shortening
   * Full API access
 * Limits:
-  * 50 URLs per hour
-  * 250 URLs per day
+  * 50 URLs per day
   * 1-year link validity
   * 10,000 API calls per month
 

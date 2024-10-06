@@ -10,7 +10,7 @@ exports.up = async function(db) {
 
   const proTypeId = await db.runSql(`
     INSERT INTO subscription_types (name, display_name, description, price_monthly, price_yearly)
-    VALUES ('pro', 'LinkPro User', 'Pro account with advanced features', 499, 4999)
+    VALUES ('pro', 'LinkPro User', 'Pro account with advanced features', 99, 999)
     RETURNING id;
   `);
 
@@ -48,8 +48,7 @@ exports.up = async function(db) {
   }
 
   const freeLimits = [
-    { type: 'urls_per_hour', value: 10 },
-    { type: 'urls_per_day', value: 50 },
+    { type: 'urls_per_day', value: 10 },
     { type: 'link_validity_days', value: 60 },
     { type: 'api_calls_per_month', value: 500 }
   ];
@@ -62,8 +61,7 @@ exports.up = async function(db) {
   }
 
   const proLimits = [
-    { type: 'urls_per_hour', value: 50 },
-    { type: 'urls_per_day', value: 250 },
+    { type: 'urls_per_day', value: 50 },
     { type: 'link_validity_days', value: 365 },
     { type: 'api_calls_per_month', value: 10000 }
   ];

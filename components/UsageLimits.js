@@ -17,7 +17,7 @@ const UsageLimits = ({  }) => {
       analytics: 'Basic',
     },
     pro: {
-      links: 250,
+      links: 50,
       validity: '1 year',
       analytics: 'Full',
     },

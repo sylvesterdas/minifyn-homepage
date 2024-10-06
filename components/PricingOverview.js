@@ -53,8 +53,7 @@ const PricingOverview = () => {
       plan: 'Free',
       price: '₹0/month',
       features: [
-        '10 URLs per hour',
-        '50 URLs per day',
+        '10 URLs per day',
         '60-day link validity',
         'Basic analytics'
       ],
@@ -64,9 +63,9 @@ const PricingOverview = () => {
     },
     {
       plan: 'Pro',
-      price: '₹--/month',
+      price: '₹99/month',
       features: [
-        'Unlimited URLs',
+        '50 URLs per day',
         '1-year link validity',
         'Advanced analytics',
         'Custom short links'
