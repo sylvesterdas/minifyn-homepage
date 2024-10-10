@@ -58,8 +58,8 @@ const Navbar = () => {
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.HOME)}</Link>
-            <Link href="/#features" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.FEATURES)}</Link>
-            <Link href="/#pricing" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.PRICING)}</Link>
+            <Link href="/features" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.FEATURES)}</Link>
+            <Link href="/pricing" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.PRICING)}</Link>
             <AuthLinks />
             <select 
               onChange={(e) => changeLanguage(e.target.value)}

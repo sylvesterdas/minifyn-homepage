@@ -21,6 +21,41 @@
     "bulkUrlShortening": {
       "title": "Bulk URL Shortening",
       "description": "Shorten multiple URLs at once for efficiency."
+    },
+    "title": "MiniFyn Features",
+    "whatWeDoTitle": "What MiniFyn Does",
+    "whatWeDoDescription": "MiniFyn is a powerful URL shortening service designed for developers and businesses. We transform long, complex URLs into short, memorable links that are easy to share and track.",
+    "basicCapabilitiesTitle": "Our Core Capabilities",
+    "basicCapabilities": {
+      "urlShortening": "Quick and efficient URL shortening",
+      "qrCodeGeneration": "QR code generation for each shortened link",
+      "linkAnalytics": "Detailed link analytics and click tracking",
+      "customization": "Custom short link aliases for branded links",
+      "apiAccess": "Developer-friendly API for integration"
+    },
+    "comparisonTitle": "Free vs Pro Subscription",
+    "comparison": {
+      "feature": "Feature",
+      "free": "Free",
+      "pro": "Pro",
+      "urlShortening": "URL Shortening",
+      "customAliases": "Custom Aliases",
+      "qrCodes": "QR Codes",
+      "analytics": "Analytics",
+      "apiAccess": "API Access",
+      "urlsPerHour": "URLs per Hour",
+      "urlsPerDay": "URLs per Day",
+      "linkValidity": "Link Validity",
+      "bulkShortening": "Bulk Shortening",
+      "signUpFree": "Sign Up Free",
+      "signUpPro": "Get Pro"
+    },
+    "descriptions": {
+      "urlShortening": "Transform long URLs into concise, shareable links with just a click.",
+      "qrCodeGeneration": "Create QR codes for your shortened links, perfect for print media and contactless sharing.",
+      "linkAnalytics": "Gain insights into your link performance with detailed click tracking and geographic data.",
+      "customization": "Personalize your short links with custom aliases to reinforce your brand.",
+      "apiAccess": "Seamlessly integrate URL shortening into your applications with our robust API."
     }
   },
   "nav": {
@@ -33,6 +68,32 @@
     "login": "Log In",
     "signup": "Sign Up",
     "logout": "Log Out"
+  },
+  "pricing": {
+    "title": "Choose Your Plan",
+    "subtitle": "Simple, transparent pricing to fit your needs",
+    "freePlan": {
+      "title": "Link Free",
+      "description": "Perfect for personal use and small projects",
+      "feature1": "10 URLs shortened per day",
+      "feature2": "Basic link analytics",
+      "feature3": "60-day link validity",
+      "feature4": "QR code generation",
+      "feature5": "Email support",
+      "cta": "Get Started Free"
+    },
+    "proPlan": {
+      "title": "Link Pro",
+      "description": "Ideal for businesses and power users",
+      "feature1": "50 URLs shortened per day",
+      "feature2": "Advanced link analytics",
+      "feature3": "1-year link validity",
+      "feature4": "Custom link aliases",
+      "feature5": "Bulk URL shortening",
+      "feature6": "Priority email and chat support",
+      "cta": "Upgrade to Pro"
+    },
+    "compareFeatures": "Compare all features in detail"
   },
   "whyChooseMiniFyn": "Why Choose MiniFyn?",
   "copyright": "© {{year}} MiniFyn. All rights reserved.",

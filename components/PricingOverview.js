@@ -14,7 +14,7 @@ const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isDisabled }) =
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between">
+    <div className={`bg-white ${plan == 'Link Pro' ? 'border-2 border-blue-500 shadow-xl z-10 lg:-mt-4 lg:-mb-4' : 'lg:mr-4'} rounded-lg shadow-md p-6 flex flex-col justify-between`}>
       <div>
         <h3 className="text-xl font-semibold mb-2">{plan}</h3>
         <p className="text-2xl font-bold mb-4">{price}</p>
@@ -46,29 +46,30 @@ const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isDisabled }) =
 
 const PricingOverview = () => {
   const { t } = useTranslation('pricing');
+  const { t: tC } = useTranslation('common');
   const { user } = useAuth();
 
   const pricingData = [
     {
-      plan: 'Free',
+      plan: tC('pricing.freePlan.title'),
       price: '₹0/month',
       features: [
-        '10 URLs per day',
-        '60-day link validity',
-        'Basic analytics'
+        tC('pricing.freePlan.feature1'),
+        tC('pricing.freePlan.feature2'),
+        tC('pricing.freePlan.feature3'),
       ],
       ctaText: user ? t('cta.dashboard') : t('cta.free'),
       ctaRoute: user ? '/dashboard' : '/signup',
       isDisabled: false
     },
     {
-      plan: 'Pro',
+      plan: tC('pricing.proPlan.title'),
       price: '₹99/month',
       features: [
-        '50 URLs per day',
-        '1-year link validity',
-        'Advanced analytics',
-        'Custom short links'
+        tC('pricing.proPlan.feature1'),
+        tC('pricing.proPlan.feature2'),
+        tC('pricing.proPlan.feature3'),
+        tC('pricing.proPlan.feature4'),
       ],
       ctaText: t('cta.proComingSoon'),
       ctaRoute: '/',
@@ -94,7 +95,7 @@ const PricingOverview = () => {
             />
           ))}
         </div>
-        <div className="text-center hidden">
+        <div className="text-center">
           <Link href="/pricing" className="text-secondary hover:underline">
             {t('detailedComparison')}
           </Link>
