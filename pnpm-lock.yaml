@@ -6,6 +6,7 @@ settings:
 
 overrides:
   micromatch: '>=4.0.8'
+  cookie: '>=0.7.0'
 
 importers:
 
@@ -680,9 +681,9 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  cookie@0.5.0:
-    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
-    engines: {node: '>= 0.6'}
+  cookie@1.0.1:
+    resolution: {integrity: sha512-Xd8lFX4LM9QEEwxQpF9J9NTUh8pmdJO0cyRJhFiDoLTk2eH8FXlRv2IFGYVadZpqI3j8fhNrSdKCeYPxiAhLXw==}
+    engines: {node: '>=18'}
 
   core-js@3.38.0:
     resolution: {integrity: sha512-XPpwqEodRljce9KswjZShh95qJ1URisBeKCjUdq27YdenkslVe7OO0ZJhlYXAChW7OhXaRLl8AAba7IBfoIHug==}
@@ -2912,7 +2913,7 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  cookie@0.5.0: {}
+  cookie@1.0.1: {}
 
   core-js@3.38.0: {}
 
@@ -3945,7 +3946,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.25.0
       '@panva/hkdf': 1.2.1
-      cookie: 0.5.0
+      cookie: 1.0.1
       jose: 4.15.9
       next: 14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       oauth: 0.9.15
