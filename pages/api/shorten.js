@@ -1,4 +1,4 @@
-import { handleShortenRequest } from '@/lib/urlShortener';
+import { handleShortenRequest, getUserUrlCount } from '@/lib/urlShortener';
 import { verifyCaptcha } from '@/lib/captcha';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { getUserSubscription } from '@/lib/subscriptions';
@@ -34,7 +34,13 @@ export default async function handler(req, res) {
     const { hourlyCount, dailyCount } = checkRateLimit(req);
 
     // Get user subscription
-    const { subscriptionTypeId, hourlyLimit, dailyLimit } = await getUserSubscription(userId);
+    const { subscriptionTypeId, hourlyLimit, dailyLimit, maxUrls } = await getUserSubscription(userId);
+
+    // Check user's current URL count
+    const userUrlCount = await getUserUrlCount(userId);
+    if (userUrlCount >= maxUrls) {
+      return res.status(403).json({ error: 'URL limit reached. Please upgrade your plan or delete some existing URLs.' });
+    }
 
     // Handle shortening request
     const result = await handleShortenRequest({

@@ -28,6 +28,8 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Detailed analytics for shortened URLs
 * API access for Pro users
 * RazorPay integration for secure payment processing
+* Comprehensive features page
+* Clear pricing page with plan comparison
 
 ## Subscription Plans
 
@@ -44,7 +46,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 
 ### Pro Account
 * Name: "LinkPro User"
-* Price: ₹99/month or ₹999/year (Save ₹189)
+* Price: ₹99/month or ₹999/year
 * Features:
   * All Free account features
   * Advanced link analytics
@@ -73,9 +75,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Use of whitespace for clarity and focus
 * Gradient backgrounds for visual interest (e.g., banner area)
 * Subtle animations and transitions for improved user experience
-* Clear typography hierarchy:
-    * Headings: Bold, larger sizes
-    * Body text: Regular weight, comfortable reading size
+* Clear typography hierarchy
 * Rounded corners on buttons and input fields
 * Use of icons for visual cues and improved usability
 * Consistent padding and margin for balanced layout
@@ -93,6 +93,8 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 9. Subscription management with RazorPay integration
 10. Basic and advanced analytics for shortened URLs
 11. API access for Pro users
+12. Comprehensive features page with detailed plan comparison
+13. Clear and attractive pricing page
 
 ## Database Structure
 
@@ -117,19 +119,6 @@ Refer to the ERD diagram for detailed relationships between these tables.
 * NEXT_RAZORPAY_KEY_SECRET: Razorpay key secret for security
 * JWT_SECRET: Secret for JSON Web Token generation and verification
 * NEXT_PUBLIC_API_URL: URL for the API endpoints
-
-## Next Steps
-
-1. Implement more advanced analytics features
-2. Add social media integration for sharing shortened URLs
-3. Develop a browser extension for quick URL shortening
-4. Implement team collaboration features for Pro users
-5. Add support for custom domains (for enterprise clients)
-6. Enhance API documentation and create SDKs for popular programming languages
-7. Implement A/B testing for landing pages
-8. Set up automated testing and CI/CD pipeline
-9. Migrate payment processing from Stripe to Razorpay
-10. Update subscription management logic for Razorpay integration
 
 ## Development Commands
 

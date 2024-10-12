@@ -38,7 +38,9 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    setLoading(true);
     const res = await fetch('/api/auth/logout', { method: 'POST' });
+    setLoading(false);
     if (res.ok) {
       setUser(null);
     } else {

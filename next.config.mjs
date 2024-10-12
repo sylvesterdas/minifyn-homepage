@@ -17,12 +17,12 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        has: [{ type: 'host', value: 'www.mnfy.in' }],
-        destination: 'https://www.minifyn.com',
-        permanent: false,
-      },
+      // {
+      //   source: '/',
+      //   has: [{ type: 'host', value: 'www.mnfy.in' }],
+      //   destination: 'https://www.minifyn.com',
+      //   permanent: false,
+      // },
       {
         source: '/dashboard',
         has: [{ type: 'host', value: 'www.mnfy.in' }],

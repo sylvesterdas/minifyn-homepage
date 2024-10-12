@@ -1,12 +1,36 @@
 {
-  "dashboard": {
-    "title": "Dashboard",
-    "welcome": "Welcome, {{name}}",
-    "totalLinks": "Total Links",
-    "totalClicks": "Total Clicks",
-    "activePlan": "Active Plan",
-    "recentLinks": "Recent Links",
-    "clicks": "clicks",
-    "created": "Created"
+  "title": "Dashboard",
+  "welcome": "Welcome, {{name}}",
+  "loading": "Loading dashboard data...",
+  "error": "Error loading dashboard data",
+  "totalLinks": "Total Links",
+  "totalClicks": "Total Clicks",
+  "activePlan": "Active Plan",
+  "recentLinks": "Recent Links",
+  "clicks": "clicks",
+  "created": "Created",
+  "urlManagement": {
+    "title": "URL Management",
+    "enterUrl": "Enter a URL to shorten",
+    "shorten": "Shorten",
+    "proFeatures": "Pro Features",
+    "customAlias": "Custom alias",
+    "bulkShorten": "Bulk URL shortening",
+    "qrCodes": "QR code generation"
+  },
+  "analytics": {
+    "title": "Analytics Overview",
+    "lastDays": "Clicks over the last 30 days",
+    "basicInfo": "Basic analytics information:",
+    "totalClicks": "Total clicks: {{clicks}}",
+    "avgClicksPerDay": "Average clicks per day: {{avg}}",
+    "upgradePrompt": "Upgrade to Pro for detailed analytics and charts"
+  },
+  "subscription": {
+    "title": "Subscription Details",
+    "currentPlan": "Current Plan: {{plan}}",
+    "urlsCreated": "URLs Created",
+    "apiCalls": "API Calls",
+    "upgradePlan": "Upgrade to Pro"
   }
 }
