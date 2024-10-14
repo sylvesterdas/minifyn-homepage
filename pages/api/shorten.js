@@ -4,6 +4,33 @@ import { checkRateLimit } from '@/lib/rateLimit';
 import { getUserSubscription } from '@/lib/subscriptions';
 import { getSession } from '@/lib/auth';
 
+/**
+ * @swagger
+ * /api/shorten:
+ *   post:
+ *     summary: Shorten a URL
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - url
+ *             properties:
+ *               url:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Shortened URL
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 shortUrl:
+ *                   type: string
+ */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });

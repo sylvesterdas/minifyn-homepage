@@ -13,6 +13,7 @@ export const TRANSLATION_KEYS = {
     FEATURES: 'nav.features',
     PRICING: 'nav.pricing',
     DASHBOARD: 'nav.dashboard',
+    API_DOCS: 'nav.api-docs'
   },
   CTA: {
     LOGIN: 'cta.login',

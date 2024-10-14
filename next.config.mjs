@@ -15,6 +15,10 @@ const nextConfig = {
     BASE_URL: process.env.BASE_URL,
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
   },
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, net: false, tls: false };
+    return config;
+  },
   async redirects() {
     return [
       // {

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useAuth } from '@/contexts/AuthContext';
+import { TRANSLATION_KEYS } from '@/constants/text';
 
 const DashboardNavbar = ({ setSidebarOpen }) => {
   const { logout } = useAuth();
@@ -17,8 +18,8 @@ const DashboardNavbar = ({ setSidebarOpen }) => {
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
+        <div className="flex justify-between gap-4 h-16">
+          <div className="flex flex-1">
             <div className="flex-shrink-0 flex items-center">
               <button
                 className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -33,6 +34,9 @@ const DashboardNavbar = ({ setSidebarOpen }) => {
                 <span className="text-xl font-bold text-primary ml-4">MiniFyn Dashboard</span>
               </Link>
             </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Link href="/api-docs" className="text-gray-700 hover:text-gray-900">API Docs</Link>
           </div>
           <div className="flex items-center">
             <button
