@@ -126,6 +126,7 @@ export default function ApiDocs() {
       <div className="api-docs-container">
         <div ref={topAdRef} className="max-w-[728px] mx-auto w-full overflow-clip"></div>
 
+        <h1 className="text-center text-2xl w-full my-8 text-primary font-sans">API Documentation - MiniFyn</h1>
         <SwaggerUI spec={spec} />
 
         <div ref={bottomAdRef} className="max-w-[728px] mx-auto w-full overflow-clip"></div>
