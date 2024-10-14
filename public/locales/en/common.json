@@ -62,7 +62,8 @@
     "home": "Home",
     "features": "Features",
     "pricing": "Pricing",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "api-docs": "API Docs"
   },
   "cta": {
     "login": "Log In",

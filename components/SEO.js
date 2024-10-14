@@ -3,6 +3,7 @@ import Head from 'next/head';
 const SEO = ({ 
   title = "MiniFyn - Quick Links & QR Codes for Devs",
   description = "Free URL shortener & QR generator for developers. Perfect for side projects, API testing, and small businesses. Try MiniFyn now!",
+  keywords = [],
   canonical = "https://www.minifyn.com",
   ogImage = "https://www.minifyn.com/og-image.jpg",
   twitterImage = "https://www.minifyn.com/twitter-image.jpg"
@@ -11,6 +12,7 @@ const SEO = ({
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {keywords.length > 0 ? '<meta name="keywords" content="MiniFyn, developers, software, integration, REST API, JSON">' : ''}
     <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />

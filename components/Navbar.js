@@ -60,6 +60,7 @@ const Navbar = () => {
             <Link href="/" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.HOME)}</Link>
             <Link href="/features" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.FEATURES)}</Link>
             <Link href="/pricing" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.PRICING)}</Link>
+            <Link href="/api-docs" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.API_DOCS)}</Link>
             <AuthLinks />
             <select 
               onChange={(e) => changeLanguage(e.target.value)}
