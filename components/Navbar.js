@@ -5,6 +5,21 @@ import { useTranslation } from 'next-i18next';
 import { TRANSLATION_KEYS } from '../constants/text';
 import { useAuth } from '@/contexts/AuthContext';
 import LogoWithName from './LogoWithName';
+import Dropdown from './Dropdown';
+
+const LocaleSwitcher = () => {
+  const router = useRouter();
+
+  const changeLanguage = (locale) => {
+    router.push(router.pathname, router.asPath, { locale });
+  };
+
+  return <>
+    <div className='w-max'>
+      <Dropdown options={{ en: "English", hi: "Hindi" }} onChange={changeLanguage} selected={router.locale} />
+    </div>
+  </>;
+}
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -21,10 +36,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const changeLanguage = (locale) => {
-    router.push(router.pathname, router.asPath, { locale });
-  };
 
   const handleLogout = async () => {
     await logout();
@@ -62,14 +73,7 @@ const Navbar = () => {
             <Link href="/pricing" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.PRICING)}</Link>
             <Link href="/api-docs" className="text-gray-700 hover:text-gray-900">{t(TRANSLATION_KEYS.NAV_LINKS.API_DOCS)}</Link>
             <AuthLinks />
-            <select 
-              onChange={(e) => changeLanguage(e.target.value)}
-              value={router.locale}
-              className="border rounded px-2 py-1"
-            >
-              <option value="en">English</option>
-              <option value="hi">हिन्दी</option>
-            </select>
+            <LocaleSwitcher />
           </div>
           <div className="md:hidden flex items-center">
             <button
@@ -101,14 +105,7 @@ const Navbar = () => {
               </>
             )}
             <div className="px-3 py-2">
-              <select 
-                onChange={(e) => changeLanguage(e.target.value)}
-                value={router.locale}
-                className="w-full border rounded px-2 py-1"
-              >
-                <option value="en">English</option>
-                <option value="hi">हिन्दी</option>
-              </select>
+              <LocaleSwitcher />
             </div>
           </div>
         </div>
