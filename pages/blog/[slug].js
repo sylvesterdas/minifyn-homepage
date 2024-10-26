@@ -154,6 +154,7 @@ export async function getStaticProps({ params, locale }) {
       };
     }
 
+    post.slug = params.slug;
     return {
       props: {
         post,
