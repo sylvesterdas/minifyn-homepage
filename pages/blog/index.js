@@ -125,13 +125,13 @@ export default function Blog({ posts }) {
 export async function getStaticProps({ locale }) {
   try {
     const posts = await getLatestPosts(20);
-    
+
     return {
       props: {
         posts,
         ...(await serverSideTranslations(locale, ['common'])),
       },
-      revalidate: 3600, // Revalidate every hour
+      revalidate: 60, // Revalidate every hour
     };
   } catch (error) {
     console.error('Error fetching blog posts:', error);

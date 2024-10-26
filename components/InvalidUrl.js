@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import LogoWithName from './LogoWithName';
+import Script from 'next/script';
 
 const InvalidUrl = ({ scenario, t }) => {
   const [secondsLeft, setSecondsLeft] = useState(7);
@@ -31,9 +32,9 @@ const InvalidUrl = ({ scenario, t }) => {
     <>
       <Head>
         <title>Invalid URL - MiniFyn</title>
-        <link rel="preload" as="script" href="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js" />
-        <script async="async" data-cfasync="false" src="//pl24581526.cpmrevenuegate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js"></script>
+        <link rel="preload" as="script" href="//pl24581526.profitablecpmrate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js" />
       </Head>
+      <Script async="async" data-cfasync="false" src="//pl24581526.profitablecpmrate.com/f48093756a685fc7ffa6b1531a3f0768/invoke.js" />
 
       <nav className="bg-white shadow-sm">
         <div className="flex flex-wrap items-center px-8 py-4 justify-between">

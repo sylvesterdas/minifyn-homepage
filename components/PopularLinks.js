@@ -22,7 +22,7 @@ const FALLBACK_DATA = {
   popularLinks: [
     {
       id: 'getting-started',
-      slug: 'getting-started-with-minifyn',
+      slug: 'getting-started-with-minifyn-your-guide-to-smarter-url-shortening',
       title: 'Getting Started with MiniFyn: A Developer\'s Guide',
       brief: 'Learn how to leverage MiniFyn\'s URL shortening service for your projects. From basic usage to advanced features, this guide covers everything you need to know.',
       category: 'guide',
@@ -33,7 +33,7 @@ const FALLBACK_DATA = {
     },
     {
       id: 'url-best-practices',
-      slug: 'url-shortening-best-practices',
+      slug: 'url-shortening-best-practices-for-developers',
       title: 'URL Shortening Best Practices for Developers',
       brief: 'Discover the best practices for managing shortened URLs, including naming conventions, analytics tracking, and security considerations.',
       category: 'tutorial',
@@ -44,7 +44,7 @@ const FALLBACK_DATA = {
     },
     {
       id: 'api-integration',
-      slug: 'api-integration-guide',
+      slug: 'integrating-minifyn-api-in-your-applications',
       title: 'Integrating MiniFyn API in Your Applications',
       brief: 'Step-by-step guide to integrate MiniFyn\'s API into your applications. Learn about authentication, rate limits, and handling responses.',
       category: 'api',
@@ -55,7 +55,6 @@ const FALLBACK_DATA = {
     }
   ]
 };
-
 
 const StatsCard = ({ value, label, icon: Icon }) => (
   <div className="bg-white rounded-lg shadow-sm p-6 flex items-center space-x-4">

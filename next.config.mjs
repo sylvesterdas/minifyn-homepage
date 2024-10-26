@@ -10,11 +10,11 @@ const nextConfig = {
     NEXT_RECAPTCHA_SECRET_KEY: process.env.NEXT_RECAPTCHA_SECRET_KEY,
     NEXT_RAZORPAY_KEY_ID: process.env.NEXT_RAZORPAY_KEY_ID,
     NEXT_RAZORPAY_KEY_SECRET: process.env.NEXT_RAZORPAY_KEY_SECRET,
+    NEXT_HASHNODE_ACCESS_TOKEN: process.env.NEXT_HASHNODE_ACCESS_TOKEN,
   },
   publicRuntimeConfig: {
     BASE_URL: process.env.BASE_URL,
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
-    NEXT_HASHNODE_ACCESS_TOKEN: process.env.NEXT_HASHNODE_ACCESS_TOKEN,
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
@@ -22,12 +22,6 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // {
-      //   source: '/',
-      //   has: [{ type: 'host', value: 'www.mnfy.in' }],
-      //   destination: 'https://www.minifyn.com',
-      //   permanent: false,
-      // },
       {
         source: '/dashboard',
         has: [{ type: 'host', value: 'www.mnfy.in' }],
@@ -38,6 +32,18 @@ const nextConfig = {
         source: '/dashboard/:path*',
         has: [{ type: 'host', value: 'www.mnfy.in' }],
         destination: 'https://www.minifyn.com/dashboard/:path*',
+        permanent: false,
+      },
+      {
+        source: '/blog',
+        has: [{ type: 'host', value: 'www.mnfy.in' }],
+        destination: 'https://www.minifyn.com/blog',
+        permanent: false,
+      },
+      {
+        source: '/blog/:path*',
+        has: [{ type: 'host', value: 'www.mnfy.in' }],
+        destination: 'https://www.minifyn.com/blog/:path*',
         permanent: false,
       },
     ];

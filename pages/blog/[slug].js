@@ -76,6 +76,8 @@ export default function BlogPost({ post }) {
         {post.coverImage && (
           <div className="relative w-full h-[400px] mb-8 rounded-lg overflow-hidden">
             <Image
+              width={500}
+              height={500}
               src={post.coverImage.url}
               alt={post.title}
               className="object-cover w-full h-full"
@@ -107,7 +109,8 @@ export default function BlogPost({ post }) {
           {post.author && (
             <div className="flex items-center text-dark-gray">
               {post.author.profilePicture ? (
-                <Image
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   src={post.author.profilePicture}
                   alt={post.author.name}
                   className="w-8 h-8 rounded-full mr-2"

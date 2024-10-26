@@ -2,7 +2,7 @@
 
 ## Description
 
-MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic. It primarily targets software developers in India but caters to a global audience as well. The project implements internationalization (i18n) with support for English and Hindi, and offers tiered subscription plans for enhanced features.
+MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic. It primarily targets software developers in India but caters to a global audience. The project implements internationalization (i18n) with support for English and Hindi, and offers tiered subscription plans for enhanced features.
 
 ## Tech Stack
 
@@ -12,9 +12,11 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * **CSS Framework:** Tailwind CSS
 * **Package Manager:** pnpm
 * **Deployment:** Vercel
-* **Authentication:** Implemented (email/password)
+* **Authentication:** Custom email/password
 * **Payment Processing:** RazorPay
 * **Database Migration:** db-migrate
+* **Blog Platform:** Hashnode Headless API
+* **Content Management:** Hashnode
 
 ## Key Features
 
@@ -28,6 +30,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Detailed analytics for shortened URLs
 * API access for Pro users
 * RazorPay integration for secure payment processing
+* Blog with developer-focused content
 * Comprehensive features page
 * Clear pricing page with plan comparison
 
@@ -58,6 +61,26 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
   * 1-year link validity
   * 10,000 API calls per month
 
+## Blog Implementation
+
+* **Platform:** Hashnode Headless CMS
+* **Integration:** Direct Next.js integration via GraphQL API
+* **URL Structure:** /blog (integrated path)
+* **Features:**
+  * SEO-optimized content
+  * Developer-focused articles
+  * Integrated navigation
+  * Category-based organization
+  * Tag support
+  * Author profiles
+  * Responsive design
+* **Content Types:**
+  * Tutorials
+  * Best Practices
+  * API Guides
+  * Use Cases
+  * Product Updates
+
 ## Color Scheme
 
 * Primary: #2C3E50 (Deep Blue-Gray)
@@ -68,57 +91,21 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Teal: #1ABC9C
 * Coral: #E74C3C
 
-## Design Concepts
-
-* Minimalist and clean interface
-* Responsive design with a mobile-first approach
-* Use of whitespace for clarity and focus
-* Gradient backgrounds for visual interest (e.g., banner area)
-* Subtle animations and transitions for improved user experience
-* Clear typography hierarchy
-* Rounded corners on buttons and input fields
-* Use of icons for visual cues and improved usability
-* Consistent padding and margin for balanced layout
-
-## Implemented Features
-
-1. Homepage with responsive design
-2. URL shortening functionality with PostgreSQL backend
-3. QR code generation
-4. Internationalization (i18n) setup for English and Hindi
-5. SEO optimizations including meta tags and structured data
-6. Mobile-friendly navigation with hamburger menu
-7. User authentication (signup, login, password reset)
-8. User dashboard for managing shortened URLs
-9. Subscription management with RazorPay integration
-10. Basic and advanced analytics for shortened URLs
-11. API access for Pro users
-12. Comprehensive features page with detailed plan comparison
-13. Clear and attractive pricing page
-
-## Database Structure
-
-The project uses a PostgreSQL database with the following main tables:
-* users
-* short_urls
-* analytics
-* subscription_types
-* features
-* subscription_features
-* subscription_limits
-* user_subscriptions
-* invoices
-
-Refer to the ERD diagram for detailed relationships between these tables.
-
 ## Environment Variables
 
-* DATABASE_URL: PostgreSQL connection string
-* NEXT_PUBLIC_BASE_URL: Base URL for shortened links (e.g., 'https://mnfy.in')
-* NEXT_RAZORPAY_KEY_ID: Razorpay key id for transaction processing
-* NEXT_RAZORPAY_KEY_SECRET: Razorpay key secret for security
-* JWT_SECRET: Secret for JSON Web Token generation and verification
-* NEXT_PUBLIC_API_URL: URL for the API endpoints
+```env
+# Core
+DATABASE_URL=
+NEXT_PUBLIC_BASE_URL=
+JWT_SECRET=
+
+# Blog
+NEXT_PUBLIC_HASHNODE_ACCESS_TOKEN=
+
+# Payment
+NEXT_RAZORPAY_KEY_ID=
+NEXT_RAZORPAY_KEY_SECRET=
+```
 
 ## Development Commands
 
@@ -126,3 +113,23 @@ Refer to the ERD diagram for detailed relationships between these tables.
 * Build for production: `pnpm run build`
 * Start production server: `pnpm start`
 * Run database migrations: `pnpm run migrate`
+
+## Implementation Notes
+
+1. **Blog Integration:**
+   * Uses Hashnode Headless API for content management
+   * Integrated directly into Next.js routing
+   * Custom styling matching MiniFyn's design
+   * Fallback content for early stages
+
+2. **SEO Considerations:**
+   * Proper meta tags implementation
+   * Structured data for blog posts
+   * Canonical URLs
+   * Optimized for social sharing
+
+3. **Performance:**
+   * Static generation with incremental updates
+   * Image optimization
+   * Efficient data fetching
+   * Response caching

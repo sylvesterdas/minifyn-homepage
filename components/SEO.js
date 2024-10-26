@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Script from 'next/script';
 
 const defaultSchema = {
   "@context": "https://schema.org",
@@ -93,72 +94,75 @@ const SEO = ({
     type === 'website' ? websiteSchema : defaultSchema;
 
   return (
-    <Head>
-      {/* Basic Metadata */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="keywords" content={allKeywords.join(', ')} />
-      
-      {/* Favicon */}
-      <link rel="icon" href="/favicon.ico" />
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-      <link rel="manifest" href="/site.webmanifest" />
-      
-      {/* Canonical and Alternate URLs */}
-      <link rel="canonical" href={canonical} />
-      {Object.entries(alternateUrls).map(([lang, url]) => (
-        <link key={lang} rel="alternate" hrefLang={lang} href={url} />
-      ))}
-      
-      {/* Open Graph */}
-      <meta property="og:site_name" content="MiniFyn" />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:type" content={type} />
-      <meta property="og:url" content={canonical} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:locale" content="en_US" />
-      
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@minifyn" />
-      <meta name="twitter:creator" content="@minifyn" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={twitterImage} />
-      
-      {/* Article Specific (for blog posts) */}
-      {type === 'article' && (
-        <>
-          <meta property="article:published_time" content={published} />
-          <meta property="article:modified_time" content={modified} />
-          <meta property="article:author" content={author} />
-          {keywords.map(keyword => (
-            <meta key={keyword} property="article:tag" content={keyword} />
-          ))}
-        </>
-      )}
-      
-      {/* Robots */}
-      <meta 
-        name="robots" 
-        content={`${noindex ? 'noindex' : 'index'}, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`} 
-      />
-      
-      {/* Google */}
-      <meta name="google-adsense-account" content="ca-pub-4781198854082500" />
-      
+    <>
+      <Head>
+        {/* Basic Metadata */}
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="keywords" content={allKeywords.join(', ')} />
+        
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        
+        {/* Canonical and Alternate URLs */}
+        <link rel="canonical" href={canonical} />
+        {Object.entries(alternateUrls).map(([lang, url]) => (
+          <link key={lang} rel="alternate" hrefLang={lang} href={url} />
+        ))}
+        
+        {/* Open Graph */}
+        <meta property="og:site_name" content="MiniFyn" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content={type} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@minifyn" />
+        <meta name="twitter:creator" content="@minifyn" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={twitterImage} />
+        
+        {/* Article Specific (for blog posts) */}
+        {type === 'article' && (
+          <>
+            <meta property="article:published_time" content={published} />
+            <meta property="article:modified_time" content={modified} />
+            <meta property="article:author" content={author} />
+            {keywords.map(keyword => (
+              <meta key={keyword} property="article:tag" content={keyword} />
+            ))}
+          </>
+        )}
+        
+        {/* Robots */}
+        <meta 
+          name="robots" 
+          content={`${noindex ? 'noindex' : 'index'}, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`} 
+        />
+        
+        {/* Google */}
+        <meta name="google-adsense-account" content="ca-pub-4781198854082500" />
+        
       {/* JSON-LD Schema */}
-      <script 
+      </Head>
+      <Script
+        id='schemas-google-adsense'
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-    </Head>
+    </>
   );
 };
 
