@@ -14,6 +14,7 @@ const nextConfig = {
   publicRuntimeConfig: {
     BASE_URL: process.env.BASE_URL,
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+    NEXT_HASHNODE_ACCESS_TOKEN: process.env.NEXT_HASHNODE_ACCESS_TOKEN,
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };

@@ -61,9 +61,10 @@
   "nav": {
     "home": "होम",
     "features": "सुविधाएँ",
+    "blog": "ब्लॉग",
     "pricing": "मूल्य निर्धारण",
     "dashboard": "डैशबोर्ड",
-    "api-docs": "API दस्तावेज़"
+    "api_docs": "API दस्तावेज़"
   },
   "cta": {
     "login": "लॉग इन",

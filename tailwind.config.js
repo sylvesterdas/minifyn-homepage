@@ -14,7 +14,47 @@ module.exports = {
         teal: '#1ABC9C',
         coral: '#E74C3C',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: '#4A4A4A',
+            a: {
+              color: '#3498DB',
+              '&:hover': {
+                color: '#2C3E50',
+              },
+            },
+            h1: {
+              color: '#2C3E50',
+            },
+            h2: {
+              color: '#2C3E50',
+            },
+            h3: {
+              color: '#2C3E50',
+            },
+            strong: {
+              color: '#2C3E50',
+            },
+            code: {
+              color: '#2C3E50',
+              backgroundColor: '#F4F6F8',
+              padding: '0.25rem',
+              borderRadius: '0.25rem',
+              fontWeight: '400',
+            },
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }

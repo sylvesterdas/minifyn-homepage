@@ -6,6 +6,7 @@ import UrlShortener from '@/components/UrlShortener';
 import QRCodeGenerator from '@/components/QRCodeGenerator';
 import UsageLimits from '@/components/UsageLimits';
 import FeaturesSection from '@/components/FeaturesSection';
+import PopularLinks from '@/components/PopularLinks';
 import { TRANSLATION_KEYS, FEATURE_KEYS } from '@/constants/text';
 import PricingOverview from '@/components/PricingOverview';
 import { useAuth } from '@/contexts/AuthContext';
@@ -58,6 +59,8 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <PopularLinks />
 
           <FeaturesSection features={FEATURE_KEYS.map(key => ({
             title: t(`${TRANSLATION_KEYS.FEATURES[key]}.title`),

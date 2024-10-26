@@ -61,9 +61,10 @@
   "nav": {
     "home": "Home",
     "features": "Features",
+    "blog": "Blog",
     "pricing": "Pricing",
     "dashboard": "Dashboard",
-    "api-docs": "API Docs"
+    "api_docs": "API Docs"
   },
   "cta": {
     "login": "Log In",

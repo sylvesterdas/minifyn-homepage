@@ -2,7 +2,7 @@
 module.exports = {
   siteUrl: process.env.HOME_URL || 'https://www.minifyn.com',
   generateRobotsTxt: true,
-  exclude: ['/hi*', '/dashboard*', '/forgot-password'],
+  exclude: ['/hi/*', '/dashboard*', '/forgot-password'],
   alternateRefs: [
     {
       href: 'https://www.minifyn.com/hi',
