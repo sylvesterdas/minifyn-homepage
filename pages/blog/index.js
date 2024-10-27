@@ -131,7 +131,7 @@ export async function getStaticProps({ locale }) {
         posts,
         ...(await serverSideTranslations(locale, ['common'])),
       },
-      revalidate: 60, // Revalidate every hour
+      revalidate: 3600, // Revalidate every hour
     };
   } catch (error) {
     console.error('Error fetching blog posts:', error);

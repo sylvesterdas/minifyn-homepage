@@ -78,7 +78,7 @@ const PricingOverview = () => {
   ];
 
   return (
-    <section id="pricing" className="py-12 bg-light-gray">
+    <section id="pricing" className="py-12 bg-gradient-to-b from-light-gray to-white">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-2">{t('overview.title')}</h2>
         <p className="text-xl text-center text-gray-600 mb-8">{t('overview.subtitle')}</p>

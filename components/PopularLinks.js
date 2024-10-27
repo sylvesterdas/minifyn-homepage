@@ -145,7 +145,7 @@ const PopularLinks = () => {
   }, [apiData, error]);
 
   return (
-    <div className="bg-gradient-to-b from-white to-light-gray py-16">
+    <div className="bg-light-gray py-16">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

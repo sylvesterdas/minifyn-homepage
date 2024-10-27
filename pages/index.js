@@ -60,14 +60,12 @@ export default function Home() {
             </div>
           </div>
 
-          <PopularLinks />
-
           <FeaturesSection features={FEATURE_KEYS.map(key => ({
             title: t(`${TRANSLATION_KEYS.FEATURES[key]}.title`),
             description: t(`${TRANSLATION_KEYS.FEATURES[key]}.description`),
           }))} />
 
-          <hr className="mx-10 shadow" />
+          <PopularLinks />
 
           <PricingOverview />
         </main>
