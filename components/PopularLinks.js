@@ -11,7 +11,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const PLACEHOLDER_GRADIENTS = {
   guide: 'bg-gradient-to-br from-secondary to-teal',
   tutorial: 'bg-gradient-to-br from-teal to-secondary',
-  api: 'bg-gradient-to-br from-primary to-secondary',
+  api: 'bg-gradient-to-br from-secondary to-teal',
 };
 
 // Updated fallback data

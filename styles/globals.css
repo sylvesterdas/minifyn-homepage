@@ -13,5 +13,5 @@ html {
 }
 
 body {
-  @apply bg-light-gray;
+  @apply bg-gradient-to-b from-blue-50 to-white;
 }

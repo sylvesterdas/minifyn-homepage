@@ -83,7 +83,7 @@ export default function Signup() {
 
   if (confirmationSent) {
     return (
-      <div className="min-h-screen flex flex-col bg-light-gray">
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
         <div className="flex-grow flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-md w-96 text-center">
             <h2 className="text-2xl font-bold mb-4 text-primary">{t('confirmationSent')}</h2>
@@ -98,7 +98,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-light-gray">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-md w-96">
           <h1 className="text-2xl font-bold mb-6 text-center text-primary">{t('signup')}</h1>

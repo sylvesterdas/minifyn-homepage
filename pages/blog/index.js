@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getLatestPosts } from '@/lib/blog';
 import SEO from '@/components/SEO';
 import Image from 'next/image';
 
 export default function Blog({ posts }) {
-  const { t } = useTranslation('common');
   const [selectedTag, setSelectedTag] = useState(null);
 
   // Get unique tags from all posts, limited to most used ones

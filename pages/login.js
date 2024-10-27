@@ -31,9 +31,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-light-gray">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       <div className="flex-grow flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <div className="bg-white p-8 rounded-lg sghadow-md w-96">
           <h1 className="text-2xl font-bold mb-6 text-center text-primary">{t('login')}</h1>
           {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
           <form onSubmit={handleSubmit}>

@@ -84,15 +84,19 @@ const PricingOverview = () => {
         <p className="text-xl text-center text-gray-600 mb-8">{t('overview.subtitle')}</p>
         <div className="grid md:grid-cols-2 gap-8 mb-8">
           {pricingData.map((plan, index) => (
-            <PricingCard 
+            <div
               key={index}
-              plan={plan.plan}
-              price={plan.price}
-              features={plan.features}
-              ctaText={plan.ctaText}
-              ctaRoute={plan.ctaRoute}
-              isDisabled={plan.isDisabled}
-            />
+              className={`${index%2 === 0 ? 'order-2 md:order-1' : 'order-1 md:order-2'}`}
+            >
+              <PricingCard 
+                plan={plan.plan}
+                price={plan.price}
+                features={plan.features}
+                ctaText={plan.ctaText}
+                ctaRoute={plan.ctaRoute}
+                isDisabled={plan.isDisabled}
+              />
+            </div>
           ))}
         </div>
         <div className="text-center">

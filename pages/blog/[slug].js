@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { ChevronLeft, Tag, User } from 'lucide-react';
-import { useTranslation } from 'next-i18next';
+import { ChevronLeft, Tag } from 'lucide-react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPostBySlug, getLatestPosts } from '@/lib/blog';
 import SEO from '@/components/SEO';
@@ -9,7 +8,6 @@ import Image from 'next/image';
 
 export default function BlogPost({ post }) {
   const router = useRouter();
-  const { t } = useTranslation('common');
 
   if (router.isFallback) {
     return (
@@ -108,16 +106,7 @@ export default function BlogPost({ post }) {
           {/* Author */}
           {post.author && (
             <div className="flex items-center text-dark-gray">
-              {post.author.profilePicture ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.author.profilePicture}
-                  alt={post.author.name}
-                  className="w-8 h-8 rounded-full mr-2"
-                />
-              ) : (
-                <User className="w-6 h-6 mr-2" />
-              )}
+              <Image src={'/logo.png'} className='w-8 h-8 mr-2' alt="author-image" width={32} height={32} />
               <span>{post.author.name}</span>
             </div>
           )}

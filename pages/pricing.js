@@ -68,7 +68,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen">
+    <div className="max-h-screen">
       <div className="container mx-auto px-4 py-16 max-w-screen-xl">
         <h1 className="text-4xl font-bold mb-4 text-center text-gray-800">{t('pricing.title')}</h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-12 text-center">{t('pricing.subtitle')}</p>
