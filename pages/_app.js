@@ -1,7 +1,7 @@
 import { appWithTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import PublicLayout from '../components/PublicLayout';
-import DashboardLayout from '../components/DashboardLayout';
+import DashboardLayout from '../components/dashboard/DashboardLayout';
 import { AuthProvider } from '@/contexts/AuthContext';
 import '../styles/globals.css';
 

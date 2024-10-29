@@ -29,36 +29,41 @@ export function AuthProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
-    if (res.ok) {
-      const userData = await res.json();
-      setUser(userData);
-    } else {
-      throw new Error('Login failed');
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'Login failed');
     }
+
+    const userData = await res.json();
+    setUser(userData);
+    return userData;
   };
 
   const logout = async () => {
-    setLoading(true);
-    const res = await fetch('/api/auth/logout', { method: 'POST' });
-    setLoading(false);
-    if (res.ok) {
+    try {
+      setLoading(true);
+      await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
-    } else {
-      throw new Error('Logout failed');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Use useMemo to memoize the context value
-  const contextValue = useMemo(() => ({
+  const value = useMemo(() => ({
     user,
     setUser,
     login,
     logout,
-    loading
+    loading,
+    isAuthenticated: !!user
   }), [user, loading]);
 
   return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

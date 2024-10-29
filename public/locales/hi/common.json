@@ -126,5 +126,20 @@
   "anonymousAdMessage": "कृपया प्रतीक्षा करें जबकि हम आपके अनुरोध को संसाधित करते हैं।",
   "clickCount": "इस लिंक पर {{count}} बार क्लिक किया गया है।",
   "clickHereIfNotRedirected": "यदि आप स्वचालित रूप से पुनर्निर्देशित नहीं होते हैं तो यहां क्लिक करें।",
-  "shortPlaceholder": "यहां छोटा किया गया URL प्रदर्शित किया जाएगा"
+  "shortPlaceholder": "यहां छोटा किया गया URL प्रदर्शित किया जाएगा",
+  
+  "terms": "नियम",
+  "privacy": "गोपनीयता",
+  "help": "सहायता",
+  "allRightsReserved": "सर्वाधिकार सुरक्षित",
+
+  "legal": "कानूनी",
+  "company": "कंपनी",
+  "resources": "संसाधन",
+  "support": "सहायता",
+
+  "followUs": "फॉलो करें",
+  "github": "GitHub",
+  "twitter": "Twitter",
+  "linkedin": "LinkedIn"
 }

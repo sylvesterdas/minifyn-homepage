@@ -33,7 +33,6 @@ export default function Dashboard() {
   }
 
   const handleDeleteLink = async (shortCode) => {
-    // Implement delete logic here
     await fetch(`/api/urls/${shortCode}`, { method: 'DELETE' });
     mutate();
   };
@@ -47,11 +46,11 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard - MiniFyn</title>
+        <title>Dashboard | MiniFyn</title>
       </Head>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">
-        Welcome, {user?.fullName || user?.name}
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Welcome, {user?.name}
       </h1>
       
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">

@@ -126,5 +126,20 @@
   "anonymousAdMessage": "Please wait while we process your request.",
   "clickCount": "This link has been clicked {{count}} times.",
   "clickHereIfNotRedirected": "Click here if you're not redirected automatically.",
-  "shortPlaceholder": "Minified URL will be displayed here"
+  "shortPlaceholder": "Minified URL will be displayed here",
+  
+  "terms": "Terms",
+  "privacy": "Privacy",
+  "help": "Help",
+  "allRightsReserved": "All rights reserved",
+
+  "legal": "Legal",
+  "company": "Company",
+  "resources": "Resources",
+  "support": "Support",
+
+  "followUs": "Follow Us",
+  "github": "GitHub",
+  "twitter": "Twitter",
+  "linkedin": "LinkedIn"
 }

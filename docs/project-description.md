@@ -1,38 +1,76 @@
-## Project Name: MiniFyn
+# MiniFyn - URL Shortener
 
 ## Description
-
-MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic. It primarily targets software developers in India but caters to a global audience. The project implements internationalization (i18n) with support for English and Hindi, and offers tiered subscription plans for enhanced features.
+MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic. It primarily targets software developers in India but caters to a global audience. The project implements internationalization (i18n) for landing pages with support for English and Hindi, and offers tiered subscription plans for enhanced features.
 
 ## Tech Stack
 
+### Core
 * **Frontend & Backend:** Next.js (React)
 * **Database:** PostgreSQL (Vercel Postgres)
-* **State Management:** React Hooks
+* **State Management:** React Context + Hooks
+* **Authentication:** Session-based (Vercel KV)
 * **CSS Framework:** Tailwind CSS
 * **Package Manager:** pnpm
 * **Deployment:** Vercel
-* **Authentication:** Custom email/password
+
+### Services
+* **Database:** Vercel Postgres
+* **Session Store:** Vercel KV
 * **Payment Processing:** RazorPay
-* **Database Migration:** db-migrate
 * **Blog Platform:** Hashnode Headless API
+
+### Development Tools
+* **Database Migration:** db-migrate
 * **Content Management:** Hashnode
+* **API Documentation:** Swagger UI
+
+## Authentication System
+* Session-based authentication using Vercel KV
+* HttpOnly cookies for session management
+* Session expiry after 30 days
+* Automatic session cleanup
+* Password hashing using bcrypt
+* Email validation with regex patterns
+* Strong password requirements
+* Protection against brute force attacks
+
+## Dashboard Features
+
+### Implemented
+* Basic dashboard layout with responsive sidebar
+* Account settings management
+* Session-based authentication
+* User profile management
+* Basic analytics view
+
+### In Progress
+* URL Management interface
+* Enhanced analytics
+* API key management
+* Subscription management
 
 ## Key Features
 
+### Core Functionality
 * URL shortening with custom aliases
 * QR code generation
 * Custom short URL domain (mnfy.in)
+* Session-based authentication
+* User dashboard
+
+### User Experience
 * Responsive design (mobile, tablet, desktop)
-* Internationalization (i18n) with English and Hindi support
-* User authentication and account management
-* Tiered subscription plans (Free, Pro)
-* Detailed analytics for shortened URLs
-* API access for Pro users
-* RazorPay integration for secure payment processing
-* Blog with developer-focused content
-* Comprehensive features page
-* Clear pricing page with plan comparison
+* Internationalized landing pages (English/Hindi)
+* Clean, minimalist interface
+* Dashboard with intuitive navigation
+
+### Security Features
+* Session-based authentication
+* Secure password hashing
+* Protected API endpoints
+* Rate limiting on critical endpoints
+* HttpOnly session cookies
 
 ## Subscription Plans
 
@@ -61,43 +99,17 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
   * 1-year link validity
   * 10,000 API calls per month
 
-## Blog Implementation
-
-* **Platform:** Hashnode Headless CMS
-* **Integration:** Direct Next.js integration via GraphQL API
-* **URL Structure:** /blog (integrated path)
-* **Features:**
-  * SEO-optimized content
-  * Developer-focused articles
-  * Integrated navigation
-  * Category-based organization
-  * Tag support
-  * Author profiles
-  * Responsive design
-* **Content Types:**
-  * Tutorials
-  * Best Practices
-  * API Guides
-  * Use Cases
-  * Product Updates
-
-## Color Scheme
-
-* Primary: #2C3E50 (Deep Blue-Gray)
-* Secondary: #3498DB (Bright Blue)
-* Light Gray: #F4F6F8
-* Medium Gray: #E0E4E8
-* Dark Gray: #4A4A4A
-* Teal: #1ABC9C
-* Coral: #E74C3C
-
 ## Environment Variables
-
 ```env
 # Core
 DATABASE_URL=
 NEXT_PUBLIC_BASE_URL=
-JWT_SECRET=
+
+# Session Management
+KV_URL=
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+KV_REST_API_READ_ONLY_TOKEN=
 
 # Blog
 NEXT_PUBLIC_HASHNODE_ACCESS_TOKEN=
@@ -108,28 +120,17 @@ NEXT_RAZORPAY_KEY_SECRET=
 ```
 
 ## Development Commands
-
 * Run development server: `pnpm run dev`
 * Build for production: `pnpm run build`
 * Start production server: `pnpm start`
 * Run database migrations: `pnpm run migrate`
 
-## Implementation Notes
-
-1. **Blog Integration:**
-   * Uses Hashnode Headless API for content management
-   * Integrated directly into Next.js routing
-   * Custom styling matching MiniFyn's design
-   * Fallback content for early stages
-
-2. **SEO Considerations:**
-   * Proper meta tags implementation
-   * Structured data for blog posts
-   * Canonical URLs
-   * Optimized for social sharing
-
-3. **Performance:**
-   * Static generation with incremental updates
-   * Image optimization
-   * Efficient data fetching
-   * Response caching
+## Recent Improvements
+1. Implemented secure session-based authentication
+2. Added dashboard layout with responsive sidebar
+3. Created account settings management
+4. Added user profile updates
+5. Implemented proper database schema
+6. Added validation utilities
+7. Improved error handling
+8. Enhanced security measures

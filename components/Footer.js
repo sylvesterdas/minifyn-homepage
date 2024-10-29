@@ -3,23 +3,108 @@ import { useTranslation } from 'next-i18next';
 
 const Footer = () => {
   const { t } = useTranslation('common');
+  const currentYear = new Date().getFullYear();
+
+  const legalLinks = [
+    { href: '/privacy-policy', label: t('privacyPolicy') },
+    { href: '/terms', label: t('termsOfService') },
+    { href: '/cookie-policy', label: t('cookiePolicy') },
+    { href: '/acceptable-use', label: t('acceptableUse') },
+    { href: '/dmca', label: t('dmca') },
+    { href: '/refund-policy', label: t('refundPolicy') },
+    { href: '/disclaimer', label: t('disclaimer') }
+  ];
+
+  const productLinks = [
+    { href: '/features', label: t('features') },
+    { href: '/pricing', label: t('pricing') },
+    { href: '/api-docs', label: t('apiDocs') },
+    { href: '/blog', label: t('blog') }
+  ];
+
+  const companyLinks = [
+    { href: '/about', label: t('about') },
+    { href: '/contact', label: t('contact') },
+    { href: '/status', label: t('status') }
+  ];
 
   return (
-    <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-2">
-          <div className="mb-4 md:mb-0 flex flex-col text-center lg:text-start">
-            <span className="font-bold text-primary">MiniFyn</span>
-            <p className="text-sm text-gray-600">{t('copyright', { year: new Date().getFullYear() })}</p>
+    <footer className="bg-primary text-white">
+      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand Section */}
+          <div className="col-span-1">
+            <Link href="/" className="flex items-center">
+              <span className="text-xl font-bold">MiniFyn</span>
+            </Link>
+            <p className="mt-4 text-sm text-gray-300">
+              {t('footerTagline')}
+            </p>
           </div>
-          <div className="flex flex-wrap justify-center md:justify-end space-x-4">
-            <Link href="/about" className="text-sm text-gray-600 hover:text-gray-900">{t('about')}</Link>
-            <Link href="/contact" className="text-sm text-gray-600 hover:text-gray-900">{t('contactUs')}</Link>
-            <Link href="/privacy-policy" className="text-sm text-gray-600 hover:text-gray-900">{t('privacyPolicy')}</Link>
-            <Link href="/disclaimer" className="text-sm text-gray-600 hover:text-gray-900">{t('disclaimer')}</Link>
-            <Link href="/terms-and-conditions" className="text-sm text-gray-600 hover:text-gray-900">{t('termsAndConditions')}</Link>
-            <Link href="/refund-and-cancellation" className="text-sm text-gray-600 hover:text-gray-900">{t('refundAndCancellation')}</Link>
-            <Link href="/shipping-and-delivery" className="text-sm text-gray-600 hover:text-gray-900">{t('shippingAndDelivery')}</Link>
+
+          {/* Product Links */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider">
+              {t('product')}
+            </h3>
+            <ul className="mt-4 space-y-4">
+              {productLinks.map(link => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-gray-300 hover:text-white">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Links */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider">
+              {t('company')}
+            </h3>
+            <ul className="mt-4 space-y-4">
+              {companyLinks.map(link => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-gray-300 hover:text-white">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal Links */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider">
+              {t('legal')}
+            </h3>
+            <ul className="mt-4 space-y-4">
+              {legalLinks.map(link => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-gray-300 hover:text-white">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="mt-8 pt-8 border-t border-gray-700">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-gray-300">
+              © {currentYear} MiniFyn. {t('allRightsReserved')}
+            </p>
+            <div className="mt-4 md:mt-0 flex space-x-6">
+              <a href="https://twitter.com/minifyn" className="text-gray-300 hover:text-white">
+                Twitter
+              </a>
+              <a href="https://github.com/minifyn" className="text-gray-300 hover:text-white">
+                GitHub
+              </a>
+            </div>
           </div>
         </div>
       </div>

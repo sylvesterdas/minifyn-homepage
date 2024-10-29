@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { TRANSLATION_KEYS } from '@/constants/text';
+import Image from 'next/image';
 
 const DashboardNavbar = ({ setSidebarOpen }) => {
   const { logout } = useAuth();
@@ -30,7 +31,8 @@ const DashboardNavbar = ({ setSidebarOpen }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <Link href="/dashboard">
+              <Link href="/dashboard" className='flex flex-row items-center h-full'>
+                <Image src={'/logo.png'} alt="Company logo" width={32} height={32} className='h-8' />
                 <span className="text-xl font-bold text-primary ml-4">MiniFyn Dashboard</span>
               </Link>
             </div>
