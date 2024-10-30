@@ -97,6 +97,41 @@
     },
     "compareFeatures": "सभी सुविधाओं की विस्तृत तुलना करें"
   },
+  "footer": {
+    "product": "उत्पाद",
+    "company": "कंपनी",
+    "legal": "कानूनी",
+    "social": "सोशल",
+    "tagline": "सरल, सुरक्षित और विश्वसनीय URL शॉर्टनिंग सेवा",
+    "allRightsReserved": "सर्वाधिकार सुरक्षित",
+    "links": {
+      "product": {
+        "features": "सुविधाएं",
+        "pricing": "मूल्य",
+        "apiDocs": "API दस्तावेज़",
+        "blog": "ब्लॉग"
+      },
+      "company": {
+        "about": "हमारे बारे में",
+        "contact": "संपर्क",
+        "status": "सिस्टम स्थिति"
+      },
+      "legal": {
+        "privacyPolicy": "गोपनीयता नीति",
+        "terms": "सेवा की शर्तें",
+        "cookiePolicy": "कुकी नीति",
+        "acceptableUse": "स्वीकार्य उपयोग",
+        "dmca": "डीएमसीए",
+        "refundPolicy": "धनवापसी नीति",
+        "shipping": "शिपिंग और डिलीवरी नीति",
+        "disclaimer": "अस्वीकरण"
+      },
+      "social": {
+        "twitter": "ट्विटर",
+        "github": "गिटहब"
+      }
+    }
+  },
   "whyChooseMiniFyn": "MiniFyn को क्यों चुनें?",
   "copyright": "© {{year}} MiniFyn. All rights reserved.",
   "privacyPolicy": "Privacy Policy",

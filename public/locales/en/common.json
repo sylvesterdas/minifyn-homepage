@@ -97,6 +97,41 @@
     },
     "compareFeatures": "Compare all features in detail"
   },
+  "footer": {
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "social": "Social",
+    "tagline": "Simple, secure, and reliable URL shortening service",
+    "allRightsReserved": "All rights reserved",
+    "links": {
+      "product": {
+        "features": "Features",
+        "pricing": "Pricing",
+        "apiDocs": "API Documentation",
+        "blog": "Blog"
+      },
+      "company": {
+        "about": "About",
+        "contact": "Contact",
+        "status": "System Status"
+      },
+      "legal": {
+        "privacyPolicy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "cookiePolicy": "Cookie Policy",
+        "acceptableUse": "Acceptable Use",
+        "dmca": "DMCA",
+        "refundPolicy": "Refund Policy",
+        "shipping": "Shipping & Delivery Policy",
+        "disclaimer": "Disclaimer"
+      },
+      "social": {
+        "twitter": "Twitter",
+        "github": "GitHub"
+      }
+    }
+  },
   "whyChooseMiniFyn": "Why Choose MiniFyn?",
   "copyright": "© {{year}} MiniFyn. All rights reserved.",
   "privacyPolicy": "Privacy Policy",
