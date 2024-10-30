@@ -110,9 +110,11 @@ erDiagram
         uuid id PK
         uuid user_id FK
         uuid subscription_type_id FK
+        string subscription_id "Razorpay subscription ID"
+        string payment_id "Razorpay payment ID"
+        string status "active/cancelled/paused"
         timestamp current_period_start
         timestamp current_period_end
-        string status
         timestamp created_at
         timestamp updated_at
     }
@@ -121,11 +123,12 @@ erDiagram
         uuid id PK
         uuid user_id FK
         decimal amount
-        string currency
-        string status
+        string currency "Default: INR"
+        string status "pending/paid/failed"
         timestamp invoice_date
-        timestamp due_date
         timestamp paid_at
+        string payment_id "Razorpay payment ID"
+        string subscription_id "Razorpay subscription ID"
         timestamp created_at
         timestamp updated_at
     }

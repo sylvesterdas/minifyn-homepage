@@ -1,3 +1,4 @@
+# project-description.md
 # MiniFyn - URL Shortener
 
 ## Description
@@ -17,7 +18,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 ### Services
 * **Database:** Vercel Postgres
 * **Session Store:** Vercel KV
-* **Payment Processing:** RazorPay
+* **Payment Processing:** Razorpay
 * **Blog Platform:** Hashnode Headless API
 
 ### Development Tools
@@ -34,6 +35,7 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Email validation with regex patterns
 * Strong password requirements
 * Protection against brute force attacks
+* Rate limiting on critical endpoints
 
 ## Dashboard Features
 
@@ -43,12 +45,13 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Session-based authentication
 * User profile management
 * Basic analytics view
+* Subscription plans with Razorpay integration
 
 ### In Progress
-* URL Management interface
-* Enhanced analytics
+* Enhanced URL Management interface
+* Advanced analytics
 * API key management
-* Subscription management
+* Subscription management UI
 
 ## Key Features
 
@@ -58,12 +61,14 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Custom short URL domain (mnfy.in)
 * Session-based authentication
 * User dashboard
+* Subscription management with Razorpay
 
 ### User Experience
 * Responsive design (mobile, tablet, desktop)
 * Internationalized landing pages (English/Hindi)
 * Clean, minimalist interface
 * Dashboard with intuitive navigation
+* Seamless payment flow
 
 ### Security Features
 * Session-based authentication
@@ -71,6 +76,8 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
 * Protected API endpoints
 * Rate limiting on critical endpoints
 * HttpOnly session cookies
+* Webhook signature verification
+* Payment verification
 
 ## Subscription Plans
 
@@ -99,6 +106,14 @@ MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic.
   * 1-year link validity
   * 10,000 API calls per month
 
+## Payment Integration
+* Razorpay subscription-based billing
+* Automatic payment processing
+* Webhook integration for subscription lifecycle
+* Invoice generation
+* Payment verification
+* Subscription status management
+
 ## Environment Variables
 ```env
 # Core
@@ -112,11 +127,16 @@ KV_REST_API_TOKEN=
 KV_REST_API_READ_ONLY_TOKEN=
 
 # Blog
-NEXT_PUBLIC_HASHNODE_ACCESS_TOKEN=
+NEXT_HASHNODE_ACCESS_TOKEN=
 
 # Payment
 NEXT_RAZORPAY_KEY_ID=
 NEXT_RAZORPAY_KEY_SECRET=
+RAZORPAY_WEBHOOK_SECRET=
+
+# Security
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
+NEXT_RECAPTCHA_SECRET_KEY=
 ```
 
 ## Development Commands
@@ -126,11 +146,11 @@ NEXT_RAZORPAY_KEY_SECRET=
 * Run database migrations: `pnpm run migrate`
 
 ## Recent Improvements
-1. Implemented secure session-based authentication
-2. Added dashboard layout with responsive sidebar
-3. Created account settings management
-4. Added user profile updates
-5. Implemented proper database schema
-6. Added validation utilities
-7. Improved error handling
-8. Enhanced security measures
+1. Implemented Razorpay subscription integration
+2. Added invoice management
+3. Implemented webhook handling
+4. Enhanced subscription lifecycle management
+5. Added payment verification
+6. Improved error handling
+7. Enhanced security measures
+8. Added rate limiting
