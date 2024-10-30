@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import Navbar from './navigation/Navbar';
 import Footer from './Footer';
 import { useRouter } from 'next/router';
 
@@ -9,7 +9,7 @@ const PublicLayout = ({ children, user, setUser }) => {
   if (router.route !== '/[shortCode]')
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white">
-        <Navbar user={user} setUser={setUser} />
+        <Navbar />
         <main className="flex-grow">
           {children}
         </main>

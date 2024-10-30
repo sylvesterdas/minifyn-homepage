@@ -1,85 +1,92 @@
-import { useState } from 'react';
-import SEO from '@/components/SEO';
+import { useState, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import UrlShortener from '@/components/UrlShortener';
-import QRCodeGenerator from '@/components/QRCodeGenerator';
-import UsageLimits from '@/components/UsageLimits';
-import FeaturesSection from '@/components/FeaturesSection';
-import PopularLinks from '@/components/PopularLinks';
-import { TRANSLATION_KEYS, FEATURE_KEYS } from '@/constants/text';
-import PricingOverview from '@/components/PricingOverview';
+import { useInView } from '@/hooks/useInView';
+import SEO from '@/components/SEO';
+import { Hero } from '@/components/landing/Hero';
 import { useAuth } from '@/contexts/AuthContext';
+import { TRANSLATION_KEYS, FEATURE_KEYS } from '@/constants/text';
+
+// Loading placeholders as separate components for better reuse
+const SectionPlaceholder = ({ height = "h-96" }) => (
+  <div className={`${height} animate-pulse bg-gray-100 rounded-lg`} />
+);
+
+// Dynamically import components with better loading states
+const FeaturesSection = dynamic(() => import('@/components/FeaturesSection'), {
+  ssr: false,
+  loading: () => <SectionPlaceholder />
+});
+
+const PricingOverview = dynamic(() => import('@/components/PricingOverview'), {
+  ssr: false,
+  loading: () => <SectionPlaceholder />
+});
+
+const PopularLinks = dynamic(() => import('@/components/PopularLinks'), {
+  ssr: false,
+  loading: () => <SectionPlaceholder height="h-72" />
+});
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('url');
   const { t } = useTranslation('common');
   const { user } = useAuth();
 
+  // Refs for intersection observer
+  const featuresRef = useRef(null);
+  const pricingRef = useRef(null);
+  const popularRef = useRef(null);
+
+  // Check if sections are in view
+  const isFeaturesInView = useInView(featuresRef);
+  const isPricingInView = useInView(pricingRef);
+  const isPopularInView = useInView(popularRef);
+
+  const features = FEATURE_KEYS.map(key => ({
+    title: t(`${TRANSLATION_KEYS.FEATURES[key]}.title`),
+    description: t(`${TRANSLATION_KEYS.FEATURES[key]}.description`),
+  }));
+
   return (
     <>
       <SEO />
       <div className="font-sans text-sm sm:text-base">
-        <main>
-          <div className="bg-gradient-to-br from-primary via-secondary to-teal relative overflow-hidden">
-            <div className="max-w-6xl mx-auto px-4 py-8 md:py-16 relative z-10">
-              <div className="md:flex md:items-center md:justify-between">
-                <div className="text-center md:text-left md:w-1/2 mb-6 md:mb-0">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-white">{t(TRANSLATION_KEYS.BANNER_TITLE)}</h1>
-                  <p className="text-base sm:text-lg md:text-xl mb-4 text-light-gray">{t(TRANSLATION_KEYS.BANNER_SUBTITLE)}</p>
-                </div>
-                <div className="md:w-1/2 md:max-w-md mx-auto">
-                  <div className="bg-white bg-opacity-10 rounded-lg shadow-lg backdrop-blur-sm overflow-hidden">
-                    <div className="flex border-b border-white border-opacity-20">
-                      <button
-                        className={`flex-1 py-2 px-3 text-sm sm:text-base focus:outline-none ${activeTab === 'url' ? 'bg-white bg-opacity-20' : ''}`}
-                        onClick={() => setActiveTab('url')}
-                      >
-                        {t('urlShortener')}
-                      </button>
-                      <button
-                        className={`flex-1 py-2 px-3 text-sm sm:text-base focus:outline-none ${activeTab === 'qr' ? 'bg-white bg-opacity-20' : ''}`}
-                        onClick={() => setActiveTab('qr')}
-                      >
-                        {t('qrCode')}
-                      </button>
-                    </div>
-                    <div className="p-4 sm:p-6 h-96 overflow-y-auto">
-                      {activeTab === 'url' ? (
-                        <>
-                          <UrlShortener />
-                          <UsageLimits userType={user?.subscriptionType ?? 'anonymous'} />
-                        </>
-                      ) : (
-                        <QRCodeGenerator />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <main className="space-y-16">
+          <Hero 
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            userType={user?.subscriptionType ?? 'anonymous'}
+          />
 
-          <FeaturesSection features={FEATURE_KEYS.map(key => ({
-            title: t(`${TRANSLATION_KEYS.FEATURES[key]}.title`),
-            description: t(`${TRANSLATION_KEYS.FEATURES[key]}.description`),
-          }))} />
+          <section ref={featuresRef} className="scroll-mt-16" id="features">
+            {isFeaturesInView && <FeaturesSection features={features} />}
+          </section>
 
-          <PopularLinks />
+          <section ref={popularRef} className="scroll-mt-16" id="popular">
+            {isPopularInView && <PopularLinks />}
+          </section>
 
-          <PricingOverview />
+          <section ref={pricingRef} className="scroll-mt-16" id="pricing">
+            {isPricingInView && <PricingOverview />}
+          </section>
         </main>
       </div>
     </>
   );
 }
 
-export async function getServerSideProps({ locale }) {
-  const resolvedLocale = locale || 'en';
+export async function getServerSideProps({ locale, res }) {
+  // Set caching headers
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=3600, stale-while-revalidate=59'
+  );
   
   return {
     props: {
-      ...(await serverSideTranslations(resolvedLocale, ['common', 'pricing'])),
+      ...(await serverSideTranslations(locale || 'en', ['common', 'pricing'])),
     },
   };
 }
