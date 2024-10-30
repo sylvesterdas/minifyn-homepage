@@ -14,23 +14,22 @@ exports.up = async function(db) {
   `);
 
   const features = [
-    'Personal dashboard',
-    'Basic link analytics',
-    'Limited API access',
-    'Advanced link analytics',
-    'Custom link aliases',
-    'Bulk URL shortening',
-    'Full API access'
+    { name: 'api_access', description: 'API endpoint access' },
+    { name: 'basic_analytics', description: 'Basic link analytics' },
+    { name: 'detailed_analytics', description: 'Advanced analytics with detailed insights' },
+    { name: 'bulk_operations', description: 'Bulk URL operations support' },
+    { name: 'personal_dashboard', description: 'Personal dashboard access' },
+    { name: 'custom_alias', description: 'Custom URL aliases' }
   ];
 
   for (const feature of features) {
     await db.runSql(`
       INSERT INTO features (name, description)
-      VALUES ($1, '${feature}');
-    `, [feature]);
+      VALUES ($1, $2);
+    `, [feature.name, feature.description]);
   }
 
-  const freeFeatures = ['Personal dashboard', 'Basic link analytics', 'Limited API access'];
+  const freeFeatures = ['api_access', 'basic_analytics', 'personal_dashboard'];
   for (const feature of freeFeatures) {
     await db.runSql(`
       INSERT INTO subscription_features (subscription_type_id, feature_id, value)
@@ -38,7 +37,7 @@ exports.up = async function(db) {
     `, [freeTypeId.rows[0].id, feature]);
   }
 
-  const proFeatures = ['Personal dashboard', 'Advanced link analytics', 'Custom link aliases', 'Bulk URL shortening', 'Full API access'];
+  const proFeatures = ['api_access', 'detailed_analytics', 'bulk_operations', 'personal_dashboard', 'custom_alias'];
   for (const feature of proFeatures) {
     await db.runSql(`
       INSERT INTO subscription_features (subscription_type_id, feature_id, value)

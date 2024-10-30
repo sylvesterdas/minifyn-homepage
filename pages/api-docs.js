@@ -15,38 +15,91 @@ const structuredData = {
   }
 };
 
-const endpointData = {
-  '/api/shorten': {
-    method: 'POST',
-    auth: 'API Key',
-    description: 'Shorten a URL',
-    request: {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': 'your_api_key'
+const getLimits = async () => {
+  const { getSubscriptionLimits } = await import('@/lib/services/subscriptionService');
+  const freeLimits = await getSubscriptionLimits('free');
+  const proLimits = await getSubscriptionLimits('pro');
+
+  return {
+    '/api/v1/urls': {
+      method: 'POST',
+      auth: 'API Key',
+      description: 'Create one or more short URLs',
+      request: {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': 'your_api_key'
+        },
+        body: {
+          urls: [{
+            url: 'string (required)',
+            title: 'string (optional, max 100 chars)',
+            description: 'string (optional, max 500 chars)'
+          }]
+        }
       },
-      body: {
-        url: 'string (required)',
-        title: 'string (optional)',
-        description: 'string (optional)'
+      response: {
+        success: [{
+          shortUrl: 'string',
+          shortCode: 'string',
+          originalUrl: 'string',
+          expiresAt: 'timestamp'
+        }]
+      },
+      limits: {
+        free: {
+          batchSize: `${freeLimits.batchSize} URLs per request`,
+          monthly: `${freeLimits.apiCalls} requests`
+        },
+        pro: {
+          batchSize: `${proLimits.batchSize} URLs per request`,
+          monthly: `${proLimits.apiCalls} requests`
+        }
       }
     },
-    response: {
-      success: {
-        shortUrl: 'string',
-        shortCode: 'string',
-        originalUrl: 'string',
-        expiresAt: 'timestamp'
-      },
-      error: {
-        error: 'string'
+    '/api/v1/urls/batch': {
+      method: 'POST',
+      auth: 'API Key',
+      description: 'Perform batch operations on URLs',
+      request: {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': 'your_api_key'
+        },
+        body: {
+          action: 'string (delete|details)',
+          shortCodes: 'string[]'
+        }
       }
     },
-    limits: {
-      free: '500 calls/month',
-      pro: '10,000 calls/month'
+    '/api/v1/urls/{shortCode}': {
+      method: 'GET|DELETE',
+      auth: 'API Key',
+      description: 'Get or delete a specific URL',
+      query: {
+        analytics: 'boolean (optional, includes basic analytics)'
+      }
+    },
+    '/api/v1/analytics/{shortCode}': {
+      method: 'GET',
+      auth: 'API Key',
+      description: 'Get URL analytics',
+      query: {
+        days: 'number (optional, default: 30, max: 90)'
+      },
+      response: {
+        success: {
+          totalClicks: 'number',
+          clicksByDate: 'object',
+          ...(proLimits.apiCalls > 500 ? {
+            devices: 'object',
+            browsers: 'object',
+            countries: 'object'
+          } : {})
+        }
+      }
     }
-  }
+  };
 };
 
 const EndpointCard = ({ path, data }) => {
@@ -116,7 +169,7 @@ const EndpointCard = ({ path, data }) => {
   );
 };
 
-const ApiDocs = () => {
+const ApiDocs = ({ endpointData }) => {
   const jsonLd = useMemo(() => JSON.stringify(structuredData), []);
 
   return <>
@@ -161,8 +214,10 @@ const ApiDocs = () => {
 export default ApiDocs;
 
 export async function getStaticProps() {
+  const endpointData = await getLimits();
+  
   return {
-    props: {},
-    revalidate: 86400 // Revalidate once per day
+    props: { endpointData },
+    revalidate: 3600 // Revalidate every hour
   };
 }
