@@ -29,8 +29,8 @@ exports.migrate = async (db, opt) => {
         }
       }
     },
-    stripe_subscription_id: { type: 'string' },
-    stripe_customer_id: { type: 'string' },
+    subscription_id: { type: 'string' },     // Razorpay subscription ID
+    payment_id: { type: 'string' },          // Razorpay payment ID
     current_period_start: { type: 'timestamp with time zone' },
     current_period_end: { type: 'timestamp with time zone' },
     status: { type: 'string', notNull: true },

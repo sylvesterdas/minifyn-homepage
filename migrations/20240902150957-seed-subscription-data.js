@@ -1,4 +1,3 @@
-// 20230904000008-seed-subscription-data.js
 'use strict';
 
 exports.up = async function(db) {

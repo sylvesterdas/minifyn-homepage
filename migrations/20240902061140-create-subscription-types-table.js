@@ -8,8 +8,6 @@ exports.migrate = async (db, opt) => {
     description: { type: 'text' },
     price_monthly: { type: 'decimal', notNull: true },
     price_yearly: { type: 'decimal', notNull: true },
-    stripe_monthly_price_id: { type: 'string' },
-    stripe_yearly_price_id: { type: 'string' },
     created_at: { type: 'timestamp with time zone', notNull: true, defaultValue: { raw: 'now()' } },
     updated_at: { type: 'timestamp with time zone', notNull: true, defaultValue: { special: 'CURRENT_TIMESTAMP' } }
   });
