@@ -15,15 +15,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { 
-      email, 
-      fullName, 
-      password, 
-      plan, 
-      paymentId, 
-      subscriptionId, 
-      recaptchaToken 
-    } = req.body;
+    const { email, fullName, password, plan, paymentId, subscriptionId, recaptchaToken } = req.body;
+
 
     console.log('Processing signup:', { 
       email, 
@@ -80,30 +73,14 @@ export default async function handler(req, res) {
 
       // Create user
       await db.query(db.sql`
-        INSERT INTO users (
-          id,
-          email,
-          password_hash,
-          full_name,
-          is_verified,
-          created_at,
-          "updatedAt"
-        )
-        VALUES (
-          ${userId},
-          ${email.toLowerCase()},
-          ${hashedPassword},
-          ${fullName.trim()},
-          false,
-          NOW(),
-          NOW()
-        )
+        INSERT INTO users (id, email, password_hash, full_name, is_verified, created_at, "updatedAt")
+        VALUES (${userId}, ${email.toLowerCase()}, ${hashedPassword}, ${fullName.trim()}, false, NOW(), NOW())
       `);
 
-      // Get subscription type
+      // Get subscription type - using COALESCE to default to 'free' if plan is not specified
       const { rows: [subscriptionType] } = await db.query(db.sql`
         SELECT id FROM subscription_types 
-        WHERE name = ${plan}
+        WHERE name = COALESCE(${plan}, 'free')
         LIMIT 1
       `);
 
@@ -111,7 +88,12 @@ export default async function handler(req, res) {
         throw new Error('Invalid subscription type');
       }
 
-      // Create subscription
+      // Create subscription - ensuring free tier gets proper status
+      const subscriptionStatus = plan === 'pro' ? 'active' : 'active';
+      const periodEnd = plan === 'pro' 
+        ? db.sql`NOW() + INTERVAL '1 month'` 
+        : db.sql`NOW() + INTERVAL '60 days'`;
+
       await db.query(db.sql`
         INSERT INTO user_subscriptions (
           user_id,
@@ -127,14 +109,11 @@ export default async function handler(req, res) {
         VALUES (
           ${userId},
           ${subscriptionType.id},
-          ${plan === 'pro' ? 'active' : 'free'},
-          ${subscriptionId || null},
-          ${paymentId || null},
+          ${subscriptionStatus},
+          ${subscriptionId},
+          ${paymentId},
           NOW(),
-          ${plan === 'pro' 
-            ? db.sql`NOW() + INTERVAL '1 month'` 
-            : db.sql`NOW() + INTERVAL '60 days'`
-          },
+          ${periodEnd},
           NOW(),
           NOW()
         )

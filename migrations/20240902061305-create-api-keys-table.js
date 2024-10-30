@@ -1,6 +1,6 @@
 'use strict';
 
-exports.migrate = async (db, opt) => {
+exports.migrate = async (db) => {
   await db.createTable('api_keys', {
     id: {
       type: 'uuid',
@@ -15,8 +15,7 @@ exports.migrate = async (db, opt) => {
         name: 'api_keys_user_fk',
         table: 'users',
         rules: {
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
+          onDelete: 'CASCADE'
         },
         mapping: 'id'
       }
@@ -34,6 +33,19 @@ exports.migrate = async (db, opt) => {
       type: 'boolean',
       defaultValue: true
     },
+    daily_usage: {
+      type: 'integer',
+      defaultValue: 0
+    },
+    monthly_usage: {
+      type: 'integer',
+      defaultValue: 0
+    },
+    last_reset_at: {
+      type: 'timestamp with time zone',
+      notNull: true,
+      defaultValue: { raw: 'now()' }
+    },
     last_used_at: {
       type: 'timestamp with time zone'
     },
@@ -45,6 +57,7 @@ exports.migrate = async (db, opt) => {
   });
 
   await db.addIndex('api_keys', 'idx_api_keys_user_id', ['user_id']);
+  await db.addIndex('api_keys', 'idx_api_keys_usage', ['daily_usage', 'monthly_usage']);
 };
 
 exports._meta = {

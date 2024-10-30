@@ -7,7 +7,7 @@ const UsageLimits = ({  }) => {
   const userType = user?.subscriptionType;
   const limits = {
     anonymous: {
-      links: 5,
+      links: 2,
       validity: '24 hours',
       analytics: 'NA'
     },

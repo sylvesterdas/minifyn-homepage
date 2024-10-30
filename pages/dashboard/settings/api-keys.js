@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import ComingSoon from '@/components/dashboard/ComingSoon';
+import ApiKeyManager from '@/components/dashboard/ApiKeyManager';
 
 export default function ApiKeys() {
   return (
@@ -8,12 +8,13 @@ export default function ApiKeys() {
         <title>API Keys | MiniFyn Dashboard</title>
       </Head>
 
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">API Keys</h1>
-      
-      <ComingSoon 
-        title="API Key Management"
-        description="Securely manage your API keys, monitor usage, and access detailed API documentation right from your dashboard."
-      />
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold text-gray-900">API Keys</h1>
+        </div>
+        
+        <ApiKeyManager />
+      </div>
     </>
   );
 }
