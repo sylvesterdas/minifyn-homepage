@@ -25,16 +25,17 @@ erDiagram
     SHORT_URLS {
         string short_code PK
         string original_url
-        uuid user_id FK
+        uuid user_id FK "null for anonymous"
         uuid subscription_type_id FK
-        string title
-        string description
+        string title "optional"
+        string description "optional"
         boolean is_custom
         boolean is_active
         timestamp created_at
         timestamp expires_at
         timestamp last_accessed_at
         int clicks
+        string tags "array"
     }
 
     ANALYTICS {
@@ -64,6 +65,8 @@ erDiagram
         string key UK
         string name
         boolean is_active
+        int daily_usage
+        int monthly_usage
         timestamp last_used_at
         timestamp created_at
         timestamp updated_at
@@ -100,7 +103,7 @@ erDiagram
     SUBSCRIPTION_LIMITS {
         uuid id PK
         uuid subscription_type_id FK
-        string limit_type
+        string limit_type "urls_per_day|api_calls_per_month|etc"
         int limit_value
         timestamp created_at
         timestamp updated_at
@@ -112,7 +115,7 @@ erDiagram
         uuid subscription_type_id FK
         string subscription_id "Razorpay subscription ID"
         string payment_id "Razorpay payment ID"
-        string status "active/cancelled/paused"
+        string status "active|cancelled|paused"
         timestamp current_period_start
         timestamp current_period_end
         timestamp created_at
@@ -124,7 +127,7 @@ erDiagram
         uuid user_id FK
         decimal amount
         string currency "Default: INR"
-        string status "pending/paid/failed"
+        string status "pending|paid|failed"
         timestamp invoice_date
         timestamp paid_at
         string payment_id "Razorpay payment ID"
