@@ -1,52 +1,120 @@
-import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useState } from 'react';
+import { Menu, Bell, User, Settings, HelpCircle, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { TRANSLATION_KEYS } from '@/constants/text';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
+const NavbarDropdownItem = ({ icon: Icon, label, onClick, href }) => {
+  const Component = href ? Link : 'button';
+  const props = href ? { href } : { onClick };
+
+  return (
+    <Component
+      {...props}
+      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 
+                 hover:bg-gray-100 transition-colors"
+    >
+      <Icon size={16} className="mr-2" />
+      {label}
+    </Component>
+  );
+};
+
 const DashboardNavbar = ({ setSidebarOpen }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    await router.push('/');
+    router.push('/');
   };
 
   return (
     <nav className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between gap-4 h-16">
-          <div className="flex flex-1">
-            <div className="flex-shrink-0 flex items-center">
-              <button
-                className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <span className="sr-only">Open sidebar</span>
-                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <Link href="/dashboard" className='flex flex-row items-center h-full'>
-                <Image src={'/logo.png'} alt="Company logo" width={32} height={32} className='h-8' />
-                <span className="text-xl font-bold text-primary ml-4">MiniFyn Dashboard</span>
-              </Link>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/api-docs" className="text-gray-700 hover:text-gray-900">API Docs</Link>
-          </div>
-          <div className="flex items-center">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div className="flex items-center">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden p-2 mr-2 text-gray-500 hover:bg-gray-100 rounded-lg"
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
+          
+          <Link href="/dashboard" className="flex items-center">
+            <Image src="/logo.png" alt="Logo" className="h-8 w-8" width={32} height={32} />
+            <span className="text-xl font-bold text-primary ml-4">Dashboard</span>
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Help */}
+          <Link 
+            href="/docs"
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Documentation"
+          >
+            <HelpCircle size={20} />
+          </Link>
+
+          {/* Notifications */}
+          <Link
+            href="/dashboard/notifications"
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Notifications"
+          >
+            <Bell size={20} />
+          </Link>
+
+          {/* API Docs */}
+          <Link 
+            href="/api-docs"
+            className="hidden md:block px-4 py-2 text-gray-700 hover:text-gray-900"
+          >
+            API Docs
+          </Link>
+
+          {/* User Menu */}
+          <div className="relative">
             <button
-              onClick={handleLogout}
-              className="bg-secondary text-white px-3 py-2 rounded hover:bg-blue-600 transition duration-300"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center gap-2 p-2 text-gray-700 hover:bg-gray-100 
+                         rounded-lg transition-colors"
             >
-              {t('logout')}
+              <User size={20} />
+              <span className="hidden md:block">{user?.fullName || user?.email}</span>
             </button>
+
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <>
+                <div 
+                  className="fixed inset-0 z-10"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
+                <div className="absolute right-0 mt-2 w-48 py-1 bg-white rounded-lg 
+                              shadow-lg border z-20">
+                  <NavbarDropdownItem
+                    href="/dashboard/settings/account"
+                    icon={User}
+                    label="Account"
+                  />
+                  <NavbarDropdownItem
+                    href="/dashboard/settings"
+                    icon={Settings}
+                    label="Settings"
+                  />
+                  <hr className="my-1" />
+                  <NavbarDropdownItem
+                    icon={LogOut}
+                    label="Logout"
+                    onClick={handleLogout}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

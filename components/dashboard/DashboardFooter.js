@@ -28,7 +28,7 @@ const DashboardFooter = () => {
               Privacy
             </Link>
             <Link 
-              href="/help" 
+              href="/docs" 
               className="hover:text-gray-700"
               target="_blank"
               rel="noopener noreferrer"

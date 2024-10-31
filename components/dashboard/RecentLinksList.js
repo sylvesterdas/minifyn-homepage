@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import { Trash2 } from 'lucide-react';
 
 export default function RecentLinksList({ links, onDelete, onCreateNew }) {
   const [expandedLink, setExpandedLink] = useState(null);
@@ -41,18 +42,25 @@ export default function RecentLinksList({ links, onDelete, onCreateNew }) {
                   >
                     {expandedLink === link.shortCode ? 'Less' : 'More'}
                   </button>
-                  <button 
+                  {/* <button 
                     onClick={() => handleDelete(link.shortCode)}
                     className="text-red-500 hover:underline"
                   >
-                    Delete
+                    <TrashIcon size={16} />
+                  </button> */}
+                  <button
+                    onClick={() => handleDelete(link.shortCode)}
+                    className={`p-2 text-gray-500 hover:text-red-600 rounded-full hover:bg-gray-100 
+                      disabled:opacity-50 disabled:cursor-not-allowed`}
+                    title="Delete link"
+                  >
+                    <Trash2 size={18} />
                   </button>
                 </div>
               </div>
               {expandedLink === link.shortCode && (
                 <div className="mt-2 text-sm text-gray-500">
                   <p>Created: {formatDistanceToNow(new Date(link.createdAt))} ago</p>
-                  <p>Expires: {link.expiresAt ? formatDistanceToNow(new Date(link.expiresAt)) : 'Never'}</p>
                 </div>
               )}
             </div>

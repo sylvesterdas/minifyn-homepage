@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useAuth } from '@/contexts/AuthContext';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import DashboardCard from '@/components/dashboard/DashboardCard';
 import RecentLinksList from '@/components/dashboard/RecentLinksList';
 import UrlManagement from '@/components/dashboard/UrlManagement';
@@ -12,7 +13,7 @@ import Loading from '@/components/Loading';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-export default function Dashboard() {
+const DashboardPage = () => {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { data: dashboardData, error, mutate } = useSWR('/api/dashboard', fetcher);
@@ -97,4 +98,11 @@ export default function Dashboard() {
       />
     </>
   );
-}
+};
+
+// Add the layout property to the page
+DashboardPage.getLayout = function getLayout(page) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export default DashboardPage;
