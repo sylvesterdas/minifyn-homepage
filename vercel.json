@@ -1,11 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/analytics-flush",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/delete-expired-urls",
+      "path": "/api/maintenance",
       "schedule": "0 0 * * *"
     }
   ]

@@ -10,7 +10,7 @@ MiniFyn is a URL shortening service optimized for the Vercel free tier, targetin
 * **Database:** Vercel Postgres (Free tier)
 * **Cache:** Vercel KV (Free tier - Rate limiting, sessions)
 * **Authentication:** Session-based with Vercel KV
-* **CSS:** Tailwind CSS
+* **CSS:** Tailwind CSS with shadcn/ui
 * **Package Manager:** pnpm
 * **Deployment:** Vercel
 
@@ -19,7 +19,6 @@ MiniFyn is a URL shortening service optimized for the Vercel free tier, targetin
 * API key authentication
 * Rate limiting per subscription tier
 * Feature-based permissions
-* Batch operations support
 * Response caching with KV store
 * Comprehensive error handling
 
@@ -29,6 +28,14 @@ MiniFyn is a URL shortening service optimized for the Vercel free tier, targetin
 * Subscription-based model
 * Analytics tracking
 * Data expiration management
+* Automatic cleanup of expired data
+
+## Maintenance System
+* Daily cron jobs for cleanup
+* Automated session cleanup
+* Analytics buffer flushing
+* URL expiration management
+* Database optimization
 
 ## Authentication System
 * Session-based authentication (Vercel KV)
@@ -61,38 +68,38 @@ GET /api/v1/analytics/{shortCode}
 - Plan-based data access
 ```
 
-### Features
-* Version-controlled endpoints
-* Comprehensive error handling
-* Rate limiting
-* Permission-based access
-* Batch operations
-* Analytics integration
-
 ## Subscription Plans
 
 ### Free Plan
+* **URL Features:**
+  * 10 URLs per day
+  * 60-day URL retention
+  * Basic analytics
+  * Simple dashboard
 * **API Features:**
   * Basic API access
   * Rate limit: 500 calls/month
-  * Basic analytics
   * Single URL operations
-* **URLs:**
-  * 10 URLs per day
-  * 60-day validity
-  * Basic click tracking
 
-### Pro Plan
-* **Price:** ₹99/month or ₹999/year
+### Pro Plan (₹99/month or ₹999/year)
+* **URL Features:**
+  * 50 URLs per day
+  * 365-day URL retention
+  * Comprehensive analytics
+  * Advanced dashboard
 * **API Features:**
   * Full API access
   * Rate limit: 10,000 calls/month
-  * Detailed analytics
   * Batch operations
-* **URLs:**
-  * 50 URLs per day
-  * 365-day validity
-  * Comprehensive analytics
+  * Priority support
+
+## Resource Optimization
+* Daily cleanup of expired URLs
+* Analytics buffer system
+* Efficient database queries
+* Response caching
+* Automated maintenance
+* KV store optimization
 
 ## Security Features
 * API key authentication
@@ -105,7 +112,7 @@ GET /api/v1/analytics/{shortCode}
 
 ## Development Commands
 ```bash
-# Core Commands
+# Development
 pnpm dev           # Development server
 pnpm build         # Production build
 pnpm start         # Production server
@@ -130,21 +137,3 @@ KV_REST_API_READ_ONLY_TOKEN=
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
 NEXT_RECAPTCHA_SECRET_KEY=
 ```
-
-## Resource Optimization
-* Aggressive caching with KV store
-* Batch database operations
-* Response pagination
-* Efficient data querying
-* Minimal API payload size
-* Optimized database indexes
-
-## Recent Updates
-1. Implemented API versioning
-2. Added permission-based access
-3. Enhanced batch operations
-4. Improved error handling
-5. Added detailed analytics
-6. Optimized database queries
-7. Enhanced security measures
-8. Updated documentation

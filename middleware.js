@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
-import { mockKV } from './lib/mockKV';
-
-const kvStore = process.env.NODE_ENV === 'development' ? mockKV : kv;
+import { kv as kvStore } from '@vercel/kv';
 
 export const config = {
   matcher: [
