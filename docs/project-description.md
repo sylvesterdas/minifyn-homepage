@@ -1,157 +1,116 @@
 # MiniFyn - URL Shortener
 
 ## Description
-MiniFyn is a URL shortening service designed with a clean, minimalist aesthetic targeting software developers in India while serving a global audience. The project implements internationalization (i18n) for landing pages and offers tiered subscription plans with a focus on API access and developer tools.
+MiniFyn is a URL shortening service optimized for the Vercel free tier, targeting software developers in India while serving a global audience. The project features API-first architecture with tiered subscription plans and comprehensive analytics.
 
 ## Tech Stack
 
 ### Core
-* **Frontend & Backend:** Next.js (React)
-* **Database:** PostgreSQL (Vercel Postgres)
-* **Cache Layer:** Vercel KV (Rate limiting, API keys, Sessions)
-* **State Management:** React Context + Hooks
-* **Authentication:** Session-based (Vercel KV)
-* **CSS Framework:** Tailwind CSS
+* **Framework:** Next.js 14
+* **Database:** Vercel Postgres (Free tier)
+* **Cache:** Vercel KV (Free tier - Rate limiting, sessions)
+* **Authentication:** Session-based with Vercel KV
+* **CSS:** Tailwind CSS
 * **Package Manager:** pnpm
 * **Deployment:** Vercel
 
-### External Services
-* **Database:** Vercel Postgres
-* **Session Store:** Vercel KV
-* **Payment Processing:** Razorpay (Subscriptions & Webhooks)
-* **Blog Platform:** Hashnode Headless API
-* **Security:** reCAPTCHA v3
-
-### Development Tools
-* **Database Migration:** db-migrate
-* **Content Management:** Hashnode
-* **API Documentation:** Custom Documentation
-* **Package Management:** pnpm with strict dependency management
-
-## Authentication System
-* Session-based authentication using Vercel KV
-* HttpOnly cookies for session management
-* Session expiry after 30 days
-* Automatic session cleanup
-* Password hashing using bcrypt
-* Email validation with regex patterns
-* Strong password requirements
-* Protection against brute force attacks
-* Rate limiting on critical endpoints
-
-## API System
-* API key based authentication
+### API Architecture
+* RESTful API with versioning (v1)
+* API key authentication
 * Rate limiting per subscription tier
-* Usage tracking with KV store
-* Domain verification for web requests
-* Security middleware stack
-* Anti-abuse measures
-* Subscription-based limits
+* Feature-based permissions
+* Batch operations support
+* Response caching with KV store
 * Comprehensive error handling
 
-## Dashboard Features
+### Database Design
+* PostgreSQL with proper indexing
+* Efficient batch operations
+* Subscription-based model
+* Analytics tracking
+* Data expiration management
 
-### Implemented
-* Basic dashboard layout with responsive sidebar
-* Account settings management
-* Session-based authentication
-* User profile management
-* Basic analytics view
-* Subscription plans with Razorpay
+## Authentication System
+* Session-based authentication (Vercel KV)
 * API key management
-* Usage monitoring
+* Feature-based permissions
+* Rate limiting per subscription
+* HttpOnly cookies
+* Password hashing (bcrypt)
+* Anti-abuse measures
 
-### In Progress
-* Enhanced URL Management interface
-* Advanced analytics
-* Custom domain support
-* Bulk operations
+## API System v1
 
-## Key Features
+### Core Endpoints
+```
+POST /api/v1/urls
+- Create single/batch URLs
+- Rate limited by plan
+- Supports metadata
 
-### Core Functionality
-* URL shortening with custom aliases (Pro)
-* QR code generation
-* Custom short URL domain (mnfy.in)
-* API access with rate limiting
-* User dashboard
-* Subscription management
-* Usage analytics
+GET/DELETE /api/v1/urls/{shortCode}
+- URL management
+- Basic analytics included
 
-### User Experience
-* Responsive design
-* Internationalized landing pages (English/Hindi)
-* Clean, minimalist interface
-* Intuitive dashboard navigation
-* Seamless payment flow
-* API documentation
+POST /api/v1/urls/batch
+- Batch operations (get/delete)
+- Pro plan feature
 
-### Security Features
-* Session-based authentication
-* Secure password hashing
-* Protected API endpoints
+GET /api/v1/analytics/{shortCode}
+- Detailed analytics
+- Plan-based data access
+```
+
+### Features
+* Version-controlled endpoints
+* Comprehensive error handling
 * Rate limiting
-* HttpOnly session cookies
-* Webhook signature verification
-* Payment verification
-* Domain verification
-* Malicious URL detection
+* Permission-based access
+* Batch operations
+* Analytics integration
 
 ## Subscription Plans
 
-### Free Registered Account
-* Name: "LinkFree User"
-* Features:
-  * Personal dashboard
-  * Basic link analytics
-  * Limited API access
-  * Basic URL management
-* Limits:
+### Free Plan
+* **API Features:**
+  * Basic API access
+  * Rate limit: 500 calls/month
+  * Basic analytics
+  * Single URL operations
+* **URLs:**
   * 10 URLs per day
-  * 60-day link validity
-  * 500 API calls per month
-  * 2 API keys maximum
+  * 60-day validity
+  * Basic click tracking
 
-### Pro Account
-* Name: "LinkPro User"
-* Price: ₹99/month or ₹999/year
-* Features:
-  * All Free account features
-  * Advanced link analytics
-  * Custom link aliases
-  * Bulk URL shortening
+### Pro Plan
+* **Price:** ₹99/month or ₹999/year
+* **API Features:**
   * Full API access
-  * Priority support
-* Limits:
+  * Rate limit: 10,000 calls/month
+  * Detailed analytics
+  * Batch operations
+* **URLs:**
   * 50 URLs per day
-  * 1-year link validity
-  * 10,000 API calls per month
-  * 5 API keys maximum
+  * 365-day validity
+  * Comprehensive analytics
 
-## Payment Integration
-* Razorpay subscription-based billing
-* Automatic payment processing
-* Webhook integration for subscription lifecycle
-* Invoice generation
-* Payment verification
-* Subscription status management
-* Automatic renewal handling
-* Refund processing
+## Security Features
+* API key authentication
+* Permission-based access
+* Rate limiting
+* Request validation
+* SQL injection protection
+* XSS protection
+* CORS configuration
 
 ## Development Commands
 ```bash
-# Development
-pnpm dev           # Run development server
-pnpm build         # Build for production
-pnpm start         # Start production server
-
-# Database
-pnpm migrate       # Run database migrations
-pnpm migrate:down  # Rollback migrations
-
-# Testing
-pnpm test         # Run tests
-pnpm lint         # Run linter
+# Core Commands
+pnpm dev           # Development server
+pnpm build         # Production build
+pnpm start         # Production server
+pnpm migrate       # Run migrations
+pnpm lint          # Run linter
 ```
 
 ## Environment Variables
@@ -161,31 +120,31 @@ DATABASE_URL=
 NEXT_PUBLIC_BASE_URL=
 VERCEL_URL=
 
-# Session Management
+# KV Store
 KV_URL=
 KV_REST_API_URL=
 KV_REST_API_TOKEN=
 KV_REST_API_READ_ONLY_TOKEN=
-
-# Blog
-NEXT_HASHNODE_ACCESS_TOKEN=
-
-# Payment
-NEXT_RAZORPAY_KEY_ID=
-NEXT_RAZORPAY_KEY_SECRET=
-RAZORPAY_WEBHOOK_SECRET=
 
 # Security
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
 NEXT_RECAPTCHA_SECRET_KEY=
 ```
 
-## Recent Improvements
-1. Implemented API key management
-2. Added domain verification for web requests
-3. Enhanced security middleware stack
-4. Implemented subscription-based rate limiting
-5. Added usage tracking
-6. Improved error handling
+## Resource Optimization
+* Aggressive caching with KV store
+* Batch database operations
+* Response pagination
+* Efficient data querying
+* Minimal API payload size
+* Optimized database indexes
+
+## Recent Updates
+1. Implemented API versioning
+2. Added permission-based access
+3. Enhanced batch operations
+4. Improved error handling
+5. Added detailed analytics
+6. Optimized database queries
 7. Enhanced security measures
-8. Added malicious URL detection
+8. Updated documentation

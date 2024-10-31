@@ -1,15 +1,12 @@
 erDiagram
     USERS ||--o{ SHORT_URLS : creates
-    USERS ||--o{ RESET_TOKENS : has
     USERS ||--o{ API_KEYS : owns
     USERS ||--o{ USER_SUBSCRIPTIONS : subscribes_to
-    USERS ||--o{ INVOICES : has
     SHORT_URLS ||--o{ ANALYTICS : records
     SUBSCRIPTION_TYPES ||--o{ SUBSCRIPTION_FEATURES : has
     SUBSCRIPTION_TYPES ||--o{ SUBSCRIPTION_LIMITS : has
     FEATURES ||--o{ SUBSCRIPTION_FEATURES : included_in
     SUBSCRIPTION_TYPES ||--o{ USER_SUBSCRIPTIONS : type_of
-    SHORT_URLS }o--|| SUBSCRIPTION_TYPES : created_with
 
     USERS {
         uuid id PK
@@ -17,25 +14,22 @@ erDiagram
         string password_hash
         string full_name
         boolean is_verified
-        boolean is_admin
         timestamp created_at
         timestamp updated_at
     }
 
     SHORT_URLS {
-        string short_code PK
+        uuid id PK
+        string short_code UK
         string original_url
-        uuid user_id FK "null for anonymous"
-        uuid subscription_type_id FK
-        string title "optional"
-        string description "optional"
-        boolean is_custom
+        uuid user_id FK
+        string title
+        string description
         boolean is_active
         timestamp created_at
         timestamp expires_at
         timestamp last_accessed_at
         int clicks
-        string tags "array"
     }
 
     ANALYTICS {
@@ -48,14 +42,6 @@ erDiagram
         string city
         string device_type
         string browser
-        timestamp created_at
-    }
-
-    RESET_TOKENS {
-        uuid id PK
-        uuid user_id FK
-        string token UK
-        timestamp expires_at
         timestamp created_at
     }
 
@@ -103,7 +89,7 @@ erDiagram
     SUBSCRIPTION_LIMITS {
         uuid id PK
         uuid subscription_type_id FK
-        string limit_type "urls_per_day|api_calls_per_month|etc"
+        string limit_type
         int limit_value
         timestamp created_at
         timestamp updated_at
@@ -113,25 +99,11 @@ erDiagram
         uuid id PK
         uuid user_id FK
         uuid subscription_type_id FK
-        string subscription_id "Razorpay subscription ID"
-        string payment_id "Razorpay payment ID"
-        string status "active|cancelled|paused"
+        string subscription_id
+        string payment_id
+        string status
         timestamp current_period_start
         timestamp current_period_end
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    INVOICES {
-        uuid id PK
-        uuid user_id FK
-        decimal amount
-        string currency "Default: INR"
-        string status "pending|paid|failed"
-        timestamp invoice_date
-        timestamp paid_at
-        string payment_id "Razorpay payment ID"
-        string subscription_id "Razorpay subscription ID"
         timestamp created_at
         timestamp updated_at
     }
