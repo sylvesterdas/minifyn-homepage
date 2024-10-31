@@ -8,27 +8,61 @@ MiniFyn is a URL shortening service optimized for the Vercel free tier, targetin
 ### Core
 * **Framework:** Next.js 14
 * **Database:** Vercel Postgres (Free tier)
-* **Cache:** Vercel KV (Free tier - Rate limiting, sessions)
+* **Cache:** Vercel KV (Free tier - Rate limiting, sessions, usage limits)
 * **Authentication:** Session-based with Vercel KV
 * **CSS:** Tailwind CSS with shadcn/ui
 * **Package Manager:** pnpm
 * **Deployment:** Vercel
 
-### API Architecture
-* RESTful API with versioning (v1)
-* API key authentication
-* Rate limiting per subscription tier
-* Feature-based permissions
-* Response caching with KV store
-* Comprehensive error handling
+### Caching & Rate Limiting
+* URL data caching with 1-hour TTL
+* Click count buffering (update DB every 10 clicks)
+* Usage limits cached for 1 minute
+* KV-based rate limiting
+* Efficient batch operations
+
+### Subscription System
+* Rolling 24-hour URL creation limits
+* Plan-based feature restrictions
+* Cached limit checks
+* Automated cleanup
+* Usage monitoring
+* KV-based temporary storage
+
+## Subscription Plans
+
+### Free Plan
+* **URL Features:**
+  * 10 URLs per rolling 24 hours
+  * 60-day URL retention
+  * Basic analytics
+  * Simple dashboard
+
+### Pro Plan (₹99/month or ₹999/year)
+* **URL Features:**
+  * 50 URLs per rolling 24 hours
+  * 365-day URL retention
+  * Comprehensive analytics
+  * Advanced dashboard
+  * Link groups & folders
+  * Custom slugs
+
+## Implementation Details
+
+### URL Limit Tracking
+* Uses rolling 24-hour window
+* Cached in KV store for performance
+* Subscription type determines limits
+* Real-time limit checking
+* Efficient DB queries
+* Automatic cache invalidation
 
 ### Database Design
-* PostgreSQL with proper indexing
-* Efficient batch operations
-* Subscription-based model
-* Analytics tracking
-* Data expiration management
-* Automatic cleanup of expired data
+* Subscription limits in dedicated table
+* Efficient URL tracking
+* Rolling window calculations
+* Proper indexing
+* Automatic cleanup
 
 ## Maintenance System
 * Daily cron jobs for cleanup
