@@ -3,10 +3,10 @@ import Navbar from './navigation/Navbar';
 import Footer from './Footer';
 import { useRouter } from 'next/router';
 
-const PublicLayout = ({ children, user, setUser }) => {
+const PublicLayout = ({ children }) => {
   const router = useRouter();
 
-  if (router.route !== '/[shortCode]')
+  if (router.route !== '/[shortCode]') {
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <Navbar />
@@ -16,11 +16,9 @@ const PublicLayout = ({ children, user, setUser }) => {
         <Footer />
       </div>
     );
-  return (
-    <main className="flex-grow">
-      {children}
-    </main>
-  );
+  }
+
+  return <main className="flex-grow">{children}</main>;
 };
 
 export default PublicLayout;
