@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
@@ -15,15 +14,8 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const DashboardPage = () => {
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
   const { data: dashboardData, error, mutate } = useSWR('/api/dashboard', fetcher);
   const [showUrlManagement, setShowUrlManagement] = useState(false);
-
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.replace('/login');
-    }
-  }, [authLoading, user, router]);
 
   if (authLoading || !dashboardData) {
     return <Loading message="Loading dashboard data..." />;

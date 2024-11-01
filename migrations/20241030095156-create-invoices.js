@@ -59,6 +59,8 @@ exports.migrate = async (db, opt) => {
       defaultValue: { special: 'CURRENT_TIMESTAMP' } 
     }
   });
+
+  await db.addIndex('invoices', 'payment_id_unique', ['payment_id'], true);
 };
 
 exports._meta = {

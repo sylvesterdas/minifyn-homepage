@@ -37,6 +37,8 @@ exports.migrate = async (db, opt) => {
     created_at: { type: 'timestamp with time zone', notNull: true, defaultValue: { raw: 'now()' } },
     updated_at: { type: 'timestamp with time zone', notNull: true, defaultValue: { special: 'CURRENT_TIMESTAMP' } }
   });
+
+  await db.addIndex('user_subscriptions', 'subscription_id_unique', ['subscription_id'], true);
 };
 
 exports._meta = {
