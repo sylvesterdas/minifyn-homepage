@@ -13,11 +13,11 @@ export default async function handler(req, res) {
 
   try {
     const { rows: transactions } = await db.query(db.sql`
-      WITH active_subscription AS (
-        SELECT id, subscription_id
-        FROM user_subscriptions
+      WITH current_subscription AS (
+        SELECT subscription_id
+        FROM active_subscriptions
         WHERE user_id = ${userId}::uuid
-          AND status = 'active'
+        ORDER BY current_period_end DESC
         LIMIT 1
       )
       SELECT 
@@ -26,10 +26,7 @@ export default async function handler(req, res) {
         i.created_at,
         i.payment_id,
         us.subscription_id,
-        CASE 
-          WHEN us.subscription_id = (SELECT subscription_id FROM active_subscription) THEN true 
-          ELSE false 
-        END as is_current
+        us.subscription_id = (SELECT subscription_id FROM current_subscription) as is_current
       FROM invoices i
       JOIN user_subscriptions us ON us.subscription_id = i.subscription_id
       WHERE i.user_id = ${userId}::uuid
@@ -37,7 +34,7 @@ export default async function handler(req, res) {
       ORDER BY i.created_at DESC
       LIMIT 5
     `);
-
+ 
     return res.json({ transactions });
     
   } catch (error) {

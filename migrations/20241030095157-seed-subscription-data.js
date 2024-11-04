@@ -3,13 +3,13 @@
 exports.up = async function(db) {
   const freeTypeId = await db.runSql(`
     INSERT INTO subscription_types (name, display_name, description, price_monthly, price_yearly)
-    VALUES ('free', 'LinkFree User', 'Free account with basic features', 0, 0)
+    VALUES ('free', 'LinkFree', 'Free account with basic features', 0, 0)
     RETURNING id;
   `);
 
   const proTypeId = await db.runSql(`
     INSERT INTO subscription_types (name, display_name, description, price_monthly, price_yearly)
-    VALUES ('pro', 'LinkPro User', 'Pro account with advanced features', 99, 999)
+    VALUES ('pro', 'LinkPro', 'Pro account with advanced features', 99, 999)
     RETURNING id;
   `);
 

@@ -58,25 +58,16 @@ export default function SignupForm() {
     });
   };
 
-  const handleSignup = async (token, subscriptionData = null) => {
+  const handleSignup = async (token) => {
     try {
       const signupRes = await fetch('/api/auth/signup', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          ...(subscriptionData && {
-            'X-Request-ID': `${subscriptionData.subscription.id}-${subscriptionData.payment.razorpay_payment_id}`
-          })
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
           fullName: formData.fullName,
           password: formData.password,
           plan: formData.selectedPlan,
-          ...(subscriptionData && {
-            paymentId: subscriptionData.payment.razorpay_payment_id,
-            subscriptionId: subscriptionData.subscription.id,
-          }),
           recaptchaToken: token
         })
       });
@@ -86,7 +77,68 @@ export default function SignupForm() {
         throw new Error(data.error || t('signupError'));
       }
 
-      window.location.href = '/dashboard';
+      // If free plan, redirect to dashboard
+      if (formData.selectedPlan === 'free') {
+        window.location.href = '/dashboard';
+        return;
+      }
+
+      // If pro plan, initiate payment
+      try {
+        await PaymentService.handleSubscription(
+          {
+            email: formData.email,
+            name: formData.fullName,
+            id: data.user.id
+          },
+          publicRuntimeConfig.NEXT_RAZORPAY_KEY_ID,
+          async (subscriptionData) => {
+            // Store subscription data first
+            const storeRes = await fetch('/api/auth/signup', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId: data.user.id,
+                paymentId: subscriptionData.razorpay_payment_id,
+                subscriptionId: subscriptionData.razorpay_subscription_id
+              })
+            });
+
+            if (!storeRes.ok) {
+              throw new Error('Failed to store subscription');
+            }
+
+            // Then verify payment
+            const paymentRes = await fetch('/api/payment/success', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId: data.user.id,
+                paymentId: subscriptionData.razorpay_payment_id,
+                subscriptionId: subscriptionData.razorpay_subscription_id,
+                planId: 'pro'
+              })
+            });
+
+            if (!paymentRes.ok) {
+              const errorData = await paymentRes.json();
+              throw new Error(errorData.error || 'Payment verification failed');
+            }
+
+            window.location.href = '/dashboard?subscription=success';
+          },
+          () => {
+            window.location.href = '/dashboard?subscription=cancelled';
+          },
+          (error) => {
+            console.error('Payment failed:', error);
+            window.location.href = '/dashboard?subscription=failed';
+          }
+        );
+      } catch (err) {
+        console.error('Payment error:', err);
+        window.location.href = '/dashboard?subscription=error';
+      }
     } catch (err) {
       console.error('Signup error:', err);
       setError(err.message);
@@ -106,28 +158,12 @@ export default function SignupForm() {
         throw new Error(t('passwordMismatch'));
       }
 
-      const token = await getRecaptchaToken();
-
-      if (formData.selectedPlan === 'pro') {
-        const userData = {
-          email: formData.email,
-          name: formData.fullName
-        };
-
-        PaymentService.handleSubscription(
-          userData,
-          async (subscriptionData) => {
-            await handleSignup(token, subscriptionData);
-          },
-          () => setIsLoading(false),
-          () => {
-            setError(t('paymentFailed'));
-            setIsLoading(false);
-          }
-        );
-      } else {
-        await handleSignup(token);
+      if (!recaptchaLoaded) {
+        throw new Error(t('recaptchaNotLoaded'));
       }
+
+      const token = await getRecaptchaToken();
+      await handleSignup(token);
     } catch (err) {
       console.error('Form submission error:', err);
       setError(err.message);
@@ -158,7 +194,7 @@ export default function SignupForm() {
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || !recaptchaLoaded}
         className="w-full bg-secondary text-white p-2 rounded hover:bg-blue-600 disabled:opacity-50 flex items-center justify-center gap-2"
       >
         {isLoading && (
@@ -167,12 +203,7 @@ export default function SignupForm() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         )}
-        {isLoading 
-          ? t('signingUp') 
-          : formData.selectedPlan === 'pro' 
-            ? t('continueToPayment') 
-            : t('signupButton')
-        }
+        {isLoading ? t('signingUp') : t('signupButton')}
       </button>
 
       <p className="text-sm text-center">

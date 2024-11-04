@@ -26,18 +26,16 @@ export default async function handler(req, res) {
         u.full_name,
         u.is_verified,
         u.is_admin,
-        st.name as subscription_type
+        COALESCE(us.subscription_type, 'free') as subscription_type
       FROM users u
-      LEFT JOIN user_subscriptions us ON us.user_id = u.id
-      LEFT JOIN subscription_types st ON st.id = us.subscription_type_id
+      LEFT JOIN active_subscriptions us ON us.user_id = u.id
       WHERE u.email = ${email.toLowerCase()}
-      AND us.status = 'active'
     `);
-
+   
     if (users.length === 0) {
       throw new AuthError('Invalid email or password', 401);
     }
-
+   
     const user = users[0];
 
     // Verify password

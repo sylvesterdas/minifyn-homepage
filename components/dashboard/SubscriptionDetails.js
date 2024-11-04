@@ -17,7 +17,8 @@ export default function SubscriptionDetails({ currentPlan, usage, limits }) {
           <p className="mt-1 text-sm text-gray-600">{usage.apiCalls} / {limits.maxApiCalls}</p>
         </div>
       </div>
-      {currentPlan === 'Free' && (
+      { currentPlan }
+      {currentPlan === 'free' && (
         <Link href="/pricing" className="text-secondary hover:underline">
           Upgrade to Pro
         </Link>

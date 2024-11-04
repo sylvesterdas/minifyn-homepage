@@ -27,15 +27,12 @@ export default async function handler(req, res) {
     const { rows: [userData] } = await db.query(db.sql`
       WITH subscription_info AS (
         SELECT 
-          st.name as plan_name,
+          subscription_type as plan_name,
           sl.limit_value as daily_url_limit,
           us.current_period_end
         FROM users u
-        LEFT JOIN user_subscriptions us ON u.id = us.user_id 
-          AND us.status = 'active'
-          AND us.current_period_end > NOW()
-        LEFT JOIN subscription_types st ON us.subscription_type_id = st.id
-        LEFT JOIN subscription_limits sl ON st.id = sl.subscription_type_id 
+        LEFT JOIN active_subscriptions us ON u.id = us.user_id
+        LEFT JOIN subscription_limits sl ON us.subscription_type_id = sl.subscription_type_id 
           AND sl.limit_type = 'daily_urls'
         WHERE u.id = ${userId}
       ),
@@ -46,7 +43,7 @@ export default async function handler(req, res) {
         AND created_at > NOW() - INTERVAL '24 hours'
       )
       SELECT 
-        COALESCE(si.plan_name, 'Free') as plan_name,
+        COALESCE(si.plan_name, 'free') as plan_name,
         COALESCE(si.daily_url_limit, 10) as daily_url_limit,
         COALESCE(du.today_count, 0) as daily_url_count,
         si.current_period_end

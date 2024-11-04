@@ -2,6 +2,7 @@ import { validateApiRequest } from '@/lib/auth';
 import db from '@/lib/db';
 import Razorpay from 'razorpay';
 import { kv } from '@vercel/kv';
+import { getRazorpayPlanId } from '@/constants/plans';
 
 const razorpay = new Razorpay({
   key_id: process.env.NEXT_RAZORPAY_KEY_ID,
@@ -24,38 +25,16 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // First try to get customer ID if exists
-    let customerQuery = await razorpay.customers.all({
-      email: user.email
+    const subscriptions = await razorpay.subscriptions.all({
+      plan_id: getRazorpayPlanId('pro', 'monthly'),
+      count: 100
     });
 
-    console.log(customerQuery);
-
-    let userSubscription;
-    
-    if (customerQuery.items?.length > 0) {
-      // If customer exists, get their subscriptions directly
-      const customer = customerQuery.items[0];
-      const customerSubscriptions = await razorpay.subscriptions.all({
-        customer_id: customer.id,
-        plan_id: 'plan_PFBadEYZNEmHwI'
-      });
-      
-      userSubscription = customerSubscriptions.items.find(sub => 
-        sub.status === 'active' || sub.status === 'authenticated'
-      );
-    } else {
-      // Fallback: check subscriptions with email in notes
-      // This is for older subscriptions before customer was created
-      const subscriptions = await razorpay.subscriptions.all({
-        count: 100
-      });
-      
-      userSubscription = subscriptions.items.find(sub => 
-        sub.notes?.email === user.email && 
-        (sub.status === 'active' || sub.status === 'authenticated')
-      );
-    }
+    const userSubscription = subscriptions.items.find(sub => {
+      const notes = sub.notes || {};
+      return (notes.customer_id === userId) &&
+        ['created', 'authenticated', 'active'].includes(sub.status);
+    });
 
     if (!userSubscription) {
       return res.json({ 
@@ -64,28 +43,30 @@ export default async function handler(req, res) {
       });
     }
 
-    // Verify the subscription payment belongs to the right customer/email
     const paymentDetails = await razorpay.payments.all({
       subscription_id: userSubscription.id
     });
 
-    const validPayment = paymentDetails.items.find(payment => 
-      payment.email === user.email || 
-      payment.customer_id === userSubscription.customer_id
+    const validPayments = paymentDetails.items.filter(payment => 
+      payment.notes?.customer_id === userId
     );
 
-    if (!validPayment) {
+    if (!validPayments.length) {
       return res.json({
         success: false,
         message: 'No matching payment found for this subscription'
       });
     }
 
-    // Start transaction
     await db.query(db.sql`BEGIN`);
 
     try {
-      // UPSERT subscription record
+      // Get subscription type id first
+      const { rows: [subType] } = await db.query(db.sql`
+        SELECT id FROM subscription_types WHERE name = 'pro' LIMIT 1
+      `);
+
+      // Insert or update subscription
       const { rows: [subscription] } = await db.query(db.sql`
         INSERT INTO user_subscriptions (
           user_id,
@@ -100,7 +81,7 @@ export default async function handler(req, res) {
         )
         VALUES (
           ${userId},
-          (SELECT id FROM subscription_types WHERE name = 'pro' LIMIT 1),
+          ${subType.id},
           ${userSubscription.id},
           ${userSubscription.payment_id},
           'active',
@@ -119,7 +100,7 @@ export default async function handler(req, res) {
         RETURNING *
       `);
 
-      // Clear any inactive subscription statuses for this user
+      // Deactivate other active subscriptions
       await db.query(db.sql`
         UPDATE user_subscriptions
         SET 
@@ -129,14 +110,13 @@ export default async function handler(req, res) {
           user_id = ${userId}
           AND id != ${subscription.id}
           AND status = 'active'
+          AND subscription_id != ${userSubscription.id}
       `);
 
-      // Process each payment and create/update invoices
-      for (const payment of validPayment.items) {
-        // Only process captured/successful payments
+      // Process payments and create/update invoices
+      for (const payment of validPayments) {
         if (payment.status === 'captured') {
           const paymentDetails = await razorpay.payments.fetch(payment.id);
-          // UPSERT invoice record
           await db.query(db.sql`
             INSERT INTO invoices (
               user_id,

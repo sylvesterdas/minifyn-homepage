@@ -1,29 +1,22 @@
-import { validateApiRequest } from '@/lib/auth';
 import db from '@/lib/db';
-import { kv } from '@vercel/kv';
+import { validateApiRequest } from '@/lib/auth';
 
 export default async function handler(req, res) {
-  const validation = await validateApiRequest(req);
-  if (validation.error) return res.status(401).json(validation);
-
-  const userId = validation.session.userId;
-
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { paymentId, subscriptionId } = req.body;
+    const validation = await validateApiRequest(req);
+    if (validation.error) return res.status(401).json(validation);
 
-    if (!paymentId || !subscriptionId) {
-      return res.status(400).json({ error: 'Payment and subscription details required' });
-    }
+    const { paymentId, subscriptionId, planId } = req.body;
+    const userId = validation.user.id;
 
-    // Start transaction
     await db.query(db.sql`BEGIN`);
 
     try {
-      // Update user subscription
+      // Update or insert subscription
       const { rows: [subscription] } = await db.query(db.sql`
         INSERT INTO user_subscriptions (
           user_id,
@@ -36,93 +29,48 @@ export default async function handler(req, res) {
           created_at,
           updated_at
         )
-        SELECT
+        VALUES (
           ${userId},
-          (SELECT id FROM subscription_types WHERE name = 'pro' LIMIT 1),
+          (SELECT id FROM subscription_types WHERE name = ${planId}),
           ${subscriptionId},
           ${paymentId},
           'active',
           NOW(),
-          NOW() + INTERVAL '1 month',
+          NOW() + INTERVAL '30 days',
           NOW(),
           NOW()
+        )
+        ON CONFLICT (subscription_id) 
+        DO UPDATE SET
+          payment_id = EXCLUDED.payment_id,
+          updated_at = NOW()
         RETURNING *
       `);
 
-      // Create invoice record
-      await db.query(db.sql`
-        INSERT INTO invoices (
-          id,
-          user_id,
-          subscription_id,
-          amount,
-          currency,
-          status,
-          payment_id,
-          invoice_date,
-          paid_at,
-          created_at,
-          updated_at
-        )
-        VALUES (
-          gen_random_uuid(),
-          ${userId},
-          ${subscription.id},
-          9900,
-          'INR',
-          'paid',
-          ${paymentId},
-          NOW(),
-          NOW(),
-          NOW(),
-          NOW()
-        )
-      `);
-
-      // Deactivate any existing subscriptions
+      // Deactivate any other active subscriptions
       await db.query(db.sql`
         UPDATE user_subscriptions
-        SET status = 'inactive',
-            updated_at = NOW()
-        WHERE user_id = ${userId}
-        AND id != ${subscription.id}
-        AND status = 'active'
+        SET 
+          status = 'inactive',
+          updated_at = NOW()
+        WHERE 
+          user_id = ${userId}
+          AND id != ${subscription.id}
+          AND status = 'active'
       `);
 
       await db.query(db.sql`COMMIT`);
 
-      // Update session with new subscription info
-      const sessionId = req.cookies.sessionId;
-      if (sessionId) {
-        const session = await kv.get(`session:${sessionId}`);
-        if (session) {
-          await kv.set(`session:${sessionId}`, {
-            ...session,
-            subscription: {
-              id: subscription.id,
-              type: 'pro',
-              periodEnd: subscription.current_period_end
-            }
-          });
-        }
-      }
-
-      return res.status(200).json({
+      return res.status(200).json({ 
         success: true,
-        subscription: {
-          id: subscription.id,
-          type: 'pro',
-          periodEnd: subscription.current_period_end
-        }
+        subscription 
       });
-
     } catch (error) {
       await db.query(db.sql`ROLLBACK`);
       throw error;
     }
-
   } catch (error) {
-    console.error('Payment success handler error:', error);
-    return res.status(500).json({ error: 'Failed to process payment success' });
+    console.error('Payment success handling failed:', error);
+    return res.status(500).json({ error: 'Failed to process payment' });
   }
 }

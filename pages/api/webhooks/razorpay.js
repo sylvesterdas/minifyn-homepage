@@ -39,8 +39,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid signature' });
     }
 
-    console.log('Processing webhook event:', body.event);
-
     switch (body.event) {
       case 'subscription.authenticated':
         // When subscription is first created and authenticated
@@ -68,7 +66,6 @@ export default async function handler(req, res) {
         break;
 
       default:
-        console.log('Unhandled webhook event:', body.event);
     }
 
     res.json({ received: true });

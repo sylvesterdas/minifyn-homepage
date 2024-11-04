@@ -111,8 +111,8 @@ const SubscriptionStatus = () => {
           </div>
         ) : (
           <>
-            <p className="text-sm font-medium text-gray-700 truncate">
-              {limits?.planName || 'Free'} Plan
+            <p className="text-sm font-medium text-gray-700 truncate capitalize">
+              {limits?.planName || 'Link Free'} Plan
             </p>
             <p className="text-xs text-gray-500 truncate">
               {limits?.remainingLinks || 0} links remaining today
@@ -120,14 +120,14 @@ const SubscriptionStatus = () => {
           </>
         )}
       </div>
-      <div className="flex-shrink-0">
+      { limits?.planName === 'free' && <div className="flex-shrink-0">
         <Link 
           href="/dashboard/settings/subscription"
           className="text-xs font-medium text-secondary hover:text-blue-700"
         >
           Upgrade
         </Link>
-      </div>
+      </div>}
     </div>
   );
 };

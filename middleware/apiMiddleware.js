@@ -14,15 +14,13 @@ export default function apiMiddleware(handler) {
       const { rows } = await db.query(db.sql`
         SELECT 
           ak.id, ak.user_id, 
-          st.name as subscription_type
+          us.subscription_type
         FROM api_keys ak
-        JOIN user_subscriptions us ON ak.user_id = us.user_id
-        JOIN subscription_types st ON us.subscription_type_id = st.id
+        JOIN active_subscriptions us ON ak.user_id = us.user_id
         WHERE ak.key = ${apiKey} 
         AND ak.is_active = true
-        AND us.status = 'active'
       `);
-
+     
       if (!rows[0]) {
         throw new APIError('Invalid API key', 401, 'UNAUTHORIZED');
       }

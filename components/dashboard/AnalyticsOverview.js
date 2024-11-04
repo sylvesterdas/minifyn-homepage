@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recha
 export default function AnalyticsOverview({ data, isPro }) {
   const days = data.length;
   const totalClicks = parseInt(data.reduce((acc, curr) => acc + curr.clicks, 0));
-  const averageClicksPerDay = parseInt(totalClicks / days);
+  const averageClicksPerDay = days === 0 ? 0 : parseInt(totalClicks / days);
 
   return (
     <div className="bg-white shadow sm:rounded-lg p-6">
