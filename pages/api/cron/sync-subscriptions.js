@@ -11,34 +11,60 @@ const razorpay = new Razorpay({
 const SYNC_LOCK_KEY = 'subscription:sync:lock';
 const LAST_SYNC_KEY = 'subscription:last_sync';
 
+// Razorpay timestamp constraints
+const MIN_TIMESTAMP = 946684800; // Jan 1, 2000
+const MAX_TIMESTAMP = 4765046400; // Jan 1, 2120
+
+function getSafeTimestamp(timestamp) {
+  const now = Math.floor(Date.now() / 1000);
+  if (!timestamp) return Math.max(MIN_TIMESTAMP, now - (30 * 24 * 60 * 60));
+  return Math.max(MIN_TIMESTAMP, Math.min(timestamp, MAX_TIMESTAMP));
+}
+
 export default async function handler(req, res) {
-  // Allow all methods in development
-  if (process.env.NODE_ENV === 'development' && 
-      req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`) {
-    // Continue with sync
-  } else if (!req.headers['x-vercel-cron'] || 
-             req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+  res.setHeader('Content-Type', 'application/json');
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Verify cron request
+  const isVercelCron = req.headers['x-vercel-cron'] === '1';
+  const authHeader = req.headers.authorization;
+  const isValidSecret = 
+    authHeader && 
+    authHeader.startsWith('Bearer ') && 
+    authHeader.split(' ')[1] === process.env.CRON_SECRET;
+
+  if ((process.env.NODE_ENV === 'production' && !isVercelCron) || !isValidSecret) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  // Add some logging for development
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Starting subscription sync...');
-  }
+  const stats = {
+    subscriptionsFound: 0,
+    subscriptionsProcessed: 0,
+    subscriptionsSkipped: 0,
+    paymentsProcessed: 0,
+    skippedReasons: {}
+  };
 
   try {
-    // Implement distributed lock to prevent multiple instances running simultaneously
-    const lock = await kv.set(SYNC_LOCK_KEY, 1, { nx: true, ex: 600 }); // 10 min lock
+    // Implement distributed lock
+    const lock = await kv.set(SYNC_LOCK_KEY, 1, { nx: true, ex: 600 });
     if (!lock) {
       return res.status(429).json({ error: 'Sync already in progress' });
     }
 
-    // Get last sync timestamp
-    const lastSync = await kv.get(LAST_SYNC_KEY) || 0;
-    const now = Math.floor(Date.now() / 1000);
-
     try {
-      // Fetch all subscriptions after last sync, paginate through them
+      const lastSyncRaw = await kv.get(LAST_SYNC_KEY);
+      const lastSync = getSafeTimestamp(lastSyncRaw);
+      const now = Math.floor(Date.now() / 1000);
+
+      // Get subscription type id once
+      const { rows: [subType] } = await db.query(db.sql`
+        SELECT id FROM subscription_types WHERE name = 'pro' LIMIT 1
+      `);
+
       let hasMore = true;
       let skip = 0;
       const planId = getRazorpayPlanId('pro', 'monthly');
@@ -51,6 +77,8 @@ export default async function handler(req, res) {
           from: lastSync
         });
 
+        stats.subscriptionsFound += subscriptions.items.length;
+
         if (!subscriptions.items.length) {
           hasMore = false;
           continue;
@@ -58,17 +86,31 @@ export default async function handler(req, res) {
 
         // Process subscriptions in batches
         await db.query(db.sql`BEGIN`);
+        
         try {
-          const { rows: [subType] } = await db.query(db.sql`
-            SELECT id FROM subscription_types WHERE name = 'pro' LIMIT 1
-          `);
-
           for (const subscription of subscriptions.items) {
             const userId = subscription.notes?.customer_id;
-            if (!userId) continue;
+            
+            // Skip if no customer_id in notes
+            if (!userId) {
+              stats.subscriptionsSkipped++;
+              stats.skippedReasons.noCustomerId = (stats.skippedReasons.noCustomerId || 0) + 1;
+              continue;
+            }
 
-            const start = subscription.current_start || subscription.start_at || now;
-            const end = subscription.current_end || subscription.end_at || (start + (30 * 24 * 60 * 60));
+            // Check if user exists in our system
+            const { rows: [existingUser] } = await db.query(db.sql`
+              SELECT id FROM users WHERE id = ${userId}
+            `);
+
+            if (!existingUser) {
+              stats.subscriptionsSkipped++;
+              stats.skippedReasons.userNotFound = (stats.skippedReasons.userNotFound || 0) + 1;
+              continue;
+            }
+
+            const start = getSafeTimestamp(subscription.current_start || subscription.start_at || now);
+            const end = getSafeTimestamp(subscription.current_end || subscription.end_at || (start + (30 * 24 * 60 * 60)));
 
             // Update subscription
             const { rows: [dbSub] } = await db.query(db.sql`
@@ -101,10 +143,10 @@ export default async function handler(req, res) {
                 current_period_start = to_timestamp(${start})::timestamp,
                 current_period_end = to_timestamp(${end})::timestamp,
                 updated_at = NOW()
-              RETURNING id
+              RETURNING *
             `);
 
-            // Process payments for this subscription
+            // Process payments
             const payments = await razorpay.payments.all({
               subscription_id: subscription.id,
               from: lastSync,
@@ -133,8 +175,8 @@ export default async function handler(req, res) {
                     ${payment.currency},
                     ${payment.status},
                     ${payment.id},
-                    to_timestamp(${payment.created_at})::timestamp,
-                    to_timestamp(${payment.created_at})::timestamp,
+                    to_timestamp(${getSafeTimestamp(payment.created_at)})::timestamp,
+                    to_timestamp(${getSafeTimestamp(payment.created_at)})::timestamp,
                     NOW(),
                     NOW()
                   )
@@ -143,8 +185,11 @@ export default async function handler(req, res) {
                     status = ${payment.status},
                     updated_at = NOW()
                 `);
+                stats.paymentsProcessed++;
               }
             }
+
+            stats.subscriptionsProcessed++;
           }
 
           await db.query(db.sql`COMMIT`);
@@ -160,17 +205,26 @@ export default async function handler(req, res) {
       // Update last sync time
       await kv.set(LAST_SYNC_KEY, now);
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Sync completed successfully');
-      }
+      return res.json({ 
+        success: true, 
+        syncedAt: now,
+        syncedAtFormatted: new Date(now * 1000).toISOString(),
+        lastSync,
+        lastSyncFormatted: new Date(lastSync * 1000).toISOString(),
+        stats
+      });
 
-      return res.json({ success: true, syncedAt: now });
     } finally {
-      // Release lock
       await kv.del(SYNC_LOCK_KEY);
     }
+
   } catch (error) {
     console.error('Subscription sync error:', error);
-    return res.status(500).json({ error: 'Sync failed' });
+    return res.status(500).json({ 
+      error: 'Sync failed', 
+      details: error,
+      message: error.message,
+      stats 
+    });
   }
 }

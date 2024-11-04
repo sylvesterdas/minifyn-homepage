@@ -4,22 +4,17 @@ import { flushAnalyticsBuffer } from '@/lib/analytics';
 import Promise from 'bluebird';
 
 export default async function handler(req, res) {
-  // Check if request is from Vercel Cron
-  const isVercelCron = req.headers['x-vercel-cron'] === '1';
-  
-  // Verify authorization header
-  const authHeader = req.headers.authorization;
-  const isValidSecret = 
-    authHeader && 
-    authHeader.startsWith('Bearer ') && 
-    authHeader.split(' ')[1] === process.env.CRON_SECRET;
+  // Allow all methods in development
+  if (process.env.NODE_ENV === 'development' && 
+    req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`) {
+    // Continue with sync
+  } else if (!req.headers['x-vercel-cron'] || 
+            req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
-  // In production, require both Vercel cron header and valid secret
-  if (process.env.NODE_ENV === 'production' && (!isVercelCron || !isValidSecret)) {
-    return res.status(401).json({ 
-      error: 'Unauthorized',
-      context: 'Only Vercel cron jobs can access this endpoint'
-    });
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Starting subscription sync...');
   }
 
   try {
@@ -32,6 +27,10 @@ export default async function handler(req, res) {
       // Flush analytics buffer
       flushAnalyticsBuffer()
     ]);
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Sync completed successfully');
+    }
 
     res.status(200).json({ 
       message: 'Maintenance tasks completed successfully',
