@@ -57,34 +57,6 @@ export default function Subscription() {
     router.push('/dashboard');
   };
 
-  const handleSyncSubscription = async () => {
-    try {
-      setIsSyncing(true);
-      const res = await fetch('/api/dashboard/sync-subscription', {
-        method: 'POST'
-      });
-      const data = await res.json();
-      
-      if (data.success) {
-        await Promise.all([
-          mutateSubscription(),
-          mutateHistory()
-        ]);
-        setUser(prev => ({
-          ...prev,
-          subscription: data.subscription
-        }));
-      } else {
-        alert(data.message || 'No active subscription found');
-      }
-    } catch (error) {
-      console.error('Failed to sync subscription:', error);
-      alert('Failed to sync subscription. Please try again.');
-    } finally {
-      setIsSyncing(false);
-    }
-  };
-
   const getStatusBanner = () => {
     if (paymentFailed) {
       return (
@@ -157,23 +129,6 @@ export default function Subscription() {
 
       <div className="space-y-6">
         {getStatusBanner()}
-
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold text-gray-900">Subscription Management</h1>
-          
-          <button
-            onClick={handleSyncSubscription}
-            disabled={isSyncing}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
-          >
-            {isSyncing ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <RotateCw className="h-4 w-4" />
-            )}
-            {isSyncing ? 'Syncing...' : 'Sync Subscription'}
-          </button>
-        </div>
 
         <CurrentPlanStatus subscription={subscriptionData?.subscription} />
 

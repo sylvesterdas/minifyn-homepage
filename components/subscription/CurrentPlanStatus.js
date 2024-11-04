@@ -35,8 +35,8 @@ export default function CurrentPlanStatus({ subscription }) {
   const planId = subscription.plan_name;
   const plan = PLANS[planId];
   const limits = getPlanLimits(planId);
-  const isExpiring = new Date(subscription.current_period_end) <= new Date();
-  const daysLeft = Math.ceil((new Date(subscription.current_period_end) - new Date()) / (1000 * 60 * 60 * 24));
+  const isExpiring = subscription.current_period_end ? new Date(subscription.current_period_end) <= new Date() : false;
+  const daysLeft = subscription.current_period_end ? Math.ceil((new Date(subscription.current_period_end) - new Date()) / (1000 * 60 * 60 * 24)) : 0;
 
   return (
     <div className="bg-white rounded-lg border shadow-sm p-6">

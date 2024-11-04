@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const { subscriptionId } = req.body;
 
     // Cancel subscription in Razorpay
-    await razorpay.subscriptions.cancel(subscriptionId);
+    // await razorpay.subscriptions.cancel(subscriptionId);
 
     // Start transaction
     await db.query(db.sql`BEGIN`);
@@ -48,8 +48,8 @@ export default async function handler(req, res) {
       );
 
       // Create free plan subscription starting after current period
-      const freePlanStart = moment(currentSub.current_period_end).toDate();
-      const freePlanEnd = moment(freePlanStart).add(60, 'days').toDate();
+      const freePlanStart = currentSub.current_period_end ? moment(currentSub.current_period_end).toDate() : null;
+      const freePlanEnd = freePlanStart ? moment(freePlanStart).add(60, 'days').toDate() : null;
 
       await db.query(
         db.sql`
