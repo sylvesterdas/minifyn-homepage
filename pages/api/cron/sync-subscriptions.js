@@ -10,10 +10,8 @@ const razorpay = new Razorpay({
 
 const SYNC_LOCK_KEY = 'subscription:sync:lock';
 const LAST_SYNC_KEY = 'subscription:last_sync';
-
-// Razorpay timestamp constraints
-const MIN_TIMESTAMP = 946684800; // Jan 1, 2000
-const MAX_TIMESTAMP = 4765046400; // Jan 1, 2120
+const MIN_TIMESTAMP = 946684800;
+const MAX_TIMESTAMP = 4765046400;
 
 function getSafeTimestamp(timestamp) {
   const now = Math.floor(Date.now() / 1000);
@@ -28,7 +26,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Verify cron request
   const isVercelCron = req.headers['x-vercel-cron'] === '1';
   const authHeader = req.headers.authorization;
   const isValidSecret = 
@@ -41,26 +38,21 @@ export default async function handler(req, res) {
   }
 
   const stats = {
-    subscriptionsFound: 0,
-    subscriptionsProcessed: 0,
-    subscriptionsSkipped: 0,
-    paymentsProcessed: 0,
-    skippedReasons: {}
+    processed: 0,
+    skipped: 0,
+    payments: 0
   };
 
   try {
-    // Implement distributed lock
     const lock = await kv.set(SYNC_LOCK_KEY, 1, { nx: true, ex: 600 });
     if (!lock) {
       return res.status(429).json({ error: 'Sync already in progress' });
     }
 
     try {
-      const lastSyncRaw = await kv.get(LAST_SYNC_KEY);
-      const lastSync = getSafeTimestamp(lastSyncRaw);
+      const lastSync = getSafeTimestamp(await kv.get(LAST_SYNC_KEY));
       const now = Math.floor(Date.now() / 1000);
 
-      // Get subscription type id once
       const { rows: [subType] } = await db.query(db.sql`
         SELECT id FROM subscription_types WHERE name = 'pro' LIMIT 1
       `);
@@ -77,42 +69,34 @@ export default async function handler(req, res) {
           from: lastSync
         });
 
-        stats.subscriptionsFound += subscriptions.items.length;
-
         if (!subscriptions.items.length) {
           hasMore = false;
           continue;
         }
 
-        // Process subscriptions in batches
         await db.query(db.sql`BEGIN`);
         
         try {
           for (const subscription of subscriptions.items) {
             const userId = subscription.notes?.customer_id;
             
-            // Skip if no customer_id in notes
             if (!userId) {
-              stats.subscriptionsSkipped++;
-              stats.skippedReasons.noCustomerId = (stats.skippedReasons.noCustomerId || 0) + 1;
+              stats.skipped++;
               continue;
             }
 
-            // Check if user exists in our system
             const { rows: [existingUser] } = await db.query(db.sql`
               SELECT id FROM users WHERE id = ${userId}
             `);
 
             if (!existingUser) {
-              stats.subscriptionsSkipped++;
-              stats.skippedReasons.userNotFound = (stats.skippedReasons.userNotFound || 0) + 1;
+              stats.skipped++;
               continue;
             }
 
             const start = getSafeTimestamp(subscription.current_start || subscription.start_at || now);
             const end = getSafeTimestamp(subscription.current_end || subscription.end_at || (start + (30 * 24 * 60 * 60)));
 
-            // Update subscription
             const { rows: [dbSub] } = await db.query(db.sql`
               INSERT INTO user_subscriptions (
                 user_id,
@@ -146,7 +130,6 @@ export default async function handler(req, res) {
               RETURNING *
             `);
 
-            // Process payments
             const payments = await razorpay.payments.all({
               subscription_id: subscription.id,
               from: lastSync,
@@ -185,11 +168,11 @@ export default async function handler(req, res) {
                     status = ${payment.status},
                     updated_at = NOW()
                 `);
-                stats.paymentsProcessed++;
+                stats.payments++;
               }
             }
 
-            stats.subscriptionsProcessed++;
+            stats.processed++;
           }
 
           await db.query(db.sql`COMMIT`);
@@ -202,29 +185,16 @@ export default async function handler(req, res) {
         hasMore = subscriptions.items.length === 100;
       }
 
-      // Update last sync time
       await kv.set(LAST_SYNC_KEY, now);
 
-      return res.json({ 
-        success: true, 
-        syncedAt: now,
-        syncedAtFormatted: new Date(now * 1000).toISOString(),
-        lastSync,
-        lastSyncFormatted: new Date(lastSync * 1000).toISOString(),
-        stats
-      });
+      return res.json({ success: true, stats });
 
     } finally {
       await kv.del(SYNC_LOCK_KEY);
     }
 
   } catch (error) {
-    console.error('Subscription sync error:', error);
-    return res.status(500).json({ 
-      error: 'Sync failed', 
-      details: error,
-      message: error.message,
-      stats 
-    });
+    console.error('Sync error:', error);
+    return res.status(500).json({ error: 'Sync failed' });
   }
 }
