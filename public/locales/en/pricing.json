@@ -4,10 +4,10 @@
     "subtitle": "Choose the plan that fits your needs"
   },
   "cta": {
-    "free": "Get Started",
+    "free": "Get Started Free",
     "pro": "Upgrade to Pro",
     "proComingSoon": "Coming Soon",
-    "dashboard": "Dashboard"
+    "dashboard": "Go to Dashboard"
   },
   "detailedComparison": "See detailed plan comparison"
 }
