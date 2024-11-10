@@ -7,18 +7,17 @@ export default async function handler(req, res) {
   // Allow all methods in development
   if (process.env.NODE_ENV === 'development' && 
     req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`) {
-    // Continue with sync
+    // Continue with maintenance
   } else if (!req.headers['x-vercel-cron'] || 
             req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   if (process.env.NODE_ENV === 'development') {
-    console.log('Starting subscription sync...');
+    console.log('Starting maintenance tasks...');
   }
 
   try {
-
     await Promise.all([
       // Delete expired URLs using the existing database function
       db.query(db.sql`SELECT delete_expired_short_urls()`),
@@ -29,7 +28,7 @@ export default async function handler(req, res) {
     ]);
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('Sync completed successfully');
+      console.log('Maintenance completed successfully');
     }
 
     res.status(200).json({ 
