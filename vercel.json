@@ -3,10 +3,6 @@
     {
       "path": "/api/maintenance",
       "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/cron/sync-subscriptions",
-      "schedule": "*/15 * * * *"
     }
   ]
 }
