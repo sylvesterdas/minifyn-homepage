@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import getConfig from 'next/config';
-import PlanSelector from './PlanSelector';
 import SignupFields from './SignupFields';
-import { PaymentService } from '@/lib/services/paymentService';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -15,7 +13,6 @@ export default function SignupForm() {
     fullName: '',
     password: '',
     confirmPassword: '',
-    selectedPlan: 'free',
     agreeTerms: false
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +64,6 @@ export default function SignupForm() {
           email: formData.email,
           fullName: formData.fullName,
           password: formData.password,
-          plan: formData.selectedPlan,
           recaptchaToken: token
         })
       });
@@ -77,68 +73,7 @@ export default function SignupForm() {
         throw new Error(data.error || t('signupError'));
       }
 
-      // If free plan, redirect to dashboard
-      if (formData.selectedPlan === 'free') {
-        window.location.href = '/dashboard';
-        return;
-      }
-
-      // If pro plan, initiate payment
-      try {
-        await PaymentService.handleSubscription(
-          {
-            email: formData.email,
-            name: formData.fullName,
-            id: data.user.id
-          },
-          publicRuntimeConfig.NEXT_RAZORPAY_KEY_ID,
-          async (subscriptionData) => {
-            // Store subscription data first
-            const storeRes = await fetch('/api/auth/signup', {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                userId: data.user.id,
-                paymentId: subscriptionData.razorpay_payment_id,
-                subscriptionId: subscriptionData.razorpay_subscription_id
-              })
-            });
-
-            if (!storeRes.ok) {
-              throw new Error('Failed to store subscription');
-            }
-
-            // Then verify payment
-            const paymentRes = await fetch('/api/payment/success', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                userId: data.user.id,
-                paymentId: subscriptionData.razorpay_payment_id,
-                subscriptionId: subscriptionData.razorpay_subscription_id,
-                planId: 'pro'
-              })
-            });
-
-            if (!paymentRes.ok) {
-              const errorData = await paymentRes.json();
-              throw new Error(errorData.error || 'Payment verification failed');
-            }
-
-            window.location.href = '/dashboard?subscription=success';
-          },
-          () => {
-            window.location.href = '/dashboard?subscription=cancelled';
-          },
-          (error) => {
-            console.error('Payment failed:', error);
-            window.location.href = '/dashboard?subscription=failed';
-          }
-        );
-      } catch (err) {
-        console.error('Payment error:', err);
-        window.location.href = '/dashboard?subscription=error';
-      }
+      window.location.href = '/dashboard';
     } catch (err) {
       console.error('Signup error:', err);
       setError(err.message);
@@ -178,11 +113,6 @@ export default function SignupForm() {
           {error}
         </div>
       )}
-
-      <PlanSelector 
-        selectedPlan={formData.selectedPlan} 
-        onPlanSelect={(plan) => setFormData(prev => ({ ...prev, selectedPlan: plan }))}
-      />
 
       <SignupFields
         formData={formData}

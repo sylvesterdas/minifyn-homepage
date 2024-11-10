@@ -13,6 +13,12 @@ export default function SignupFields({
 
   return (
     <>
+      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+        <p className="text-sm text-blue-700">
+          {t('freePlanMessage')} {/* Add this to your translations */}
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="fullName">

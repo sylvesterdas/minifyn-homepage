@@ -2,10 +2,10 @@ import Head from 'next/head';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Loader2, RotateCw, AlertCircle, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import useSWR from 'swr';
 import CurrentPlanStatus from '@/components/subscription/CurrentPlanStatus';
-import SubscriptionUpgrade from '@/components/subscription/SubscriptionUpgrade';
+// import SubscriptionUpgrade from '@/components/subscription/SubscriptionUpgrade';
 import SubscriptionHistory from '@/components/subscription/SubscriptionHistory';
 
 const fetcher = url => fetch(url).then(r => r.json());
@@ -132,7 +132,7 @@ export default function Subscription() {
 
         <CurrentPlanStatus subscription={subscriptionData?.subscription} />
 
-        <div className="bg-white rounded-lg border shadow-sm">
+        {/* <div className="bg-white rounded-lg border shadow-sm">
           <div className="p-6 border-b">
             <h2 className="text-xl font-semibold">Change Plan</h2>
             <p className="text-sm text-gray-500 mt-1">
@@ -151,7 +151,7 @@ export default function Subscription() {
               isFromSignup={Boolean(fromSignup)}
             />
           </div>
-        </div>
+        </div> */}
 
         <SubscriptionHistory transactions={historyData?.transactions || []} />
       </div>

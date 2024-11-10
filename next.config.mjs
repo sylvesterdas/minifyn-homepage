@@ -46,6 +46,16 @@ const nextConfig = {
         destination: 'https://www.minifyn.com/blog/:path*',
         permanent: false,
       },
+      {
+        source: '/api/payment/:path*',
+        destination: '/404',
+        permanent: false,
+      },
+      {
+        source: '/api/webhooks/razorpay',
+        destination: '/404',
+        permanent: false,
+      }
     ];
   },
   async headers() {

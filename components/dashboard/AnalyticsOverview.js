@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { Clock } from 'lucide-react';
 
 export default function AnalyticsOverview({ data, isPro }) {
   const days = data.length;
@@ -24,13 +24,17 @@ export default function AnalyticsOverview({ data, isPro }) {
       ) : (
         <div>
           <p className="text-sm text-gray-600 mb-2">Basic analytics information:</p>
-          <ul className="list-disc list-inside text-sm text-gray-600">
+          <ul className="list-disc list-inside text-sm text-gray-600 mb-4">
             <li>Total clicks: {totalClicks}</li>
             <li>Average clicks per day: {averageClicksPerDay}</li>
           </ul>
-          <p className="mt-4 text-sm text-gray-600">
-            <Link href="/dashboard/settings/subscription" rel='button' className='text-secondary'>Upgrade to pro</Link>
-            &nbsp;for detailed analytics and charts</p>
+          <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-3 rounded-md border border-gray-100">
+            <Clock className="w-4 h-4 text-blue-500" />
+            <p>
+              <span className="font-medium">Pro Plan Coming Soon:</span>
+              {' '}Detailed analytics with charts and advanced insights
+            </p>
+          </div>
         </div>
       )}
     </div>

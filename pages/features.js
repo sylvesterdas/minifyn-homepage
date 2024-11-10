@@ -3,7 +3,7 @@ import LinkA from 'next/link'
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { Check, X, Link, BarChart2, Code } from 'lucide-react';
+import { Check, X, Link, BarChart2, Code, Clock } from 'lucide-react';
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <Card className="h-full hover:shadow-lg transition-shadow duration-300">
@@ -30,11 +30,14 @@ const FeatureComparison = ({ feature, free, pro }) => (
       )}
     </td>
     <td className="py-3 px-4 text-center">
-      {typeof pro === 'boolean' ? (
-        pro ? <Check className="inline-block text-green-500" /> : <X className="inline-block text-red-500" />
-      ) : (
-        <span className="text-sm font-medium">{pro}</span>
-      )}
+      <div className="flex items-center justify-center gap-1">
+        {typeof pro === 'boolean' ? (
+          pro ? <Check className="inline-block text-gray-400" /> : <X className="inline-block text-gray-400" />
+        ) : (
+          <span className="text-sm font-medium text-gray-400">{pro}</span>
+        )}
+        <Clock className="w-4 h-4 text-blue-500" />
+      </div>
     </td>
   </tr>
 );
@@ -44,9 +47,7 @@ export default function FeaturesPage() {
 
   const features = [
     { icon: Link, title: t('features.basicCapabilities.urlShortening'), description: t('features.descriptions.urlShortening') },
-    // { icon: Zap, title: t('features.basicCapabilities.qrCodeGeneration'), description: t('features.descriptions.qrCodeGeneration') },
     { icon: BarChart2, title: t('features.basicCapabilities.linkAnalytics'), description: t('features.descriptions.linkAnalytics') },
-    // { icon: Globe, title: t('features.basicCapabilities.customization'), description: t('features.descriptions.customization') },
     { icon: Code, title: t('features.basicCapabilities.apiAccess'), description: t('features.descriptions.apiAccess') },
   ];
 
@@ -56,7 +57,6 @@ export default function FeaturesPage() {
     { name: t('features.comparison.qrCodes'), free: true, pro: true },
     { name: t('features.comparison.analytics'), free: 'Basic', pro: 'Advanced' },
     { name: t('features.comparison.apiAccess'), free: 'Limited', pro: 'Full' },
-    // { name: t('features.comparison.urlsPerHour'), free: '10', pro: '50' },
     { name: t('features.comparison.urlsPerDay'), free: '10', pro: '50' },
     { name: t('features.comparison.linkValidity'), free: '60 days', pro: '1 year' },
     { name: t('features.comparison.bulkShortening'), free: false, pro: true },
@@ -90,7 +90,12 @@ export default function FeaturesPage() {
                 <tr className="bg-gray-100">
                   <th className="py-3 px-4 text-left">{t('features.comparison.feature')}</th>
                   <th className="py-3 px-4 text-center">{t('features.comparison.free')}</th>
-                  <th className="py-3 px-4 text-center">{t('features.comparison.pro')}</th>
+                  <th className="py-3 px-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      {t('features.comparison.pro')}
+                      <Clock className="w-5 h-5 text-blue-500" />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -110,9 +115,10 @@ export default function FeaturesPage() {
                     </LinkA>
                   </td>
                   <td className="py-4 px-4 text-center">
-                    <LinkA href="/signup?plan=pro" className="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors" >
-                      {t('features.comparison.signUpPro')}
-                    </LinkA>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded cursor-default">
+                      <Clock className="w-5 h-5" />
+                      Coming Soon
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -125,11 +131,9 @@ export default function FeaturesPage() {
 }
 
 export async function getStaticProps({ locale }) {
-  const resolvedLocale = locale || 'en';
-  
   return {
     props: {
-      ...(await serverSideTranslations(resolvedLocale, ['common'])),
+      ...(await serverSideTranslations(locale || 'en', ['common'])),
     },
   };
 }

@@ -3,41 +3,52 @@ import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/contexts/AuthContext';
+import { Clock, Check } from 'lucide-react';
 
-const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isDisabled }) => {
+const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isComingSoon }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    if (!isDisabled) {
+    if (!isComingSoon) {
       router.push(ctaRoute);
     }
   };
 
   return (
-    <div className={`bg-white ${plan == 'Link Pro' ? 'border-2 border-blue-500 shadow-xl z-10 lg:-mt-4 lg:-mb-4' : 'lg:mr-4'} rounded-lg shadow-md p-6 flex flex-col justify-between`}>
+    <div className={`bg-white rounded-lg ${
+      isComingSoon 
+        ? 'border border-dashed border-gray-300 bg-gray-50' 
+        : 'border border-gray-200 shadow-md'
+    } p-6 flex flex-col justify-between`}>
       <div>
-        <h3 className="text-xl font-semibold mb-2">{plan}</h3>
+        <div className="flex items-center gap-2 mb-2">
+          <h3 className="text-xl font-semibold">{plan}</h3>
+          {isComingSoon && (
+            <Clock className="w-5 h-5 text-blue-500" />
+          )}
+        </div>
         <p className="text-2xl font-bold mb-4">{price}</p>
-        <ul className="mb-4">
+        <ul className="mb-4 space-y-3">
           {features.map((feature, index) => (
-            <li key={index} className="flex items-center mb-2">
-              <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              {feature}
+            <li key={index} className="flex items-center gap-2">
+              <Check className={`w-4 h-4 ${isComingSoon ? 'text-gray-400' : 'text-green-500'}`} />
+              <span className={isComingSoon ? 'text-gray-500' : 'text-gray-700'}>
+                {feature}
+              </span>
             </li>
           ))}
         </ul>
       </div>
       <button 
         className={`w-full font-semibold py-2 px-4 rounded transition-colors ${
-          isDisabled 
-            ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
-            : 'bg-secondary text-white hover:bg-opacity-90'
+          isComingSoon 
+            ? 'bg-gray-100 text-gray-600 cursor-default flex items-center justify-center gap-2' 
+            : 'bg-blue-600 text-white hover:bg-blue-700'
         }`}
-        disabled={isDisabled}
+        disabled={isComingSoon}
         onClick={handleClick}
       >
+        {isComingSoon && <Clock className="w-4 h-4" />}
         {ctaText}
       </button>
     </div>
@@ -60,7 +71,7 @@ const PricingOverview = () => {
       ],
       ctaText: user ? t('cta.dashboard') : t('cta.free'),
       ctaRoute: user ? '/dashboard' : '/signup',
-      isDisabled: false
+      isComingSoon: false
     },
     {
       plan: tC('pricing.proPlan.title'),
@@ -73,34 +84,32 @@ const PricingOverview = () => {
       ],
       ctaText: t('cta.proComingSoon'),
       ctaRoute: '/',
-      isDisabled: true
+      isComingSoon: true
     }
   ];
 
   return (
-    <section id="pricing" className="py-12 bg-gradient-to-b from-light-gray to-white">
+    <section className="py-12 bg-gradient-to-b from-light-gray to-white">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-2">{t('overview.title')}</h2>
         <p className="text-xl text-center text-gray-600 mb-8">{t('overview.subtitle')}</p>
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
+        
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
           {pricingData.map((plan, index) => (
-            <div
+            <PricingCard 
               key={index}
-              className={`${index%2 === 0 ? 'order-2 md:order-1' : 'order-1 md:order-2'}`}
-            >
-              <PricingCard 
-                plan={plan.plan}
-                price={plan.price}
-                features={plan.features}
-                ctaText={plan.ctaText}
-                ctaRoute={plan.ctaRoute}
-                isDisabled={plan.isDisabled}
-              />
-            </div>
+              plan={plan.plan}
+              price={plan.price}
+              features={plan.features}
+              ctaText={plan.ctaText}
+              ctaRoute={plan.ctaRoute}
+              isComingSoon={plan.isComingSoon}
+            />
           ))}
         </div>
+
         <div className="text-center">
-          <Link href="/pricing" className="text-secondary hover:underline">
+          <Link href="/pricing" className="text-blue-600 hover:underline">
             {t('detailedComparison')}
           </Link>
         </div>
