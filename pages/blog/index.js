@@ -8,13 +8,9 @@ import Image from 'next/image';
 
 export default function Blog({ posts }) {
   const [selectedTag, setSelectedTag] = useState(null);
-
-  // Get unique tags from all posts, limited to most used ones
   const allTags = Array.from(
     new Set(posts.flatMap(post => post.tags.map(tag => JSON.stringify(tag))))
-  )
-    .map(tag => JSON.parse(tag))
-    .slice(0, 5);
+  ).map(tag => JSON.parse(tag)).slice(0, 5);
 
   const filteredPosts = selectedTag
     ? posts.filter(post => post.tags.some(tag => tag.slug === selectedTag))
@@ -64,13 +60,22 @@ export default function Blog({ posts }) {
               key={post.id}
               className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
             >
-              {post.coverImage && (
+              <div className="flex w-full h-48 object-cover rounded-t-lg relative items-center">
                 <Image
-                  src={post.coverImage.url}
+                  src="/images/minifyn-blank.png"
                   alt={post.title}
-                  className="w-full h-48 object-cover rounded-t-lg"
+                  className="w-full h-48 object-cover rounded-t-lg absolute"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
                 />
-              )}
+                <p className="absolute text-white text-[0.6rem]
+                  font-bold w-full text-center px-10"
+                  style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5))" }}
+                >
+                  { post.title }
+                </p>
+              </div>
               <div className="p-6">
                 {/* Show only first 2 tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
@@ -122,23 +127,26 @@ export default function Blog({ posts }) {
 
 export async function getStaticProps({ locale }) {
   try {
-    const posts = await getLatestPosts(20);
+    const [posts, translations] = await Promise.all([
+      getLatestPosts(20),
+      serverSideTranslations(locale, ['common'])
+    ]);
 
     return {
       props: {
         posts,
-        ...(await serverSideTranslations(locale, ['common'])),
+        ...translations
       },
-      revalidate: 3600, // Revalidate every hour
+      revalidate: 1800
     };
   } catch (error) {
-    console.error('Error fetching blog posts:', error);
+    console.error('Error in getStaticProps:', error);
     return {
       props: {
         posts: [],
-        ...(await serverSideTranslations(locale, ['common'])),
+        ...(await serverSideTranslations(locale, ['common']))
       },
-      revalidate: 60, // Retry sooner if there was an error
+      revalidate: 60
     };
   }
 }

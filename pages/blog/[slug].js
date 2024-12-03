@@ -61,7 +61,6 @@ export default function BlogPost({ post }) {
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">
-        {/* Back to blog */}
         <Link
           href="/blog"
           className="inline-flex items-center text-secondary hover:text-primary mb-8 transition-colors"
@@ -70,12 +69,11 @@ export default function BlogPost({ post }) {
           Back to blog
         </Link>
 
-        {/* Cover image */}
         {post.coverImage && (
-          <div className="relative w-full h-[400px] mb-8 rounded-lg overflow-hidden">
+          <div className="relative w-full h-fit mb-8 rounded-lg overflow-hidden">
             <Image
-              width={500}
-              height={500}
+              width={1260}
+              height={630}
               src={post.coverImage.url}
               alt={post.title}
               className="object-cover w-full h-full"
@@ -83,13 +81,11 @@ export default function BlogPost({ post }) {
           </div>
         )}
 
-        {/* Header */}
         <header className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">
             {post.title}
           </h1>
 
-          {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map(tag => (
               <Link
@@ -103,7 +99,6 @@ export default function BlogPost({ post }) {
             ))}
           </div>
 
-          {/* Author */}
           {post.author && (
             <div className="flex items-center text-dark-gray">
               <Image src={'/logo.png'} className='w-8 h-8 mr-2' alt="author-image" width={32} height={32} />
@@ -112,7 +107,6 @@ export default function BlogPost({ post }) {
           )}
         </header>
 
-        {/* Content */}
         <div 
           className="prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: post.content.html }}
@@ -122,39 +116,41 @@ export default function BlogPost({ post }) {
   );
 }
 
-export async function getStaticPaths() {
-  const posts = await getLatestPosts(20);
-  
-  return {
-    paths: posts.map(post => ({
-      params: { slug: post.slug }
-    })),
-    fallback: true
-  };
+export async function getStaticPaths({ locales }) {
+  try {
+    const posts = await getLatestPosts(20);
+    const paths = locales.flatMap(locale => 
+      posts.map(post => ({
+        params: { slug: post.slug },
+        locale
+      }))
+    );
+
+    return { paths, fallback: 'blocking' };
+  } catch (error) {
+    console.error('Error in getStaticPaths:', error);
+    return { paths: [], fallback: 'blocking' };
+  }
 }
 
 export async function getStaticProps({ params, locale }) {
   try {
-    const post = await getPostBySlug(params.slug);
+    const [post, translations] = await Promise.all([
+      getPostBySlug(params.slug),
+      serverSideTranslations(locale, ['common'])
+    ]);
     
-    if (!post) {
-      return {
-        notFound: true
-      };
-    }
+    if (!post) return { notFound: true };
 
-    post.slug = params.slug;
     return {
       props: {
-        post,
-        ...(await serverSideTranslations(locale, ['common'])),
+        post: { ...post, slug: params.slug },
+        ...translations
       },
-      revalidate: 3600
+      revalidate: 1800
     };
   } catch (error) {
-    console.error('Error fetching blog post:', error);
-    return {
-      notFound: true
-    };
+    console.error('Error in getStaticProps:', error);
+    return { notFound: true };
   }
 }

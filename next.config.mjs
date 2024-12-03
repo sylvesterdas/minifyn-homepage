@@ -20,6 +20,18 @@ const nextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.ibb.co"
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.hashnode.com"
+      },
+    ],
+  },
   async redirects() {
     return [
       {
