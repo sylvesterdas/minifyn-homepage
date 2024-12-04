@@ -28,7 +28,8 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/dashboard', '/forgot-password']
+        disallow: ['/dashboard', '/forgot-password', '/api/', '/*.json$', '/*?*sort=', '/*?*filter='],
+        crawlDelay: 1
       }
     ],
     additionalSitemaps: [
