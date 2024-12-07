@@ -42,7 +42,12 @@ const ConsentManager = () => {
       <Script
         id="osano-script"
         src="https://cmp.osano.com/AzZf9zUWGEOX8IkzM/de7b4016-6d72-4699-8703-ac98f261c04f/osano.js"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
+      />
+      <Script
+        async="true"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+        strategy="beforeInteractive"
       />
       <Script
         id="ga-script"
