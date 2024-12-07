@@ -4,22 +4,22 @@ import { useRouter } from 'next/router';
 
 const ConsentManager = () => {
   const router = useRouter();
-  
+
   useEffect(() => {
     // Initialize analytics only after consent
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function() { window.dataLayer.push(arguments); };
-    
+    window.gtag = function () { window.dataLayer.push(arguments); };
+
     // Listen for Osano consent changes
     window.addEventListener('osano-cm-consent-changed', (event) => {
       const { categories } = event.detail;
-      
+
       if (categories.analytics) {
         gtag('consent', 'update', {
           'analytics_storage': 'granted',
           'ad_storage': 'granted'
         });
-        
+
         // Initialize GA4 with privacy-focused settings
         gtag('config', process.env.NEXT_PUBLIC_GA_ID, {
           page_path: router.pathname,
@@ -39,6 +39,11 @@ const ConsentManager = () => {
 
   return (
     <>
+      <Script
+        id="osano-script"
+        src="https://cmp.osano.com/AzZf9zUWGEOX8IkzM/de7b4016-6d72-4699-8703-ac98f261c04f/osano.js"
+        strategy="afterInteractive"
+      />
       <Script
         id="ga-script"
         strategy="afterInteractive"
