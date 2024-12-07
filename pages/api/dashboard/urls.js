@@ -1,5 +1,5 @@
 import { validateApiRequest } from '@/lib/auth';
-import { getUserUrls, deleteUrl, updateUrl } from '@/lib/services/urlDashboardService';
+import { getUserUrls, deleteUserUrl, updateUrl } from '@/lib/services/urlDashboardService';
 
 export default async function handler(req, res) {
   const validation = await validateApiRequest(req);
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         if (!shortCode) {
           return res.status(400).json({ error: 'Short code is required' });
         }
-        const deleted = await deleteUrl(userId, shortCode);
+        const deleted = await deleteUserUrl(userId, shortCode);
         if (!deleted) {
           return res.status(404).json({ error: 'URL not found' });
         }
