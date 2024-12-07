@@ -1,7 +1,6 @@
 import { kv } from '@vercel/kv';
 import db from '@/lib/db';
 import Razorpay from 'razorpay';
-import moment from 'moment';
 
 const razorpay = new Razorpay({
   key_id: process.env.NEXT_RAZORPAY_KEY_ID,
@@ -47,9 +46,8 @@ export default async function handler(req, res) {
         `
       );
 
-      // Create free plan subscription starting after current period
-      const freePlanStart = currentSub.current_period_end ? moment(currentSub.current_period_end).toDate() : null;
-      const freePlanEnd = freePlanStart ? moment(freePlanStart).add(60, 'days').toDate() : null;
+      const freePlanStart = currentSub.current_period_end ? new Date(currentSub.current_period_end) : null;
+      const freePlanEnd = freePlanStart ? new Date(freePlanStart.setDate(freePlanStart.getDate() + 60)) : null;
 
       await db.query(
         db.sql`
@@ -97,11 +95,15 @@ export default async function handler(req, res) {
         }
       }
 
+      const d = new Date(currentSub.current_period_end).toLocaleDateString(getLocaleFromRequest(req), {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+
       return res.status(200).json({ 
         success: true,
-        message: 'Your Pro subscription has been cancelled. Your Pro features will remain active until ' +
-                moment(currentSub.current_period_end).format('MMMM D, YYYY') +
-                ', after which you will be moved to the Free plan.'
+        message: `Your Pro subscription has been cancelled. Your Pro features will remain active until ${d}, after which you will be moved to the Free plan.`
       });
 
     } catch (error) {
@@ -115,4 +117,21 @@ export default async function handler(req, res) {
       error: 'Failed to cancel subscription. Please try again or contact support.' 
     });
   }
+}
+
+const getLocaleFromRequest = (req) => {
+  // Check Accept-Language header
+  const acceptLanguage = req.headers['accept-language'];
+  if (acceptLanguage) {
+    const preferredLocale = acceptLanguage.split(',')[0];
+    return preferredLocale.replace('_', '-');
+  }
+  
+  // Check if locale is available in the URL (Next.js i18n)
+  const locale = req.headers['x-next-locale'] || req.query.locale;
+  if (locale) {
+    return locale;
+  }
+  
+  return 'en-IN';
 }

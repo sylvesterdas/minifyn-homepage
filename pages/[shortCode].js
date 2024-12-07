@@ -4,7 +4,6 @@ import InvalidUrl from '../components/InvalidUrl';
 import AdRedirect from '../components/AdRedirect';
 import { getShortUrl } from '../lib/cache';
 import { incrementClicks } from '../lib/analytics';
-import moment from 'moment';
 
 export async function getServerSideProps(context) {
   const { shortCode } = context.params;
@@ -24,7 +23,7 @@ export async function getServerSideProps(context) {
 
     const { original_url, expires_at, is_active, subscription_type } = urlData;
 
-    if (!is_active || moment().isAfter(expires_at)) {
+    if (!is_active || new Date() > new Date(expires_at)) {
       return { 
         props: { 
           ...(await serverSideTranslations(locale, ['common'])),
