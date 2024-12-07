@@ -1,4 +1,10 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 import i18nConfig from './next-i18next.config.js';
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const allowedOrigins = ['https://www.minifyn.com', 'https://www.mnfy.in'];
 
@@ -10,6 +16,8 @@ const nextConfig = {
     NEXT_RECAPTCHA_SECRET_KEY: process.env.NEXT_RECAPTCHA_SECRET_KEY,
     NEXT_RAZORPAY_KEY_SECRET: process.env.NEXT_RAZORPAY_KEY_SECRET,
     NEXT_HASHNODE_ACCESS_TOKEN: process.env.NEXT_HASHNODE_ACCESS_TOKEN,
+    KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
+    KV_REST_API_URL: process.env.KV_REST_API_URL
   },
   publicRuntimeConfig: {
     BASE_URL: process.env.BASE_URL,
@@ -93,4 +101,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

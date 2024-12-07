@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && create-ads-txt",
+    "build": "ANALYZE=true next build && create-ads-txt",
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
@@ -44,6 +44,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.0.4",
     "@types/bluebird": "^3.5.42",
     "@types/react": "^18.3.11",
     "dotenv": "^16.4.5",
