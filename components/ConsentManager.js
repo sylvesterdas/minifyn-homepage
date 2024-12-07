@@ -40,11 +40,6 @@ const ConsentManager = () => {
   return (
     <>
       <Script
-        id="osano-script"
-        src="https://cmp.osano.com/AzZf9zUWGEOX8IkzM/de7b4016-6d72-4699-8703-ac98f261c04f/osano.js"
-        strategy="beforeInteractive"
-      />
-      <Script
         id="ga-script"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{

@@ -1,5 +1,6 @@
-import { appWithTranslation } from 'next-i18next';
+import Script from 'next/script';
 import { useRouter } from 'next/router';
+import { appWithTranslation } from 'next-i18next';
 import PublicLayout from '@/components/PublicLayout';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { AuthProvider } from '@/contexts/AuthContext';
@@ -14,6 +15,11 @@ function MyApp({ Component, pageProps }) {
 
   const body = (
       <Layout>
+        <Script
+          id="osano-script"
+          src="https://cmp.osano.com/AzZf9zUWGEOX8IkzM/de7b4016-6d72-4699-8703-ac98f261c04f/osano.js"
+          strategy="beforeInteractive"
+        />
         <ConsentManager />
         <Component {...pageProps} />
       </Layout>
