@@ -4,6 +4,8 @@ import { useTranslation } from 'next-i18next';
 import { TrendingUp, ArrowUpRight, Users, Link as LinkIcon, Sparkles } from 'lucide-react';
 import useSWR from 'swr';
 import Image from 'next/image';
+import { sendGAEvent } from '@next/third-parties/google';
+import { useRouter } from 'next/router';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -124,6 +126,7 @@ const FeaturedPost = ({ post }) => (
 );
 
 const PopularLinks = () => {
+  const router = useRouter();
   const { t } = useTranslation('common');
   const { data: apiData, error } = useSWR('/api/public-stats', fetcher, {
     refreshInterval: 300000 // Refresh every 5 minutes
@@ -143,6 +146,14 @@ const PopularLinks = () => {
         : FALLBACK_DATA.popularLinks
     };
   }, [apiData, error]);
+
+  const onClick = async (event) => {
+    event.preventDefault();
+    sendGAEvent('event', 'signup_start', {
+      source: 'popular_links'
+    });
+    await router.push(event.target.href);
+  }
 
   return (
     <div className="bg-light-gray py-16">
@@ -201,6 +212,7 @@ const PopularLinks = () => {
         {/* CTA */}
         <div className="text-center mt-12">
           <Link
+            onClick={onClick}
             href="/signup"
             className="inline-flex items-center px-6 py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors"
           >

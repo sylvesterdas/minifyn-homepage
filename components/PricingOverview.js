@@ -4,12 +4,16 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/contexts/AuthContext';
 import { Clock, Check } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const PricingCard = ({ plan, features, price, ctaText, ctaRoute, isComingSoon }) => {
   const router = useRouter();
 
   const handleClick = () => {
     if (!isComingSoon) {
+      sendGAEvent('event', 'signup_start', {
+        source: 'pricing_overview'
+      })
       router.push(ctaRoute);
     }
   };

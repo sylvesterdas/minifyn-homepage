@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
+import { sendGAEvent } from '@next/third-parties/google';
 import { useRouter } from 'next/router';
 
 const AuthButton = ({ variant = 'ghost', children, onClick, className = '' }) => (
@@ -60,7 +61,12 @@ const AuthButtons = ({ isMobile }) => {
       </AuthButton>
       <AuthButton 
         variant="primary" 
-        onClick={() => router.push('/signup')}
+        onClick={() => {
+          sendGAEvent('event', 'signup_start', {
+            source: 'header'
+          });
+          return router.push('/signup')
+        }}
         className={isMobile ? "w-full" : ""}
       >
         Sign Up

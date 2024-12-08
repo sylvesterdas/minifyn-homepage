@@ -5,31 +5,44 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Check, Clock } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { useRouter } from 'next/router';
+import { sendGAEvent } from '@next/third-parties/google';
 
-const PricingCard = ({ title, features, ctaText, ctaLink }) => (
-  <Card className="h-max transition-all duration-300 hover:shadow-lg">
-    <CardHeader className="bg-gradient-to-br from-blue-50 to-white">
-      <h3 className="text-2xl font-bold text-center text-gray-800">{title}</h3>
-      <p className="text-4xl font-bold text-center mt-2 text-blue-600">Free</p>
-    </CardHeader>
-    <CardContent className="pt-6">
-      <ul className="space-y-3 mb-6">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start">
-            <Check className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
-            <span className="text-gray-700">{feature}</span>
-          </li>
-        ))}
-      </ul>
-      <Link 
-        href={ctaLink} 
-        className="block w-full text-center py-3 px-4 rounded-lg font-semibold bg-blue-600 text-white hover:opacity-90 transition-opacity"
-      >
-        {ctaText}
-      </Link>
-    </CardContent>
-  </Card>
-);
+const PricingCard = ({ title, features, ctaText, ctaLink }) => {
+  const router = useRouter();
+
+  return (
+    <Card className="h-max transition-all duration-300 hover:shadow-lg">
+      <CardHeader className="bg-gradient-to-br from-blue-50 to-white">
+        <h3 className="text-2xl font-bold text-center text-gray-800">{title}</h3>
+        <p className="text-4xl font-bold text-center mt-2 text-blue-600">Free</p>
+      </CardHeader>
+      <CardContent className="pt-6">
+        <ul className="space-y-3 mb-6">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-start">
+              <Check className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">{feature}</span>
+            </li>
+          ))}
+        </ul>
+        <Link 
+          href={ctaLink}
+          onClick={(e) => {
+            e.preventDefault();
+            sendGAEvent('event', 'signup_start', {
+              source: 'pricing_page'
+            });
+            return router.push(e.target.href)
+          }}
+          className="block w-full text-center py-3 px-4 rounded-lg font-semibold bg-blue-600 text-white hover:opacity-90 transition-opacity"
+        >
+          {ctaText}
+        </Link>
+      </CardContent>
+    </Card>
+  );
+}
 
 const ComingSoonCard = ({ title, features }) => (
   <Card className="h-max bg-gray-50 border-dashed">

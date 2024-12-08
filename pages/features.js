@@ -5,6 +5,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Check, X, Link, BarChart2, Code, Clock } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { sendGAEvent } from '@next/third-parties/google';
+import { useRouter } from 'next/router';
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <Card className="h-full hover:shadow-lg transition-shadow duration-300">
@@ -45,6 +47,7 @@ const FeatureComparison = ({ feature, free, pro }) => (
 
 export default function FeaturesPage() {
   const { t } = useTranslation('common');
+  const router = useRouter();
 
   const features = [
     { icon: Link, title: t('features.basicCapabilities.urlShortening'), description: t('features.descriptions.urlShortening') },
@@ -117,7 +120,15 @@ export default function FeaturesPage() {
                 <tr>
                   <td className="py-4 px-4"></td>
                   <td className="py-4 px-4 text-center">
-                    <LinkA href="/signup" className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                    <LinkA
+                      onClick={(e) => {
+                        e.preventDefault();
+                        sendGAEvent('event', 'signup_start', {
+                          source: 'features_page'
+                        });
+                        return router.push(e.target.href)
+                      }}
+                      href="/signup" className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
                       {t('features.comparison.signUpFree')}
                     </LinkA>
                   </td>

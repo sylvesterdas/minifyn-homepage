@@ -8,7 +8,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 const PublicLayout = ({ children }) => {
   const router = useRouter();
-  // Only initialize GA once
+
   const [gaInitialized] = useState(() => (
     <GoogleAnalytics 
       gaId={process.env.NEXT_PUBLIC_GA_ID} 

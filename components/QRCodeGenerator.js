@@ -1,5 +1,8 @@
+'use client'
+
 import React, { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const QRCodeGenerator = ({ className = '' }) => {
   const [input, setInput] = useState('');
@@ -22,6 +25,9 @@ const QRCodeGenerator = ({ className = '' }) => {
 
     setQrData(processedInput);
     setShowModal(true);
+    sendGAEvent('event', 'qr_code_generate', {
+      from_page: 'home'
+    })
   };
 
   const handleDownload = () => {
@@ -39,6 +45,10 @@ const QRCodeGenerator = ({ className = '' }) => {
       downloadLink.download = 'qrcode.png';
       downloadLink.href = pngFile;
       downloadLink.click();
+      sendGAEvent('event', 'qr_code_download', {
+        from_page: 'home',
+        qr_size: img.sizes
+      })
     };
     img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
   };
