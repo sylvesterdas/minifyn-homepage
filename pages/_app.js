@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
   const Layout = isDashboardRoute ? DashboardLayout : PublicLayout;
 
   const body = (
-      <Layout>        
+      <Layout>
         <Component {...pageProps} />
       </Layout>
   )
