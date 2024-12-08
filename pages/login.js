@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useAuth } from '@/contexts/AuthContext';
 import SEO from '@/components/SEO';
+import { sendGAEvent } from '@next/third-parties/google';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -19,12 +20,19 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
+  
     try {
       await login({ email, password });
+      sendGAEvent('event', 'login_success', {
+        method: 'email'
+      });
       router.push('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
+      sendGAEvent('event', 'login_error', {
+        error_type: 'invalid_credentials',
+        method: 'email'
+      });
       setError('Invalid email or password. Please try again.');
     } finally {
       setIsLoading(false);
