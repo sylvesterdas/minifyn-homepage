@@ -1,5 +1,8 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
+import { sendGAEvent } from '@next/third-parties/google'
 
 const UrlShortener = ({ className = '' }) => {
   const [url, setUrl] = useState('');
@@ -39,9 +42,17 @@ const UrlShortener = ({ className = '' }) => {
 
       const data = await response.json();
       setShortUrl(data.shortUrl);
+      sendGAEvent('event', 'url_shorten', {
+        success: true,
+        url_length: url.length
+      })
     } catch (error) {
       console.error('Error shortening URL:', error);
       setError(error.message || t('errorShortening'));
+      sendGAEvent('event', 'url_shorten', {
+        success: false,
+        error: error.message
+      })
     } finally {
       setIsLoading(false);
     }
