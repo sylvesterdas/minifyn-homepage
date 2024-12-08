@@ -63,6 +63,7 @@ const PricingOverview = () => {
   const { t } = useTranslation('pricing');
   const { t: tC } = useTranslation('common');
   const { user } = useAuth();
+  const router = useRouter();
 
   const pricingData = [
     {
@@ -113,7 +114,15 @@ const PricingOverview = () => {
         </div>
 
         <div className="text-center">
-          <Link href="/pricing" className="text-blue-600 hover:underline">
+          <Link
+            onClick={(e) => {
+              e.preventDefault();
+              sendGAEvent('event', 'pricing_page_interaction', {
+                interaction_type: 'view_comparison'
+              })
+              return router.push(e.target.href)
+            }}
+            href="/pricing" className="text-blue-600 hover:underline">
             {t('detailedComparison')}
           </Link>
         </div>
