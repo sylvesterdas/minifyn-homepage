@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+'use client'
+
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import getConfig from 'next/config';
 import SignupFields from './SignupFields';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -19,6 +22,7 @@ export default function SignupForm() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+  const startTime = useRef(Date.now());
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -73,6 +77,10 @@ export default function SignupForm() {
         throw new Error(data.error || t('signupError'));
       }
 
+      const timeToComplete = Math.floor((Date.now() - startTime.current) / 1000);
+      sendGAEvent('event', 'signup_complete', {
+        time_to_complete: timeToComplete
+      });
       window.location.href = '/dashboard';
     } catch (err) {
       console.error('Signup error:', err);
