@@ -3,7 +3,6 @@ import { appWithTranslation } from 'next-i18next';
 import PublicLayout from '@/components/PublicLayout';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { AuthProvider } from '@/contexts/AuthContext';
-// import ConsentManager from '@/components/ConsentManager';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
@@ -14,7 +13,6 @@ function MyApp({ Component, pageProps }) {
 
   const body = (
       <Layout>        
-        {/* <ConsentManager /> */}
         <Component {...pageProps} />
       </Layout>
   )

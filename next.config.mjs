@@ -1,10 +1,4 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
 import i18nConfig from './next-i18next.config.js';
-
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
 
 const allowedOrigins = ['https://www.minifyn.com', 'https://www.mnfy.in'];
 
@@ -101,4 +95,4 @@ const nextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default (nextConfig);
