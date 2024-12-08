@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Check, X, Link, BarChart2, Code, Clock } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <Card className="h-full hover:shadow-lg transition-shadow duration-300">
@@ -64,6 +65,12 @@ export default function FeaturesPage() {
 
   return (
     <div className="bg-gradient-to-b from-blue-50 to-white">
+      <SEO
+        title="Features - MiniFyn"
+        description="Features for different subscriptions in MiniFyn."
+        canonical="https://www.minifyn.com/features"
+        keywords={['URL shortening', 'web analytics', 'feature', 'comparison']}
+      />
       <div className="container mx-auto px-4 py-16 max-w-screen-xl">
         {/* Hero Section */}
         <section className="text-center mb-16">

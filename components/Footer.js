@@ -32,7 +32,7 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { href: 'https://twitter.com/minifyn', label: t('footer.links.social.twitter') },
+    { href: 'https://x.com/minifyncom', label: t('footer.links.social.twitter') },
     { href: 'https://github.com/minifyn', label: t('footer.links.social.github') }
   ];
 

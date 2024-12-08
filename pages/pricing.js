@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Check, Clock } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 const PricingCard = ({ title, features, ctaText, ctaLink }) => (
   <Card className="h-max transition-all duration-300 hover:shadow-lg">
@@ -79,6 +80,12 @@ export default function PricingPage() {
 
   return (
     <div className="max-h-screen">
+      <SEO
+        title="Pricing - MiniFyn"
+        description="Pricing for different subscriptions in MiniFyn."
+        canonical="https://www.minifyn.com/features"
+        keywords={['URL shortening', 'web analytics', 'feature', 'comparison']}
+      />
       <div className="container mx-auto px-4 py-16 max-w-screen-xl">
         <h1 className="text-4xl font-bold mb-4 text-center text-gray-800">
           {t('pricing.title')}

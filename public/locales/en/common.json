@@ -128,7 +128,7 @@
         "disclaimer": "Disclaimer"
       },
       "social": {
-        "twitter": "Twitter",
+        "twitter": "Twitter/x.com",
         "github": "GitHub"
       }
     }
@@ -176,6 +176,6 @@
 
   "followUs": "Follow Us",
   "github": "GitHub",
-  "twitter": "Twitter",
+  "twitter": "Twitter/x.com",
   "linkedin": "LinkedIn"
 }
