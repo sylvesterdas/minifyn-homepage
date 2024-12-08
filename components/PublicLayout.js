@@ -11,7 +11,7 @@ const PublicLayout = ({ children }) => {
 
   const body = (
     <main className="flex-grow">
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} debugMode={true} />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} debugMode={process.env.NODE_ENV === 'development'} />
       {children}
     </main>
   )
