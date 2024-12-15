@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ChevronDown, ChevronUp, Play, Lock } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Card,  CardContent, CardHeader } from '@/components/ui/card';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -213,11 +214,14 @@ const ApiDocs = ({ endpointData }) => {
 
 export default ApiDocs;
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }) {
   const endpointData = await getLimits();
   
   return {
-    props: { endpointData },
+    props: {
+      endpointData,
+      ...(await serverSideTranslations(locale || 'en', ['common'])),
+    },
     revalidate: 3600 // Revalidate every hour
   };
 }

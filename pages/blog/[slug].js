@@ -147,10 +147,9 @@ export async function getStaticProps({ params, locale }) {
         post: { ...post, slug: params.slug },
         ...translations
       },
-      revalidate: 1800
+      revalidate: 300
     };
   } catch (error) {
-    console.error('Error in getStaticProps:', error);
     return { notFound: true };
   }
 }
