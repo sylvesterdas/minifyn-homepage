@@ -86,6 +86,7 @@ const UrlShortener = ({ className = '' }) => {
         >
           {isLoading ? t('shortening') : t('shortenUrl')}
         </button>
+        { process.env.NODE_ENV === 'development' && <button type="reset" onClick={() => fetch('/api/reset-rate-limit')}>Clear</button> }
       </form>
       {error && <p className="mt-2 text-red-500">{error}</p>}
         <div className="mt-4 p-2 bg-white bg-opacity-20 rounded flex justify-between items-center">

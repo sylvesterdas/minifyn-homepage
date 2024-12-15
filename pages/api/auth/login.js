@@ -45,17 +45,19 @@ export default async function handler(req, res) {
     }
 
     // Create session
-    const sessionId = await createSession(user);
+    const sessionId = await createSession(req, user);
 
-    // Set session cookie
+    // Clear guest session and set session cookie
     res.setHeader(
-      'Set-Cookie',
-      `sessionId=${sessionId}; HttpOnly; Path=/; Max-Age=${30 * 24 * 60 * 60}; SameSite=Strict${
-        process.env.NODE_ENV === 'production' ? '; Secure' : ''
-      }`
+      'Set-Cookie', 
+      [
+        'guestSession=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+        `sessionId=${sessionId}; HttpOnly; Path=/; Max-Age=${30 * 24 * 60 * 60}; SameSite=Strict${
+          process.env.NODE_ENV === 'production' ? '; Secure' : ''
+        }`
+      ]
     );
 
-    // Return sanitized user data
     res.status(200).json(sanitizeUser(user));
   } catch (error) {
     console.error('Login error:', error);

@@ -18,9 +18,11 @@ const ALLOWED_HEADERS = ['Content-Type', 'Authorization'];
 const MAX_AGE = 86400;
 
 function getClientIdentifier(request) {
-  const forwardedFor = request.headers.get('x-forwarded-for');
-  const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : request.ip;
-  return ip || 'unknown';
+  const guestSession = request.cookies.get('guestSession')?.value;
+  if (guestSession) return guestSession;
+  
+  const newGuestId = `guest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  return newGuestId;
 }
 
 function getAllowedOrigins() {
@@ -73,15 +75,23 @@ export async function middleware(request) {
   }
 
   if (request.nextUrl.pathname === '/api/reset-rate-limit') {
-    const clientId = getClientIdentifier(request);
-    const hourlyKey = `hourly:${clientId}`;
-    const dailyKey = `daily:${clientId}`;
-
-    await Promise.all([
-      kvStore.del(hourlyKey),
-      kvStore.del(dailyKey)
-    ]);
-
+    const session = await verifySession(request);
+    const guestId = request.cookies.get('guestSession')?.value;
+    const clientId = session?.id || guestId;
+    
+    if (!clientId) {
+      return new NextResponse(JSON.stringify({ error: 'No session found' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders,
+        },
+      });
+    }
+  
+    const key = `requests:${clientId}`;
+    await kvStore.del(key);
+  
     return new NextResponse(JSON.stringify({ message: 'Rate limit reset successfully' }), {
       status: 200,
       headers: {
@@ -92,35 +102,54 @@ export async function middleware(request) {
   }
 
   if (request.nextUrl.pathname === '/api/shorten') {
-    const clientId = getClientIdentifier(request);
-    const hourlyKey = `hourly:${clientId}`;
-    const dailyKey = `daily:${clientId}`;
-
+    const session = await verifySession(request);
+    const guestId = getClientIdentifier(request);
+    const clientId = session?.id || guestId;
+    
+    const key = `requests:${clientId}`;
+    const limit = session ? 50 : 2;
+    const now = new Date();
+    const todayKey = now.toISOString().split('T')[0];
+  
     try {
-      const [hourlyCount, dailyCount] = await Promise.all([
-        kvStore.incr(hourlyKey),
-        kvStore.incr(dailyKey),
-      ]);
-
-      if (hourlyCount === 1) await kvStore.expire(hourlyKey, 3600);
-      if (dailyCount === 1) await kvStore.expire(dailyKey, 86400);
-
+      const requestData = await kvStore.get(key) || { count: 0, date: todayKey };
+      
+      if (requestData.date !== todayKey) {
+        requestData.count = 0;
+        requestData.date = todayKey;
+      }
+  
+      console.log(requestData)
+      if (requestData.count >= limit) {
+        return new NextResponse(JSON.stringify({ error: 'Daily limit exceeded' }), {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            ...corsHeaders,
+          },
+        });
+      }
+  
+      requestData.count++;
+      await kvStore.set(key, requestData, { ex: 86400 });
+  
       const response = NextResponse.next();
       
-      // Pass rate limit info to the API route
-      response.headers.set('X-Rate-Limit-Hourly', hourlyCount.toString());
-      response.headers.set('X-Rate-Limit-Daily', dailyCount.toString());
-
-      // Pass auth token to API route if present
-      const authHeader = request.headers.get('Authorization');
-      if (authHeader) {
-        response.headers.set('X-Auth-Token', authHeader.split(' ')[1]);
+      // Set guest cookie for new visitors
+      if (!session && !request.cookies.get('guestSession')) {
+        response.cookies.set('guestSession', guestId, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          maxAge: 24 * 60 * 60
+        });
       }
-
+  
+      response.headers.set('X-Rate-Limit-Remaining', (limit - requestData.count).toString());
       corsHeaders.forEach((value, key) => {
         response.headers.set(key, value);
       });
-
+  
       return response;
     } catch (error) {
       console.error('Rate limiting error:', error);
