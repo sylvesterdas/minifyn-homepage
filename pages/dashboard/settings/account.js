@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/Loading';
+import VerifyEmailButton from '@/components/auth/VerifyEmailButton';
 
 export default function AccountSettings() {
   const { user, setUser, loading: authLoading } = useAuth();
@@ -104,9 +105,12 @@ export default function AccountSettings() {
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-secondary"
                 />
                 {!user?.is_verified && (
-                  <p className="mt-2 text-sm text-coral">
-                    Please verify your email address to access all features.
-                  </p>
+                  <>
+                    <p className="mt-2 text-sm text-coral">
+                      Please verify your email address to access all features.
+                    </p>
+                    <VerifyEmailButton />
+                  </>
                 )}
               </div>
               

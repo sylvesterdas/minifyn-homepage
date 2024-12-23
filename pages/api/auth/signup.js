@@ -2,6 +2,7 @@ import db from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import { kv } from '@vercel/kv'
 import { hashPassword } from '@/lib/auth';
+import { emailService } from '@/lib/email/service';
 
 const verifyRecaptcha = async (token) => {
   const secretKey = process.env.NEXT_RECAPTCHA_SECRET_KEY;
@@ -109,6 +110,8 @@ export default async function handler(req, res) {
         plan,
         expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
       });
+
+      await emailService.sendVerification(user)
 
       // Set session cookie
       res.setHeader('Set-Cookie', `sessionId=${sessionId}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000`);

@@ -1,25 +1,19 @@
-import { EmailSender } from '@/lib/email/sender';
+import { emailService } from '@/lib/email/service';
+import { validateApiRequest } from '@/lib/auth';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).end();
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { email, userId } = req.body;
-    const token = crypto.randomBytes(32).toString('hex');
-    
-    await kv.set(`verify:${token}`, userId, {
-      ex: emailConfig.limits.verificationTTL
-    });
+    const auth = await validateApiRequest(req);
+    if (auth.error) return res.status(auth.status).json({ error: auth.error });
 
-    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/verify?token=${token}`;
-    
-    const emailSender = new EmailSender();
-    await emailSender.send(email, 'verification', { verificationUrl }, userId);
-    
-    res.status(200).json({ message: 'Verification email sent' });
+    await emailService.sendVerification(auth.user);
+    return res.status(200).json({ success: true });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to send verification email' });
+    console.error('Send verification error:', error);
+    return res.status(500).json({ error: 'Failed to send verification email' });
   }
 }
