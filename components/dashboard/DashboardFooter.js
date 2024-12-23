@@ -12,7 +12,7 @@ const DashboardFooter = () => {
           </div>
           <div className="flex space-x-4">
             <Link 
-              href="/terms-and-conditions" 
+              href="/legal/terms" 
               className="hover:text-gray-700"
               target="_blank"
               rel="noopener noreferrer"
@@ -20,7 +20,7 @@ const DashboardFooter = () => {
               Terms
             </Link>
             <Link 
-              href="/privacy-policy" 
+              href="/legal/privacy" 
               className="hover:text-gray-700"
               target="_blank"
               rel="noopener noreferrer"
@@ -28,7 +28,7 @@ const DashboardFooter = () => {
               Privacy
             </Link>
             <Link 
-              href="/docs" 
+              href="/api-docs" 
               className="hover:text-gray-700"
               target="_blank"
               rel="noopener noreferrer"

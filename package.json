@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "ANALYZE=true next build && create-ads-txt",
     "postbuild": "next-sitemap",
     "start": "next start",

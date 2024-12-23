@@ -7,7 +7,7 @@ export default function VerifyEmailButton() {
   const handleSendVerification = async () => {
     try {
       setIsDisabled(true);
-      setTimeLeft(20);
+      setTimeLeft(60);
       
       await fetch('/api/auth/send-verification', {
         method: 'POST',
