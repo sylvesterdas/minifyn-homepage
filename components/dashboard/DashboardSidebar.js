@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { X, LayoutDashboard, Link2, BarChart2, User, Key, CreditCard } from 'lucide-react';
+import { X, LayoutDashboard, Link2, BarChart2, User, Key, CreditCard, Bug, Lightbulb, Code } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import useSWR from 'swr';
@@ -42,13 +42,34 @@ const SETTINGS_ITEMS = [
   }
 ];
 
+const SUPPORT_ITEMS = [
+  { 
+    key: 'API Docs',
+    path: '/api-docs',
+    icon: Code,
+    external: true
+  },
+  { 
+    key: 'Report Issue',
+    path: 'https://github.com/Minifyn/minifyn-issues/issues/new?template=bug_report.md',
+    icon: Bug,
+    external: true
+  },
+  {
+    key: 'Request Feature',
+    path: 'https://github.com/Minifyn/minifyn-issues/issues/new?template=feature_request.md',
+    icon: Lightbulb,
+    external: true
+  }
+];
+
 // NavSection Component
 const NavSection = ({ title, items, currentPath }) => (
   <div className="space-y-1">
     <h3 className="px-3 mb-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
       {title}
     </h3>
-    {items.map(({ key, path, icon: Icon }) => {
+    {items.map(({ key, path, icon: Icon, external = false }) => {
       const isActive = path === currentPath || 
                       (path !== '/dashboard' && currentPath.startsWith(path));
       
@@ -56,6 +77,7 @@ const NavSection = ({ title, items, currentPath }) => (
         <Link
           key={path}
           href={path}
+          target={external ? '_blank' : '_self'}
           className={`
             flex items-center px-3 py-2 mx-2 text-sm font-medium rounded-lg
             transition-all duration-200 group
@@ -186,6 +208,11 @@ const DashboardSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <NavSection 
               title="Settings" 
               items={SETTINGS_ITEMS}
+              currentPath={router.pathname} 
+            />
+            <NavSection 
+              title="Help & Support" 
+              items={SUPPORT_ITEMS}
               currentPath={router.pathname} 
             />
           </nav>

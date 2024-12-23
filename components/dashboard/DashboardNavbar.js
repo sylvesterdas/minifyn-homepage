@@ -52,7 +52,7 @@ const DashboardNavbar = ({ setSidebarOpen }) => {
         <div className="flex items-center gap-2">
           {/* Help */}
           <Link 
-            href="/docs"
+            href="/api-docs"
             className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             aria-label="Documentation"
           >
@@ -68,14 +68,6 @@ const DashboardNavbar = ({ setSidebarOpen }) => {
             <Bell size={20} />
           </Link>
 
-          {/* API Docs */}
-          <Link 
-            href="/api-docs"
-            className="hidden md:block px-4 py-2 text-gray-700 hover:text-gray-900"
-          >
-            API Docs
-          </Link>
-
           {/* User Menu */}
           <div className="relative">
             <button
@@ -84,7 +76,6 @@ const DashboardNavbar = ({ setSidebarOpen }) => {
                          rounded-lg transition-colors"
             >
               <User size={20} />
-              <span className="hidden md:block">{user?.fullName || user?.email}</span>
             </button>
 
             {/* Dropdown Menu */}
