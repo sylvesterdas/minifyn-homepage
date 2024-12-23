@@ -10,14 +10,16 @@ const Footer = () => {
   const productLinks = [
     { href: '/features', label: t('footer.links.product.features') },
     { href: '/pricing', label: t('footer.links.product.pricing') },
-    { href: '/api-docs', label: t('footer.links.product.apiDocs') },
+    { href: '/api-docs', newTab: true, label: t('footer.links.product.apiDocs') },
+    { href: 'https://github.com/Minifyn/minifyn-issues/issues/new?template=bug_report.md', newTab: true, label: t('footer.links.product.reportBug') },
+    { href: 'https://github.com/Minifyn/minifyn-issues/issues/new?template=feature_request.md', newTab: true, label: t('footer.links.product.requestFeature') },
     { href: '/blog', label: t('footer.links.product.blog') }
   ];
 
   const companyLinks = [
     { href: '/about', label: t('footer.links.company.about') },
     { href: '/contact', label: t('footer.links.company.contact') },
-    { href: '/status', label: t('footer.links.company.status') }
+    { href: '/status', newTab: true, label: t('footer.links.company.status') }
   ];
 
   const legalLinks = [

@@ -7,10 +7,11 @@ export const FooterLinkGroup = ({ title, links }) => {
         {title}
       </h3>
       <ul className="mt-4 space-y-4">
-        {links.map(({ href, label }) => (
+        {links.map(({ href, label, newTab = false }) => (
           <li key={href}>
             <Link 
               href={href} 
+              target={newTab ? '_blank' : '_self'}
               className="text-sm text-gray-300 hover:text-white"
             >
               {label}

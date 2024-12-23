@@ -110,6 +110,8 @@
         "features": "Features",
         "pricing": "Pricing",
         "apiDocs": "API Documentation",
+        "reportBug": "Report a Bug",
+        "requestFeature": "Request a feature",
         "blog": "Blog"
       },
       "company": {
