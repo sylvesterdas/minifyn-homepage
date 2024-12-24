@@ -1,50 +1,36 @@
-import db from '../../../lib/db';
-import { v4 as uuidv4 } from 'uuid';
-// import sendEmail from '../../../lib/sendEmail'; // You'll need to implement this
+import db from '@/lib/db';
+import { passwordResetUtils } from '@/lib/password-reset-utils';
+import { emailService } from '@/lib/email/service';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { email } = req.body;
 
   try {
-    // Check if user exists
-    const checkUserQuery = db.sql`
-      SELECT * FROM users WHERE email = ${email}
-    `;
-    const { rows } = await db.query(checkUserQuery);
+    const { rows } = await db.query(db.sql`
+      SELECT id, email, full_name FROM users WHERE email = ${email.toLowerCase()}
+    `);
 
     if (rows.length === 0) {
-      // For security reasons, don't reveal that the user doesn't exist
-      return res.status(200).json({ message: 'If the email exists, a reset link has been sent.' });
+      return res.status(200).json({ message: 'If an account exists with this email, you will receive a password reset link.' });
     }
 
     const user = rows[0];
+    const token = await passwordResetUtils.createResetToken(user.id);
+    const resetLink = passwordResetUtils.getResetLink(token);
 
-    // Generate reset token
-    const resetToken = uuidv4();
-    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+    await emailService.sendPasswordReset({
+      email: user.email,
+      name: user.full_name,
+      resetLink
+    });
 
-    // Store reset token
-    const insertTokenQuery = db.sql`
-      INSERT INTO reset_tokens (token, user_id, expiry)
-      VALUES (${resetToken}, ${user.id}, ${resetTokenExpiry})
-    `;
-    await db.query(insertTokenQuery);
-
-    // Send reset email
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${resetToken}`;
-    // await sendEmail({
-    //   to: email,
-    //   subject: 'Password Reset',
-    //   text: `Please use the following link to reset your password: ${resetUrl}`,
-    // });
-
-    res.status(200).json({ message: 'If the email exists, a reset link has been sent.' });
+    res.status(200).json({ message: 'If an account exists with this email, you will receive a password reset link.' });
   } catch (error) {
-    console.error('Forgot password error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Password reset request error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
   }
 }

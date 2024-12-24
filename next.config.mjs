@@ -61,6 +61,16 @@ const nextConfig = {
         permanent: false,
       },
       {
+        source: '/:lang/dashboard/:path*',
+        destination: '/dashboard/:path*', 
+        permanent: false,
+      },
+      {
+        source: '/:lang/dashboard',
+        destination: '/dashboard',
+        permanent: false,
+      },
+      {
         source: '/api/payment/:path*',
         destination: '/404',
         permanent: false,
