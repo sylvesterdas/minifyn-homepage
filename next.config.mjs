@@ -62,13 +62,13 @@ const nextConfig = {
       },
       {
         source: '/:lang/dashboard/:path*',
-        has: [{ type: 'path', value: '^(en|hi)' }],
+        has: [{ type: 'lang', value: '^(en|hi)' }],
         destination: '/dashboard/:path*',
         permanent: false
        },
        {
         source: '/:lang/dashboard',
-        has: [{ type: 'path', value: '^(en|hi)' }],
+        has: [{ type: 'lang', value: '^(en|hi)' }],
         destination: '/dashboard',
         permanent: false
        },
