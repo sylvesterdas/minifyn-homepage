@@ -62,30 +62,16 @@ const nextConfig = {
       },
       {
         source: '/:lang/dashboard/:path*',
-        has: [
-          {
-            type: 'query',
-            key: 'lang',
-            not: true,
-            value: 'api'
-          }
-        ],
+        has: [{ type: 'path', value: '^(en|hi)' }],
         destination: '/dashboard/:path*',
         permanent: false
-      },
-      {
+       },
+       {
         source: '/:lang/dashboard',
-        has: [
-          {
-            type: 'query', 
-            key: 'lang',
-            not: true,
-            value: 'api'
-          }
-        ],
+        has: [{ type: 'path', value: '^(en|hi)' }],
         destination: '/dashboard',
         permanent: false
-      },
+       },
       {
         source: '/api/payment/:path*',
         destination: '/404',
