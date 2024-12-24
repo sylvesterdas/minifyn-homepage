@@ -61,30 +61,6 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: '/:lang/dashboard/:path*',
-        has: [
-          {
-            type: 'header',
-            key: 'x-lang',
-            value: '(en|hi)'
-          }
-        ],
-        destination: '/dashboard/:path*',
-        permanent: false
-      },
-      {
-        source: '/:lang/dashboard',
-        has: [
-          {
-            type: 'header',
-            key: 'x-lang', 
-            value: '(en|hi)'
-          }
-        ],
-        destination: '/dashboard',
-        permanent: false
-      },
-      {
         source: '/api/payment/:path*',
         destination: '/404',
         permanent: false,

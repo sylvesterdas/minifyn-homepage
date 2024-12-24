@@ -20,7 +20,7 @@ const MAX_AGE = 86400;
 function getClientIdentifier(request) {
   const guestSession = request.cookies.get('guestSession')?.value;
   if (guestSession) return guestSession;
-  
+
   const newGuestId = `guest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   return newGuestId;
 }
@@ -69,7 +69,7 @@ async function getSession(sessionId) {
 
 export async function middleware(request) {
   const corsHeaders = handleCORS(request);
-  
+
   if (request.method === 'OPTIONS') {
     return new NextResponse(null, { status: 204, headers: corsHeaders });
   }
@@ -78,7 +78,7 @@ export async function middleware(request) {
     const session = await verifySession(request);
     const guestId = request.cookies.get('guestSession')?.value;
     const clientId = session?.id || guestId;
-    
+
     if (!clientId) {
       return new NextResponse(JSON.stringify({ error: 'No session found' }), {
         status: 400,
@@ -88,10 +88,10 @@ export async function middleware(request) {
         },
       });
     }
-  
+
     const key = `requests:${clientId}`;
     await kvStore.del(key);
-  
+
     return new NextResponse(JSON.stringify({ message: 'Rate limit reset successfully' }), {
       status: 200,
       headers: {
@@ -105,20 +105,20 @@ export async function middleware(request) {
     const session = await verifySession(request);
     const guestId = getClientIdentifier(request);
     const clientId = session?.id || guestId;
-    
+
     const key = `requests:${clientId}`;
     const limit = session ? 50 : 2;
     const now = new Date();
     const todayKey = now.toISOString().split('T')[0];
-  
+
     try {
       const requestData = await kvStore.get(key) || { count: 0, date: todayKey };
-      
+
       if (requestData.date !== todayKey) {
         requestData.count = 0;
         requestData.date = todayKey;
       }
-  
+
       console.log(requestData)
       if (requestData.count >= limit) {
         return new NextResponse(JSON.stringify({ error: 'Daily limit exceeded' }), {
@@ -129,12 +129,12 @@ export async function middleware(request) {
           },
         });
       }
-  
+
       requestData.count++;
       await kvStore.set(key, requestData, { ex: 86400 });
-  
+
       const response = NextResponse.next();
-      
+
       // Set guest cookie for new visitors
       if (!session && !request.cookies.get('guestSession')) {
         response.cookies.set('guestSession', guestId, {
@@ -144,12 +144,12 @@ export async function middleware(request) {
           maxAge: 24 * 60 * 60
         });
       }
-  
+
       response.headers.set('X-Rate-Limit-Remaining', (limit - requestData.count).toString());
       corsHeaders.forEach((value, key) => {
         response.headers.set(key, value);
       });
-  
+
       return response;
     } catch (error) {
       console.error('Rate limiting error:', error);
