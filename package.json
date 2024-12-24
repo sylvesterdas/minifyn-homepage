@@ -25,6 +25,7 @@
     "lucide-react": "^0.451.0",
     "nanoid": "^5.0.9",
     "next": "15.0.4",
+    "next-google-adsense": "^1.0.12",
     "next-i18next": "^15.4.0",
     "next-sitemap": "^4.2.3",
     "nodemailer": "^6.9.16",
