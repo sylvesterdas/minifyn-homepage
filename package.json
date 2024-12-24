@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "ANALYZE=true next build && create-ads-txt",
+    "build": "next build && create-ads-txt",
+    "build:analyze": "ANALYZE=true next build && create-ads-txt",
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",

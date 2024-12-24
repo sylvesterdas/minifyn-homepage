@@ -1,5 +1,5 @@
 import { validateApiRequest } from '@/lib/auth';
-import { getUserUrls, deleteUserUrl, updateUrl } from '@/lib/services/urlDashboardService';
+import { getUserUrls, deleteUserUrl } from '@/lib/services/urlDashboardService';
 
 export default async function handler(req, res) {
   const validation = await validateApiRequest(req);
@@ -30,17 +30,6 @@ export default async function handler(req, res) {
           return res.status(404).json({ error: 'URL not found' });
         }
         return res.status(200).json({ success: true });
-
-      case 'PATCH':
-        const { shortCode: code, ...updates } = req.body;
-        if (!code) {
-          return res.status(400).json({ error: 'Short code is required' });
-        }
-        const updated = await updateUrl(userId, code, updates);
-        if (!updated) {
-          return res.status(404).json({ error: 'URL not found' });
-        }
-        return res.status(200).json(updated);
 
       default:
         return res.status(405).json({ error: 'Method not allowed' });
