@@ -9,8 +9,8 @@ const AuthButton = ({ variant = 'ghost', children, onClick, className = '' }) =>
       px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
       transform hover:scale-[1.02] active:scale-[0.98]
       ${variant === 'primary' 
-        ? 'bg-secondary text-white hover:bg-blue-600 hover:shadow-md' 
-        : 'text-gray-700 hover:bg-gray-100 active:bg-gray-200'
+        ? 'bg-secondary-500 text-white hover:bg-secondary-600 hover:shadow-md' 
+        : 'text-primary-600 dark:text-primary-200 hover:bg-primary-50 dark:hover:bg-dark-lighter active:bg-primary-100 dark:active:bg-dark-lightest'
       }
       ${className}
     `}
@@ -62,9 +62,7 @@ const AuthButtons = ({ isMobile }) => {
       <AuthButton 
         variant="primary" 
         onClick={() => {
-          sendGAEvent('event', 'signup_start', {
-            source: 'header'
-          });
+          sendGAEvent('event', 'signup_start', { source: 'header' });
           return router.push('/signup')
         }}
         className={isMobile ? "w-full" : ""}

@@ -27,9 +27,10 @@ const LocaleSwitcher = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 
-                   hover:text-secondary transition-colors duration-200 rounded-md
-                   hover:bg-gray-50 active:bg-gray-100"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium 
+                   text-primary-600 dark:text-primary-200
+                   hover:text-secondary-500 transition-colors duration-200 rounded-md
+                   hover:bg-primary-50 dark:hover:bg-dark-lighter active:bg-primary-100 dark:active:bg-dark-lightest"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -42,7 +43,8 @@ const LocaleSwitcher = () => {
       
       {isOpen && (
         <div 
-          className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-100 
+          className="absolute right-0 mt-1 w-40 bg-white dark:bg-dark-surface rounded-lg shadow-lg 
+                     border border-primary-100 dark:border-dark-lighter
                      overflow-hidden transform opacity-100 scale-100 transition-all duration-200"
           role="menu"
         >
@@ -55,8 +57,11 @@ const LocaleSwitcher = () => {
               }}
               className={`
                 w-full px-4 py-2 text-sm text-left flex items-center gap-2
-                ${router.locale === code ? 'text-secondary bg-blue-50' : 'text-gray-700'}
-                hover:bg-gray-50 transition-colors duration-150
+                ${router.locale === code 
+                  ? 'text-secondary-500 bg-secondary-50 dark:bg-secondary-900/30' 
+                  : 'text-primary-600 dark:text-primary-200'
+                }
+                hover:bg-primary-50 dark:hover:bg-dark-lighter transition-colors duration-150
               `}
               role="menuitem"
             >

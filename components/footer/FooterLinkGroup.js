@@ -12,7 +12,7 @@ export const FooterLinkGroup = ({ title, links }) => {
             <Link 
               href={href} 
               target={newTab ? '_blank' : '_self'}
-              className="text-sm text-gray-300 hover:text-white"
+              className="text-sm text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white"
             >
               {label}
             </Link>

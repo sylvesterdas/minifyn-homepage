@@ -25,7 +25,7 @@ const PublicLayout = ({ children }) => {
 
   if (router.route !== '/[shortCode]') {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-dark-surface dark:to-dark">
         <Navbar />
         {body}
         <Footer />
