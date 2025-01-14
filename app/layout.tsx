@@ -1,7 +1,6 @@
 import { ThemeProvider } from './providers/theme-provider'
 import { Nav } from '@/components/layout/nav'
 import { Sidebar } from '@/components/layout/sidebar'
-import './globals.css'
 import React from 'react';
 
 export default function RootLayout({

@@ -1,5 +1,7 @@
-import { Card } from "@/components/ui/card";
-import { Clipboard } from "lucide-react";
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Clipboard } from "lucide-react"
+import '@/app/globals.css'
 
 export default function Page() {
   return (
@@ -25,15 +27,15 @@ export default function Page() {
                   placeholder="Paste your long URL"
                   className="w-full px-4 py-3 bg-transparent border-none text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-0"
                 />
-                <button className="px-4 text-slate-400 hover:text-white transition-colors">
+                <Button variant="ghost" size="sm" className="mr-2">
                   <Clipboard className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             </div>
 
-            <button className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition-all hover:shadow-lg hover:shadow-blue-500/20">
+            <Button size="lg" className="w-full">
               Create Short URL
-            </button>
+            </Button>
 
             {/* Feature highlights with icon */}
             <div className="grid grid-cols-3 gap-4 pt-2">
