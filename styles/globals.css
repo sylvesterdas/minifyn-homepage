@@ -1,17 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-html, body, #__next {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  @apply scroll-smooth;
-}
-
-body {
-  @apply bg-gradient-to-b from-blue-50 to-white;
-}
