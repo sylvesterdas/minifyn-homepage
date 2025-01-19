@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + HeroUI",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "MiniFyn - Quick Links & QR Codes for Devs",
+  description: "Free URL shortener & QR generator for developers. Perfect for side projects, API testing, and small businesses. Try MiniFyn now!",
   navItems: [
     {
       label: "Home",
