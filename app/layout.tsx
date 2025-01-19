@@ -47,7 +47,7 @@ export default function RootLayout({
             <Navbar />
             <div className="flex flex-1">
               <Sidebar />
-              <main>{children}</main>
+              <main className="flex-1 overflow-auto">{children}</main>
             </div>
             <footer className="hidden w-full items-center justify-center py-3">
               <Link
