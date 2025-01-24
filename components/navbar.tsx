@@ -9,12 +9,12 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@heroui/navbar";
-import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import NextLink from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
 export const Navbar = () => {
@@ -53,9 +53,8 @@ export const Navbar = () => {
         <NavbarItem>
           <Button
             as={Link}
-            className="text-sm font-normal text-foreground bg-gradient-to-r from-primary-600 to-primary-500"
             href="/login?type=free"
-            variant="flat"
+            variant="primary"
           >
             Get Started
           </Button>

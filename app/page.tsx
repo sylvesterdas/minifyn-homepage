@@ -3,6 +3,8 @@
 import { Card } from "@heroui/react";
 import { Clipboard } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -27,15 +29,19 @@ export default function Home() {
                   placeholder="Paste your long URL"
                   type="text"
                 />
-                <button className="px-4 text-slate-400 hover:text-white transition-colors">
+                <Button
+                  isIconOnly
+                  className="md:mx-4 bg-transparent hover:bg-transparent"
+                  variant="ghost"
+                >
                   <Clipboard className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             </div>
 
-            <button className="w-full py-3 max-sm:text-small rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition-all hover:shadow-lg hover:shadow-blue-500/20">
+            <Button fullWidth size="lg" variant="primary">
               Create Short URL
-            </button>
+            </Button>
 
             {/* Feature highlights with icon */}
             <div className="grid grid-cols-3 gap-4 pt-2">
@@ -48,9 +54,7 @@ export default function Home() {
                   key={item.label}
                   className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50"
                 >
-                  <div className="text-xs text-slate-400">
-                    {item.label}
-                  </div>
+                  <div className="text-xs text-slate-400">{item.label}</div>
                   <div className="mt-1 max-sm:text-xs font-medium text-slate-200">
                     {item.value}
                   </div>
@@ -71,10 +75,12 @@ export default function Home() {
               key={item.title}
               className="p-4 rounded-lg bg-slate-900/30 border border-slate-800/50"
             >
-              <h3 className="font-medium max-sm:text-xs text-slate-200">
+              <h3 className="font-medium max-sm:text-xs max-sm:text-center text-slate-200">
                 {item.title}
               </h3>
-              <p className="mt-1 text-sm max-sm:text-xs text-slate-400">{item.desc}</p>
+              <p className="mt-1 text-sm max-sm:text-xs max-sm:text-center text-slate-400">
+                {item.desc}
+              </p>
             </div>
           ))}
         </div>
