@@ -1,9 +1,11 @@
 import { ArrowRight, Code2, Terminal } from "lucide-react";
 import Link from "next/link";
 
+import { siteConfig } from "@/config/site";
+
 export const Sidebar = () => {
   return (
-    <div className="w-80 border-r border-gray-800 flex flex-col">
+    <div className="w-max border-r border-gray-800 flex flex-col">
     <div className="p-6 border-b border-gray-800">
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-white">MiniFyn</span>
@@ -15,7 +17,7 @@ export const Sidebar = () => {
         Developer-focused URL shortener
       </div>
     </div>
-    
+
     <div className="flex-1 overflow-y-auto">
       <div className="p-4">
         <div className="rounded-lg bg-gray-900 p-4">
@@ -26,9 +28,9 @@ export const Sidebar = () => {
             </span>
           </div>
           <code className="text-sm text-white font-mono">
-            <p>$ curl api.minifyn.com/v1/urls \</p>
-            <p className="mt-2 text-gray-500">  -d &apos;&#123; &quot;url&quot;: &quot;https://example.com&quot; &#125;&apos; \</p>
-            <p className="text-gray-500">  -H &quot;Content-Type: application/json&quot;</p>
+            <p>$ curl {siteConfig.links.shortenApi} \</p>
+            <p className="mt-2 text-gray-500">&emsp;-d &apos;&#123; &quot;url&quot;: &quot;https://example.com&quot; &#125;&apos; \</p>
+            <p className="text-gray-500">&emsp;-H &quot;Content-Type: application/json&quot;</p>
           </code>
         </div>
 
@@ -75,8 +77,8 @@ export const Sidebar = () => {
       <div className="flex items-center justify-between text-sm text-gray-400">
         <span>© 2025 MiniFyn</span>
         <div className="flex space-x-3">
-          <Link className="hover:text-white" href="#">GitHub</Link>
-          <Link className="hover:text-white" href="#">Twitter</Link>
+          <Link className="hover:text-white" href={siteConfig.links.github} target="_blank">GitHub</Link>
+          <Link className="hover:text-white" href={siteConfig.links.twitter} target="_blank">Twitter</Link>
         </div>
       </div>
     </div>
