@@ -8,10 +8,10 @@ export default function Home() {
     <div className="max-w-4xl mx-auto p-8">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+          <h1 className="text-3xl max-sm:text-2xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
             Professional URL Shortener
           </h1>
-          <p className="mt-2 text-lg text-slate-400">
+          <p className="mt-2 text-lg max-sm:text-xs text-slate-400">
             Built for developers. Simple for everyone.
           </p>
         </div>
@@ -23,7 +23,7 @@ export default function Home() {
               <div className="absolute -inset-px bg-gradient-to-r from-blue-500 to-blue-400 rounded-lg opacity-0 group-hover:opacity-100 blur transition duration-1000" />
               <div className="relative flex items-center bg-slate-800/50 rounded-lg border border-slate-700/50">
                 <input
-                  className="w-full px-4 py-3 bg-transparent border-none text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-0"
+                  className="w-full max-sm:text-small px-4 py-3 bg-transparent border-none text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-0"
                   placeholder="Paste your long URL"
                   type="text"
                 />
@@ -33,7 +33,7 @@ export default function Home() {
               </div>
             </div>
 
-            <button className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition-all hover:shadow-lg hover:shadow-blue-500/20">
+            <button className="w-full py-3 max-sm:text-small rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition-all hover:shadow-lg hover:shadow-blue-500/20">
               Create Short URL
             </button>
 
@@ -42,7 +42,7 @@ export default function Home() {
               {[
                 { label: "API Access", value: "Included" },
                 { label: "Analytics", value: "Real-time" },
-                { label: "Custom Domain", value: "Available" },
+                { label: "QR maker", value: "Available" },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -51,7 +51,7 @@ export default function Home() {
                   <div className="text-xs text-slate-400">
                     {item.label}
                   </div>
-                  <div className="mt-1 font-medium text-slate-200">
+                  <div className="mt-1 max-sm:text-xs font-medium text-slate-200">
                     {item.value}
                   </div>
                 </div>
@@ -71,10 +71,10 @@ export default function Home() {
               key={item.title}
               className="p-4 rounded-lg bg-slate-900/30 border border-slate-800/50"
             >
-              <h3 className="font-medium text-slate-200">
+              <h3 className="font-medium max-sm:text-xs text-slate-200">
                 {item.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-400">{item.desc}</p>
+              <p className="mt-1 text-sm max-sm:text-xs text-slate-400">{item.desc}</p>
             </div>
           ))}
         </div>

@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import { Link } from "@heroui/link";
 import clsx from "clsx";
+import { Divider } from "@heroui/react";
 
 import { Providers } from "./providers";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
             <Navbar />
             <div className="flex flex-1 max-sm:flex-col-reverse">
               <Sidebar />
+              <Divider className="md:hidden" />
               <main className="flex-1 overflow-auto">{children}</main>
             </div>
             <footer className="hidden w-full items-center justify-center py-3">

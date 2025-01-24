@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -11,10 +13,13 @@ import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import NextLink from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
 
 export const Navbar = () => {
+  const path = usePathname();
+
   return (
     <HeroUINavbar
       className="z-50 border-small border-default-100 bg-gradient-to-b from-background to-background/50 backdrop-blur-xl"
@@ -37,7 +42,7 @@ export const Navbar = () => {
         {siteConfig.navMenuItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
             <Link
-              color={index === 1 ? "primary" : "foreground"}
+              color={path === item.href ? "primary" : "foreground"}
               href={item.href}
               size="md"
             >
