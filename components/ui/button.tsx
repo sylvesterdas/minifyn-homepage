@@ -18,10 +18,8 @@ export function Button({
   return (
     <HeroButton
       className={cn(
-        "transition-all",
-        variant === "primary" &&
-          "bg-blue-600 hover:bg-blue-500 text-white font-medium hover:shadow-lg hover:shadow-blue-500/20",
-        variant === "ghost" && "text-slate-400 hover:text-white",
+        variant === "primary" && "bg-blue-600 hover:bg-blue-500 text-white font-medium hover:shadow-lg hover:shadow-blue-500/20",
+        variant === "ghost" && "text-slate-400 hover:text-white bg-transparent hover:bg-transparent",
         fullWidth && "w-full",
         className
       )}

@@ -29,11 +29,7 @@ export default function Home() {
                   placeholder="Paste your long URL"
                   type="text"
                 />
-                <Button
-                  isIconOnly
-                  className="md:mx-4 bg-transparent hover:bg-transparent"
-                  variant="ghost"
-                >
+                <Button isIconOnly variant="ghost">
                   <Clipboard className="w-4 h-4" />
                 </Button>
               </div>
