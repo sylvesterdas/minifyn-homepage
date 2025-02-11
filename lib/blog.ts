@@ -84,7 +84,7 @@ export async function getPosts(page = 1, limit = 12): Promise<{ posts: Post[], t
     })) as Post[];
 
     return { posts, total: posts.length };
-  } catch (_) {
+  } catch {
     return { posts: [], total: 0 };
   }
 }
@@ -136,7 +136,7 @@ export async function getPost(slug: string): Promise<Post | null> {
       coverImage: post.coverImage,
       author: post.author
     } as Post;
-  } catch (_) {
+  } catch {
     return null;
   }
 }
