@@ -3,7 +3,7 @@ import BlogList from './blog-list';
 import { getPosts } from '@/lib/blog';
 
 export default async function BlogPage() {
-  const { posts } = await getPosts();
+  const { posts, nextCursor } = await getPosts();
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -17,7 +17,7 @@ export default async function BlogPage() {
               Built for developers. Simple for everyone.
             </p>
           </div>
-          <BlogList posts={posts} />
+          <BlogList initialCursor={nextCursor} initialPosts={posts} />
         </div>
       </div>
     </div>

@@ -19,14 +19,21 @@ export interface Post {
   };
 }
 
-export interface Response { publication: { posts: { edges: Post[] }, post: Post } }
+export interface Response {
+  publication: {
+    posts: {
+      edges: Post[],
+      pageInfo: {
+        total: number,
+        hasNextPage: boolean,
+        endCursor: string
+      }
+    },
+    post: Post
+  }
+}
 
-/**
- * 
- * @param query 
- * @param variables 
- * @returns {Promise<Response>}
- */
+// @returns {Promise<Response>}
 async function gqlFetch<Response>(query: string, variables = {}) {
   const response = await fetch(HASHNODE_GQL_ENDPOINT, {
     method: 'POST',
@@ -44,13 +51,17 @@ async function gqlFetch<Response>(query: string, variables = {}) {
   return data as Response;
 }
 
-export async function getPosts(page = 1, limit = 12): Promise<{ posts: Post[], total: number }> {
+export async function getPosts(cursor?: string): Promise<{
+  posts: Post[],
+  nextCursor: string | null
+}> {
   try {
     const query = `
-      query Publication($first: Int!) {
+      query Publication($first: Int!, $after: String) {
         publication(host: "${HASHNODE_HOST}") {
-          posts(first: $first) {
+          posts(first: $first, after: $after) {
             edges {
+              cursor
               node {
                 id
                 title
@@ -66,12 +77,20 @@ export async function getPosts(page = 1, limit = 12): Promise<{ posts: Post[], t
                 publishedAt
               }
             }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
           }
         }
       }
     `;
 
-    const data = await gqlFetch(query, { first: limit }) as Response;
+    const data = await gqlFetch(query, {
+      first: 6,
+      after: cursor
+    }) as Response;
+
     const posts = data.publication.posts.edges.map(({ node }: any) => ({
       id: node.id,
       title: node.title,
@@ -83,9 +102,14 @@ export async function getPosts(page = 1, limit = 12): Promise<{ posts: Post[], t
       coverImage: node.coverImage
     })) as Post[];
 
-    return { posts, total: posts.length };
+    return {
+      posts,
+      nextCursor: data.publication.posts.pageInfo.hasNextPage
+        ? data.publication.posts.pageInfo.endCursor
+        : null
+    };
   } catch {
-    return { posts: [], total: 0 };
+    return { posts: [], nextCursor: null };
   }
 }
 
