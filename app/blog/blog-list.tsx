@@ -10,6 +10,7 @@ import debounce from 'lodash/debounce';
 import { SearchBar } from './SearchBar';
 
 import { Post, getPosts, searchPosts } from "@/lib/blog";
+import { GoToTop } from "@/components/ui/GoToTop";
 
 export default function BlogList({ initialPosts, initialCursor }: {
   initialPosts: Post[],
@@ -82,10 +83,12 @@ export default function BlogList({ initialPosts, initialCursor }: {
     <div className="space-y-6">
       <SearchBar onSearch={handleSearch} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[200px]">
+      <GoToTop />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[200px] [&>*]:h-full">
         {posts.map(post => (
           <Link key={post.id} href={`/blog/${post.slug}`}>
-            <Card className="group relative bg-slate-900/70 border-slate-800/50 backdrop-blur-sm overflow-hidden cursor-pointer">
+            <Card className="group relative bg-slate-900/70 border-slate-800/50 backdrop-blur-sm overflow-hidden cursor-pointer h-full flex flex-col">
               <Image
                 alt={post.title}
                 className="w-full h-min bg-contain bg-center bg-no-repeat rounded-xl mb-4 border-none border-slate-800"
@@ -94,7 +97,7 @@ export default function BlogList({ initialPosts, initialCursor }: {
                 width={1200}
               />
 
-              <div className="p-6 space-y-4">
+              <div className="p-6 space-y-4 h-full flex flex-col">
                 <div className="flex gap-2 flex-wrap">
                   {post.tags.map(tag => (
                     <span key={tag} className="px-2 py-1 text-xs bg-blue-500/10 text-blue-400 rounded-full capitalize">
@@ -103,7 +106,7 @@ export default function BlogList({ initialPosts, initialCursor }: {
                   ))}
                 </div>
 
-                <div>
+                <div className="flex-1">
                   <h3 className="text-xl font-bold text-slate-200 group-hover:text-white transition-colors">
                     {post.title}
                   </h3>
@@ -129,7 +132,7 @@ export default function BlogList({ initialPosts, initialCursor }: {
                   </div>
                 </div>
               </div>
-              </Card>
+            </Card>
           </Link>
         ))}
       </div>
