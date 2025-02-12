@@ -108,7 +108,7 @@ export default async function ArticlePage({ params }: PageProps) {
                   h1: ({children, ...props}) => <h1 className="text-3xl font-bold mt-8 mb-4" {...props}>{children}</h1>,
                   h2: ({children, ...props}) => <h2 className="text-2xl font-bold mt-8 mb-4 text-white" {...props} >{children}</h2>,
                   p: ({children, ...props}) => <p className="mb-4 text-slate-300 leading-relaxed" {...props} >{children}</p>,
-                  ul: ({children, ...props}) => <ul className="my-4 space-y-2 list-disc list-inside" {...props} >{children}</ul>,
+                  ul: ({children, ...props}) => <ul className="my-4 space-y-2 list-disc list-outside" {...props} >{children}</ul>,
                   li: ({children, ...props}) => <li className="text-slate-300" {...props} >{children}</li>,
                   code: ({children, className, ...props}) => {
                     if (className) {
