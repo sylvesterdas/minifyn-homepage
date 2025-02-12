@@ -29,7 +29,7 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-2" href="/">
-            <Image alt="logo" height={35} src={"/logo.png"} width={35} />
+            <Image alt="logo" height={35} src="/logo.png" width={32.5} />
             <p className="font-bold text-foreground">MiniFyn</p>
           </NextLink>
         </NavbarBrand>

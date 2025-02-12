@@ -4,42 +4,87 @@ import { Card } from "@heroui/card";
 import { Calendar, Clock, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useEffect, useState, useCallback } from 'react';
+import debounce from 'lodash/debounce';
 
-import { Post, getPosts } from "@/lib/blog";
+import { SearchBar } from './SearchBar';
 
-export default function BlogList({ initialPosts, initialCursor }: { 
-  initialPosts: Post[], 
-  initialCursor: string | null 
+import { Post, getPosts, searchPosts } from "@/lib/blog";
+
+export default function BlogList({ initialPosts, initialCursor }: {
+  initialPosts: Post[],
+  initialCursor: string | null
 }) {
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
   const [loading, setLoading] = useState(false);
-  const { ref, inView } = useInView();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const loadMore = useCallback(async () => {
+    if (loading || !cursor) return;
+    setLoading(true);
+
+    try {
+      const result = searchTerm
+        ? await searchPosts(searchTerm, cursor)
+        : await getPosts(cursor);
+
+      setPosts(prev => [...prev, ...result.posts]);
+      setCursor(result.nextCursor);
+    } finally {
+      setLoading(false);
+    }
+  }, [cursor, loading, searchTerm]);
+
+  const handleSearch = useCallback(
+    debounce(async (term: string) => {
+      setSearchTerm(term);
+      setLoading(true);
+
+      try {
+        const result = term
+          ? await searchPosts(term)
+          : await getPosts();
+
+        setPosts(result.posts);
+        setCursor(result.nextCursor);
+      } finally {
+        setLoading(false);
+      }
+    }, 500),
+    []
+  );
 
   useEffect(() => {
-    async function loadMore() {
-      if (inView && cursor && !loading) {
-        setLoading(true);
-        try {
-          const { posts: newPosts, nextCursor } = await getPosts(cursor);
-
-          setPosts(prev => [...prev, ...newPosts]);
-          setCursor(nextCursor);
-        } finally {
-          setLoading(false);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && cursor && !loading) {
+          loadMore();
         }
+      },
+      {
+        root: null,
+        rootMargin: '100px',
+        threshold: 0.1
       }
+    );
+
+    const sentinel = document.getElementById('infinite-scroll-sentinel');
+
+    if (sentinel) {
+      observer.observe(sentinel);
     }
-    loadMore();
-  }, [inView, cursor, loading]);
+
+    return () => observer.disconnect();
+  }, [cursor, loading, loadMore]);
 
   return (
-    <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {posts.map((post, index) => (
-          <Link key={`blog-card-${index}`} href={`/blog/${post.slug}`}>
+    <div className="space-y-6">
+      <SearchBar onSearch={handleSearch} />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[200px]">
+        {posts.map(post => (
+          <Link key={post.id} href={`/blog/${post.slug}`}>
             <Card className="group relative bg-slate-900/70 border-slate-800/50 backdrop-blur-sm overflow-hidden cursor-pointer">
               <Image
                 alt={post.title}
@@ -84,17 +129,18 @@ export default function BlogList({ initialPosts, initialCursor }: {
                   </div>
                 </div>
               </div>
-            </Card>
+              </Card>
           </Link>
         ))}
       </div>
-      {cursor && (
-        <div ref={ref} className="flex justify-center p-4">
-          {loading && (
-            <div className="text-slate-400">Loading more posts...</div>
-          )}
+
+      {loading && (
+        <div className="flex justify-center py-4">
+          <div className="text-slate-400">Loading posts...</div>
         </div>
       )}
-    </>
+
+      <div className="h-px" id="infinite-scroll-sentinel" />
+    </div>
   );
 }

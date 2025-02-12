@@ -1,5 +1,6 @@
 const HASHNODE_GQL_ENDPOINT = 'https://gql.hashnode.com';
 const HASHNODE_HOST = 'www.minifyn.com/blog';
+const HASHNODE_PUBLICATION_ID = '671cb196d70e912325b7ff84';
 
 export interface Post {
   id: string;
@@ -20,6 +21,7 @@ export interface Post {
 }
 
 export interface Response {
+  searchPostsOfPublication: any,
   publication: {
     posts: {
       edges: Post[],
@@ -106,6 +108,75 @@ export async function getPosts(cursor?: string): Promise<{
       posts,
       nextCursor: data.publication.posts.pageInfo.hasNextPage
         ? data.publication.posts.pageInfo.endCursor
+        : null
+    };
+  } catch {
+    return { posts: [], nextCursor: null };
+  }
+}
+
+export async function searchPosts(query: string, cursor?: string): Promise<{
+  posts: Post[],
+  nextCursor: string | null
+}> {
+  try {
+    const gqlQuery = `
+      query SearchPosts($first: Int!, $after: String, $filter: SearchPostsOfPublicationFilter!) {
+        searchPostsOfPublication(
+          first: $first,
+          after: $after,
+          filter: $filter,
+        ) {
+          edges {
+            node {
+              id
+              title
+              brief
+              slug
+              coverImage {
+                url
+              }
+              tags {
+                name
+              }
+              readTimeInMinutes
+              publishedAt
+            }
+            cursor
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    `;
+
+    const data = await gqlFetch(gqlQuery, {
+      first: 6,
+      after: cursor,
+      filter: {
+        query,
+        publicationId: HASHNODE_PUBLICATION_ID
+      }
+    }) as Response;
+
+    const edges = data.searchPostsOfPublication.edges;
+    const posts = edges.map(({ node }: any) => ({
+      id: node.id,
+      title: node.title,
+      excerpt: node.brief,
+      slug: node.slug,
+      date: new Date(node.publishedAt).toLocaleDateString(),
+      readTime: `${node.readTimeInMinutes} min`,
+      tags: node.tags.map((t: any) => t.name),
+      coverImage: node.coverImage
+    }));
+
+    return {
+      posts,
+      nextCursor: data.searchPostsOfPublication.pageInfo.hasNextPage
+        ? data.searchPostsOfPublication.pageInfo.endCursor
         : null
     };
   } catch {
