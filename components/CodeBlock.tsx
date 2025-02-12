@@ -4,7 +4,7 @@ import { ReactNode, useState, useRef } from 'react';
 
 export function CodeBlock({ children }: { children: ReactNode }) {
   const [copied, setCopied] = useState(false);
-  const codeRef = useRef(null);
+  const codeRef = useRef(null) as any;
 
   const handleCopy = async () => {
     const code = codeRef.current?.textContent || '';

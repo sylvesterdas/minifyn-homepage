@@ -10,12 +10,9 @@ import Link from 'next/link';
 
 import { CodeBlock } from '@/components/CodeBlock';
 import { getPost } from '@/lib/blog';
+import { PageProps } from '@/.next/types/app/blog/page';
 
-type Props = {
-  params: { slug: string }
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const slug = (await params).slug;
   const article = await getPost(slug);
 
@@ -42,7 +39,7 @@ export async function generateStaticParams() {
   ];
 }
 
-export default async function ArticlePage({ params }: Props) {
+export default async function ArticlePage({ params }: PageProps) {
   const slug = (await params).slug;
   const article = await getPost(slug);
 
