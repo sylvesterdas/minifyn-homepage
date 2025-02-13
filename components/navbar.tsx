@@ -13,73 +13,112 @@ import { Link } from "@heroui/link";
 import NextLink from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useState, useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
+const NavBrand = () => (
+  <NavbarBrand as="li" className="gap-3 max-w-fit">
+    <NextLink className="flex justify-start items-center gap-2" href="/">
+      <Image 
+        priority 
+        alt="logo" 
+        height={35} 
+        src="/logo.png"
+        width={32.5}
+      />
+      <p className="font-bold text-foreground">MiniFyn</p>
+    </NextLink>
+  </NavbarBrand>
+);
+
+const DesktopNav = ({ path }: any) => (
+  <NavbarContent
+    className="hidden sm:flex basis-1/5 sm:basis-full"
+    justify="end"
+  >
+    {siteConfig.navMenuItems.map((item) => (
+      <NavbarItem key={item.href}>
+        <Link
+          color={path === item.href ? "primary" : "foreground"}
+          href={item.href}
+          size="md"
+        >
+          {item.label}
+        </Link>
+      </NavbarItem>
+    ))}
+    <NavbarItem>
+      <Button
+        as={Link}
+        href="/login?type=free"
+        variant="primary"
+      >
+        Get Started
+      </Button>
+    </NavbarItem>
+  </NavbarContent>
+);
+
+const MobileNav = ({ path, onClose }: any) => (
+  <>
+    <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+      <NavbarMenuToggle />
+    </NavbarContent>
+
+    <NavbarMenu className="bg-gradient-to-b from-background to-background/50 backdrop-blur-xl">
+      <div className="mx-4 mt-2 flex flex-col gap-2">
+        {siteConfig.navMenuItems.map((item) => (
+          <NavbarMenuItem key={item.href}>
+            <Link
+              color={path === item.href ? "primary" : "foreground"}
+              href={item.href}
+              size="lg"
+              onClick={onClose}
+            >
+              {item.label}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+        <NavbarMenuItem>
+          <Button
+            as={Link}
+            className="w-full"
+            href="/login?type=free"
+            variant="primary"
+            onClick={onClose}
+          >
+            Get Started
+          </Button>
+        </NavbarMenuItem>
+      </div>
+    </NavbarMenu>
+  </>
+);
+
 export const Navbar = () => {
   const path = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   return (
     <HeroUINavbar
       className="z-50 border-small border-default-100 bg-gradient-to-b from-background to-background/50 backdrop-blur-xl"
+      isMenuOpen={isOpen}
       maxWidth="xl"
       position="sticky"
+      onMenuOpenChange={setIsOpen}
     >
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-2" href="/">
-            <Image alt="logo" height={35} src="/logo.png" width={32.5} />
-            <p className="font-bold text-foreground">MiniFyn</p>
-          </NextLink>
-        </NavbarBrand>
+        <NavBrand />
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
-        justify="end"
-      >
-        {siteConfig.navMenuItems.map((item, index) => (
-          <NavbarItem key={`${item}-${index}`}>
-            <Link
-              color={path === item.href ? "primary" : "foreground"}
-              href={item.href}
-              size="md"
-            >
-              {item.label}
-            </Link>
-          </NavbarItem>
-        ))}
-        <NavbarItem>
-          <Button
-            as={Link}
-            href="/login?type=free"
-            variant="primary"
-          >
-            Get Started
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <NavbarMenuToggle />
-      </NavbarContent>
-
-      <NavbarMenu className="bg-gradient-to-b from-background to-background/50 backdrop-blur-xl">
-        <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={index === 1 ? "primary" : "foreground"}
-                href={item.href}
-                size="lg"
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </div>
-      </NavbarMenu>
+      <DesktopNav path={path} />
+      <MobileNav isOpen={isOpen} path={path} onClose={handleClose} />
     </HeroUINavbar>
   );
-};
+}
