@@ -15,6 +15,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
 
+import { Sidebar } from "./sidebar";
+
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
@@ -35,7 +37,7 @@ const NavBrand = () => (
 
 const DesktopNav = ({ path }: any) => (
   <NavbarContent
-    className="hidden sm:flex basis-1/5 sm:basis-full"
+    className="hidden md:flex basis-1/5 md:basis-full"
     justify="end"
   >
     {siteConfig.navMenuItems.map((item) => (
@@ -61,9 +63,9 @@ const DesktopNav = ({ path }: any) => (
   </NavbarContent>
 );
 
-const MobileNav = ({ path, onClose }: any) => (
+const MobileNav = ({ path, onClose }: { path: string, onClose: () => void }) => (
   <>
-    <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+    <NavbarContent className="md:hidden basis-1 pl-4" justify="end">
       <NavbarMenuToggle />
     </NavbarContent>
 
@@ -75,7 +77,7 @@ const MobileNav = ({ path, onClose }: any) => (
               color={path === item.href ? "primary" : "foreground"}
               href={item.href}
               size="lg"
-              onClick={onClose}
+              onPress={onClose}
             >
               {item.label}
             </Link>
@@ -87,11 +89,12 @@ const MobileNav = ({ path, onClose }: any) => (
             className="w-full"
             href="/login?type=free"
             variant="primary"
-            onClick={onClose}
+            onPress={onClose}
           >
             Get Started
           </Button>
         </NavbarMenuItem>
+        <Sidebar className="w-full border-none !px-0" onPress={onClose} />
       </div>
     </NavbarMenu>
   </>
@@ -109,16 +112,16 @@ export const Navbar = () => {
     <HeroUINavbar
       className="z-50 border-small border-default-100 bg-gradient-to-b from-background to-background/50 backdrop-blur-xl"
       isMenuOpen={isOpen}
-      maxWidth="xl"
+      maxWidth="full"
       position="sticky"
       onMenuOpenChange={setIsOpen}
     >
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+      <NavbarContent className="basis-1/5 sm:basis-full" justify="start" >
         <NavBrand />
       </NavbarContent>
 
       <DesktopNav path={path} />
-      <MobileNav isOpen={isOpen} path={path} onClose={handleClose} />
+      <MobileNav path={path} onClose={handleClose} />
     </HeroUINavbar>
   );
 }

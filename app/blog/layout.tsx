@@ -1,3 +1,4 @@
+import { Sidebar } from '@/components/sidebar'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -14,5 +15,8 @@ export default function BlogLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return <div className="flex flex-row flex-1">
+      <Sidebar className={"max-md:hidden"} onPress={undefined} />
+      <main className="w-full">{children}</main>
+    </div>
 }

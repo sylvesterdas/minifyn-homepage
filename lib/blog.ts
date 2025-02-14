@@ -89,7 +89,7 @@ export async function getPosts(cursor?: string): Promise<{
     `;
 
     const data = await gqlFetch(query, {
-      first: 6,
+      first: 10,
       after: cursor
     }) as Response;
 

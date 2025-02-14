@@ -1,15 +1,12 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { Link } from "@heroui/link";
 import clsx from "clsx";
-import { Divider } from "@heroui/react";
 
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
-import { Sidebar } from "@/components/sidebar";
 
 export const metadata: Metadata = {
   title: {
@@ -46,22 +43,7 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="flex flex-col h-screen">
             <Navbar />
-            <div className="flex flex-1 max-sm:flex-col-reverse">
-              <Sidebar />
-              <Divider className="md:hidden" />
-              <main className="flex-1 overflow-auto">{children}</main>
-            </div>
-            <footer className="hidden w-full items-center justify-center py-3">
-              <Link
-                isExternal
-                className="flex items-center gap-1 text-current"
-                href="https://heroui.com?utm_source=next-app-template"
-                title="heroui.com homepage"
-              >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">HeroUI</p>
-              </Link>
-            </footer>
+            {children}
           </div>
         </Providers>
       </body>

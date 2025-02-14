@@ -68,9 +68,9 @@ export default async function ArticlePage({ params }: PageProps) {
 
           <div className="max-w-3xl mx-auto">
             <header className="mb-12">
-              <div className="flex gap-2 mb-6">
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
                 {article.tags.map(tag => (
-                  <span key={tag} className="px-3 py-1 text-xs font-medium bg-slate-900 text-slate-300 rounded-full border border-slate-800">
+                  <span key={tag} className="flex items-center min-w-max px-3 py-1 text-xs font-medium bg-slate-900 text-slate-300 rounded-full border border-slate-800">
                     {tag}
                   </span>
                 ))}
@@ -102,7 +102,7 @@ export default async function ArticlePage({ params }: PageProps) {
               </div>
             </header>
 
-            <main className="prose prose-invert max-w-none mb-12">
+            <main className="prose prose-invert max-w-none max-xl:mx-4 mb-12">
               <ReactMarkdown
                 components={{
                   h1: ({children, ...props}) => <h1 className="text-3xl font-bold mt-8 mb-4" {...props}>{children}</h1>,
@@ -115,8 +115,9 @@ export default async function ArticlePage({ params }: PageProps) {
                       return <CodeBlock>{children}</CodeBlock>;
                     }
 
-                    return <code className="bg-slate-800 px-1 py-0.5 rounded text-sm font-mono" {...props}>{children}</code>;
+                    return <code className="bg-slate-700 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>{children}</code>;
                   },
+                  a: ({children, ...props}) => <a className='text-blue-500 hover:text-blue-600' {...props}>{children}</a>
                 }}
                 rehypePlugins={[rehypeHighlight]}
               >
@@ -151,23 +152,23 @@ export default async function ArticlePage({ params }: PageProps) {
                 <h3 className="text-lg font-semibold text-white">Connect with MiniFyn</h3>
                 <p className="text-sm text-slate-400 mt-1">Join our community for updates and discussions</p>
               </div>
-              <div className="flex justify-center gap-8">
-                <a className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://x.com/minifyn" rel="noopener noreferrer" 
+              <div className="grid grid-cols-2 lg:grid-cols-4 justify-center gap-8">
+                <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://x.com/minifyn" rel="noopener noreferrer" 
                   target="_blank">
                   <FaXTwitter className="w-5 h-5" />
                   <span>X (Twitter)</span>
                 </a>
-                <a className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://facebook.com/minifyn" rel="noopener noreferrer" 
+                <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://facebook.com/minifyn" rel="noopener noreferrer" 
                   target="_blank">
                   <Facebook className="w-5 h-5" />
                   <span>Facebook</span>
                 </a>
-                <a className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://linkedin.com/company/minifyn" rel="noopener noreferrer" 
+                <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://linkedin.com/company/minifyn" rel="noopener noreferrer" 
                   target="_blank">
                   <Linkedin className="w-5 h-5" />
                   <span>LinkedIn</span>
                 </a>
-                <a className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://t.me/minifyn" rel="noopener noreferrer" 
+                <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://t.me/minifyn" rel="noopener noreferrer" 
                   target="_blank">
                   <Send className="w-5 h-5" />
                   <span>Telegram</span>
