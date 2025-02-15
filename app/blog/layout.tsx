@@ -1,5 +1,6 @@
-import { Sidebar } from '@/components/sidebar'
 import type { Metadata } from 'next'
+
+import { Sidebar } from '@/components/sidebar'
 
 export const metadata: Metadata = {
   title: 'MiniFyn Blog - Web Performance & Development Tips',

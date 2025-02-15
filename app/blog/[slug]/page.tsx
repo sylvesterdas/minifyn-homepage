@@ -32,13 +32,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export async function generateStaticParams() {
-  return [
-    { slug: 'optimizing-javascript-bundle-size' },
-    { slug: 'understanding-web-vitals' }
-  ];
-}
-
 export default async function ArticlePage({ params }: PageProps) {
   const slug = (await params).slug;
   const article = await getPost(slug);

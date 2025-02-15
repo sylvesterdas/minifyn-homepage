@@ -15,8 +15,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
 
-import { Sidebar } from "./sidebar";
-
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
@@ -94,7 +92,6 @@ const MobileNav = ({ path, onClose }: { path: string, onClose: () => void }) => 
             Get Started
           </Button>
         </NavbarMenuItem>
-        <Sidebar className="w-full border-none !px-0" onPress={onClose} />
       </div>
     </NavbarMenu>
   </>
