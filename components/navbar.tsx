@@ -11,7 +11,8 @@ import {
 } from "@heroui/navbar";
 import { Link } from "@heroui/link";
 import NextLink from "next/link";
-import Image from "next/image";
+import { Image } from "@heroui/image";
+import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
 
@@ -21,12 +22,15 @@ import { siteConfig } from "@/config/site";
 const NavBrand = () => (
   <NavbarBrand as="li" className="gap-3 max-w-fit">
     <NextLink className="flex justify-start items-center gap-2" href="/">
-      <Image 
-        priority 
-        alt="logo" 
-        height={35} 
+      <Image
+        priority
+        alt="logo"
+        as={NextImage}
+        height={35}
+        quality={100}
+        shadow="sm"
         src="/logo.png"
-        width={32.5}
+        width={35}
       />
       <p className="font-bold text-foreground">MiniFyn</p>
     </NextLink>

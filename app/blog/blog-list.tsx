@@ -1,9 +1,9 @@
 'use client';
 
-import { Card } from "@heroui/card";
 import { Calendar, Clock, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import { Image, Card } from "@heroui/react";
+import NextImage from "next/image";
 import { useEffect, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
@@ -89,13 +89,19 @@ export default function BlogList({ initialPosts, initialCursor }: {
         {posts.map(post => (
           <Link key={post.id} href={`/blog/${post.slug}`}>
             <Card className="group relative bg-slate-900/70 border-slate-800/50 backdrop-blur-sm overflow-hidden cursor-pointer h-full flex flex-col">
-              <Image
-                alt={post.title}
-                className="w-full h-min bg-contain bg-center bg-no-repeat rounded-xl mb-4 border-none border-slate-800"
-                height={600}
-                src={`/blog/og?title=${encodeURIComponent(post.title)}&tags=${encodeURIComponent(post.tags.join(','))}`}
-                width={1200}
-              />
+              <div className="w-full mb-4 aspect-[1200/630]">
+                <Image
+                  alt={post.title}
+                  as={NextImage}
+                  className=""
+                  height={0}
+                  isBlurred={true}
+                  quality={100}
+                  shadow="sm"
+                  src={`/blog/og?title=${encodeURIComponent(post.title)}&tags=${encodeURIComponent(post.tags.join(','))}`}
+                  width={885}
+                />
+              </div>
 
               <div className="p-6 space-y-4 h-full flex flex-col">
                 <div className="flex gap-2 flex-wrap">

@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { Calendar, Clock, Share2, Bookmark, ArrowLeft, Facebook, Linkedin, Send } from 'lucide-react';
 import { FaXTwitter } from 'react-icons/fa6';
-import Image from 'next/image';
+import { Image } from '@heroui/image';
+import NextImage from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
@@ -51,13 +52,19 @@ export default async function ArticlePage({ params }: PageProps) {
         </div>
 
         <article>
-          <Image
-            alt={article.title}
-            className="w-full h-min bg-contain bg-center bg-no-repeat rounded-xl mb-12 border-none border-slate-800"
-            height={600}
-            src={coverImage}
-            width={1200}
-          />
+          <div className="mb-12 aspect-[1200/630]">
+            <Image
+              alt={article.title}
+              as={NextImage}
+              disableSkeleton={false}
+              height={0}
+              isBlurred={true}
+              quality={100}
+              shadow="sm"
+              src={coverImage}
+              width={1200}
+            />
+          </div>
 
           <div className="max-w-3xl mx-auto">
             <header className="mb-12">
