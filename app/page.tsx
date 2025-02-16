@@ -1,10 +1,7 @@
 "use client";
 
-import { Card } from "@heroui/react";
-import { Clipboard } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import { Sidebar } from "@/components/sidebar";
+import { Shortener } from "@/components/shortner";
 
 export default function Home() {
   return (
@@ -22,47 +19,7 @@ export default function Home() {
               </p>
             </div>
 
-            <Card className="bg-slate-900/70 border-slate-800/50 backdrop-blur-sm">
-              <div className="p-6 space-y-6">
-                {/* URL input with enhanced visual feedback */}
-                <div className="relative group">
-                  <div className="absolute -inset-px bg-gradient-to-r from-blue-500 to-blue-400 rounded-lg opacity-0 group-hover:opacity-100 blur transition duration-1000" />
-                  <div className="relative flex items-center bg-slate-800/50 rounded-lg border border-slate-700/50">
-                    <input
-                      className="w-full max-sm:text-small px-4 py-3 bg-transparent border-none text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-0"
-                      placeholder="Paste your long URL"
-                      type="text"
-                    />
-                    <Button isIconOnly variant="ghost">
-                      <Clipboard className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                <Button fullWidth size="lg" variant="primary">
-                  Create Short URL
-                </Button>
-
-                {/* Feature highlights with icon */}
-                <div className="grid grid-cols-3 gap-4 pt-2">
-                  {[
-                    { label: "API Access", value: "Included" },
-                    { label: "Analytics", value: "Real-time" },
-                    { label: "QR maker", value: "Available" },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50"
-                    >
-                      <div className="text-xs text-slate-400">{item.label}</div>
-                      <div className="mt-1 max-sm:text-xs font-medium text-slate-200">
-                        {item.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Card>
+            <Shortener />
 
             {/* Trust indicators */}
             <div className="grid grid-cols-3 gap-6 mt-8">

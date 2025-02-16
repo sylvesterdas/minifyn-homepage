@@ -23,9 +23,13 @@
     "@heroui/theme": "2.4.5",
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.18",
+    "@vercel/kv": "^3.0.0",
     "clsx": "2.1.1",
+    "firebase": "^11.3.1",
+    "firebase-admin": "^13.1.0",
     "highlight.js": "^11.11.1",
     "intl-messageformat": "^10.5.0",
+    "jsdom": "^26.0.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.473.0",
     "nanoid": "^5.0.9",
@@ -35,15 +39,18 @@
     "react-dom": "18.3.1",
     "react-icons": "^5.4.0",
     "react-markdown": "^9.0.3",
-    "rehype-highlight": "^7.0.2"
+    "rehype-highlight": "^7.0.2",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.0.4",
     "@react-types/shared": "3.25.0",
+    "@types/jsdom": "^21.1.7",
     "@types/lodash": "^4.17.15",
     "@types/node": "20.5.7",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
+    "@types/validator": "^13.12.2",
     "@typescript-eslint/eslint-plugin": "8.11.0",
     "@typescript-eslint/parser": "8.11.0",
     "autoprefixer": "10.4.19",
@@ -62,5 +69,13 @@
     "tailwind-variants": "0.1.20",
     "tailwindcss": "3.4.16",
     "typescript": "5.6.3"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "protobufjs"
+    ],
+    "onlyBuiltDependencies": [
+      "protobufjs"
+    ]
   }
 }

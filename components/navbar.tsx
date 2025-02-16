@@ -16,8 +16,10 @@ import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
 
+import { SignOut } from "@/components/auth/SignOut";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { useFirebase } from "@/app/providers/firebase-provider";
 
 const NavBrand = () => (
   <NavbarBrand as="li" className="gap-3 max-w-fit">
@@ -37,6 +39,35 @@ const NavBrand = () => (
   </NavbarBrand>
 );
 
+const AuthButtons = () => {
+  const { user, isAnonymous } = useFirebase();
+
+  if (user && !isAnonymous) {
+    return (
+      <div className="flex items-center gap-2">
+        <Button
+          as={Link}
+          href="/dashboard"
+          variant="primary"
+        >
+          Dashboard
+        </Button>
+        <SignOut />
+      </div>
+    );
+  }
+
+  return (
+    <Button
+      as={Link}
+      href="/signin"
+      variant="primary"
+    >
+      Get Started
+    </Button>
+  );
+};
+
 const DesktopNav = ({ path }: any) => (
   <NavbarContent
     className="hidden md:flex basis-1/5 md:basis-full"
@@ -54,52 +85,50 @@ const DesktopNav = ({ path }: any) => (
       </NavbarItem>
     ))}
     <NavbarItem>
-      <Button
-        as={Link}
-        href="/login?type=free"
-        variant="primary"
-      >
-        Get Started
-      </Button>
+      <AuthButtons />
     </NavbarItem>
   </NavbarContent>
 );
 
-const MobileNav = ({ path, onClose }: { path: string, onClose: () => void }) => (
-  <>
-    <NavbarContent className="md:hidden basis-1 pl-4" justify="end">
-      <NavbarMenuToggle />
-    </NavbarContent>
+const MobileNav = ({ path, onClose }: { path: string, onClose: () => void }) => {
+  const { user } = useFirebase();
 
-    <NavbarMenu className="bg-gradient-to-b from-background to-background/50 backdrop-blur-xl">
-      <div className="mx-4 mt-2 flex flex-col gap-2">
-        {siteConfig.navMenuItems.map((item) => (
-          <NavbarMenuItem key={item.href}>
-            <Link
-              color={path === item.href ? "primary" : "foreground"}
-              href={item.href}
-              size="lg"
+  return (
+    <>
+      <NavbarContent className="md:hidden basis-1 pl-4" justify="end">
+        <NavbarMenuToggle />
+      </NavbarContent>
+
+      <NavbarMenu className="bg-gradient-to-b from-background to-background/50 backdrop-blur-xl">
+        <div className="mx-4 mt-2 flex flex-col gap-2">
+          {siteConfig.navMenuItems.map((item) => (
+            <NavbarMenuItem key={item.href}>
+              <Link
+                color={path === item.href ? "primary" : "foreground"}
+                href={item.href}
+                size="lg"
+                onPress={onClose}
+              >
+                {item.label}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+          <NavbarMenuItem>
+            <Button
+              as={Link}
+              className="w-full"
+              href={user ? "/dashboard" : "/signin"}
+              variant="primary"
               onPress={onClose}
             >
-              {item.label}
-            </Link>
+              {user ? "Dashboard" : "Get Started"}
+            </Button>
           </NavbarMenuItem>
-        ))}
-        <NavbarMenuItem>
-          <Button
-            as={Link}
-            className="w-full"
-            href="/login?type=free"
-            variant="primary"
-            onPress={onClose}
-          >
-            Get Started
-          </Button>
-        </NavbarMenuItem>
-      </div>
-    </NavbarMenu>
-  </>
-);
+        </div>
+      </NavbarMenu>
+    </>
+  );
+};
 
 export const Navbar = () => {
   const path = usePathname();
