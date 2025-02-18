@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "firebase-admin/auth";
 import { User } from "firebase/auth";
 
-import { checkAllLimits, getRemainingLimits } from "@/lib/rate-limits";
+import { checkLimits, getRemainingLimits } from "@/lib/rate-limits";
 import { validateURL } from "@/lib/url-validator";
 import { initAdmin } from "@/app/firebase/admin";
 import { createShortUrl, generateId } from "@/lib/shorten";
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     initAdmin();
     const decodedToken = await getAuth().verifyIdToken(token);
-    const allowed = await checkAllLimits(
+    const allowed = await checkLimits(
       {
         uid: decodedToken.uid,
         isAnonymous: decodedToken.provider_id === "anonymous",

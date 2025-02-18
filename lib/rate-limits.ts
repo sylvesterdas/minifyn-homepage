@@ -1,59 +1,59 @@
-import { kv } from "@vercel/kv";
 import { User } from "firebase/auth";
+import { getDatabase } from "firebase-admin/database";
 
-export async function checkAnonymousLimit(user: User) {
-  if (!user.isAnonymous) return true;
+import { initAdmin } from "@/app/firebase/admin";
 
-  const key = `anonymous:${user.uid}`;
-  const usage = await kv.get(key) as number | null;
-
-  if (!usage) {
-    await kv.set(key, 1, { ex: 86400 }); // 24 hours
-
-    return true;
-  }
-
-  if (usage >= 5) return false;
-
-  await kv.incr(key);
-
-  return true;
+interface Limits {
+  anonymous: number;
+  ip: number;
 }
 
-export async function checkIPLimit(ip: string) {
-  const key = `ip:${ip}`;
-  const usage = await kv.get(key) as number | null;
+export async function checkLimits(user: User, ip: string): Promise<boolean> {
+  initAdmin();
+  const db = getDatabase();
+  const date = new Date().toISOString().split("T")[0];
 
-  if (!usage) {
-    await kv.set(key, 1, { ex: 86400 });
-
-    return true;
-  }
-
-  if (usage >= 10) return false;
-
-  await kv.incr(key);
-
-  return true;
-}
-
-export async function getRemainingLimits(user: User, ip: string) {
-  const [anonUsage, ipUsage] = await Promise.all([
-    kv.get(`anonymous:${user.uid}`),
-    kv.get(`ip:${ip}`),
-  ]) as [number | null, number | null];
-
-  return {
-    anonymous: 5 - (anonUsage || 0),
-    ip: 10 - (ipUsage || 0),
+  const paths = {
+    anon: `limits/${date}/anonymous/${user.uid}`,
+    ip: `limits/${date}/ip/${ip.replace(/\./g, "_")}`,
   };
-}
 
-export async function checkAllLimits(user: User, ip: string) {
-  const [anonAllowed, ipAllowed] = await Promise.all([
-    checkAnonymousLimit(user),
-    checkIPLimit(ip),
+  const [anonSnap, ipSnap] = await Promise.all([
+    db.ref(paths.anon).get(),
+    db.ref(paths.ip).get(),
   ]);
 
-  return anonAllowed && ipAllowed;
+  const count = {
+    anon: anonSnap.val() || 0,
+    ip: ipSnap.val() || 0,
+  };
+
+  if (user.isAnonymous && count.anon >= 5) return false;
+  if (count.ip >= 10) return false;
+
+  await Promise.all([
+    db.ref(paths.anon).set(count.anon + 1),
+    db.ref(paths.ip).set(count.ip + 1),
+  ]);
+
+  return true;
+}
+
+export async function getRemainingLimits(
+  user: User,
+  ip: string
+): Promise<Limits> {
+  initAdmin();
+  const db = getDatabase();
+  const date = new Date().toISOString().split("T")[0];
+
+  const [anonCount, ipCount] = await Promise.all([
+    db.ref(`limits/${date}/anonymous/${user.uid}`).get(),
+    db.ref(`limits/${date}/ip/${ip.replace(/\./g, "_")}`).get(),
+  ]);
+
+  return {
+    anonymous: 5 - (anonCount.val() || 0),
+    ip: 10 - (ipCount.val() || 0),
+  };
 }

@@ -77,6 +77,13 @@ const ShortenerComponent = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const reset = () => {
+    setUrl("")
+    setShortUrl("")
+    setError("")
+    setIsLoading(false)
+  }
+
   const handleShorten = async () => {
     if (!url.trim()) return;
 
@@ -114,8 +121,13 @@ const ShortenerComponent = () => {
         return;
       }
 
-      setShortUrl(data.shortUrl);
-      setUrl("");
+      if (data?.data?.shortCode) {
+        const shortUrl = new URL(data?.data?.shortCode, process.env.NEXT_PUBLIC_BASE_URL);
+
+        setShortUrl(shortUrl.href);
+        setUrl("");
+      }
+
     } catch {
       setError("Failed to connect to server");
     } finally {
@@ -132,18 +144,20 @@ const ShortenerComponent = () => {
           </Alert>
         )}
 
-        {shortUrl ? (
-          <ShortURLDisplay shortUrl={shortUrl} />
-        ) : (
-          <URLInput setUrl={setUrl} url={url} />
-        )}
+        <div>
+          {shortUrl ? (
+            <ShortURLDisplay shortUrl={shortUrl} />
+          ) : (
+            <URLInput setUrl={setUrl} url={url} />
+          )}
+        </div>
 
         <Button
           className="w-full"
           disabled={!url.trim() && !shortUrl}
           isLoading={isLoading}
           size="lg"
-          onPress={handleShorten}
+          onPress={() => !shortUrl ? handleShorten() : reset() }
         >
           {shortUrl ? "Shorten Another URL" : "Create Short URL"}
         </Button>

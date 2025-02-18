@@ -4,6 +4,7 @@ const allowedOrigins = ["https://www.minifyn.com", "https://www.mnfy.in"];
 const nextConfig = {
   reactStrictMode: true,
   serverRuntimeConfig: {
+    BASE_URL: process.env.BASE_URL,
     NEXT_RECAPTCHA_SECRET_KEY: process.env.NEXT_RECAPTCHA_SECRET_KEY,
     NEXT_RAZORPAY_KEY_SECRET: process.env.NEXT_RAZORPAY_KEY_SECRET,
     NEXT_HASHNODE_ACCESS_TOKEN: process.env.NEXT_HASHNODE_ACCESS_TOKEN,
@@ -11,7 +12,7 @@ const nextConfig = {
     KV_REST_API_URL: process.env.KV_REST_API_URL,
   },
   publicRuntimeConfig: {
-    BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     NEXT_RAZORPAY_KEY_ID: process.env.NEXT_RAZORPAY_KEY_ID,
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
   },
