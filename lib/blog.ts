@@ -235,3 +235,16 @@ export async function getPost(slug: string): Promise<Post | null> {
     return null;
   }
 }
+
+let blogSlugs: string[] = process.env.BLOG_SLUGS ?
+  JSON.parse(process.env.BLOG_SLUGS) : []
+
+export function addBlogSlug(slug: string) {
+  if (!blogSlugs.includes(slug)) {
+    blogSlugs = [...blogSlugs, slug]
+  }
+}
+
+export function getBlogSlugs() {
+  return blogSlugs
+}

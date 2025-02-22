@@ -90,7 +90,7 @@ const DesktopNav = ({ path }: any) => (
   </NavbarContent>
 );
 
-const MobileNav = ({ path, onClose }: { path: string, onClose: () => void }) => {
+const MobileNav = ({ path, onClose }: { path: string|null, onClose: () => void }) => {
   const { user } = useFirebase();
 
   return (
