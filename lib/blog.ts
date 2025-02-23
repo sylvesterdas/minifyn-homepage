@@ -258,7 +258,7 @@ export async function fetchBlogSitemapData(id: string) {
   }
 }
 
-let blogSlugs: object[] = process.env.BLOG_SLUGS ?
+let blogSlugs: any[] = process.env.BLOG_SLUGS ?
   JSON.parse(process.env.BLOG_SLUGS) : []
 
 export function addBlogSlug(slug: object) {

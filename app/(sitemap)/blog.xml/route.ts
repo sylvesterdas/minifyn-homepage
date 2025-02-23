@@ -11,8 +11,9 @@ export async function GET() {
         .map(
           (slug) => `
         <url>
-          <loc>https://www.minifyn.com/blog/${slug}</loc>
-          <changefreq>monthly</changefreq>
+          <loc>${slug.loc}</loc>
+          <changefreq>${slug.changefreq}</changefreq>
+          <lastmod>${slug.lastmod}</lastmod>
         </url>
       `
         )
