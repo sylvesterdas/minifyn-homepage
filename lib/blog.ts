@@ -193,7 +193,6 @@ export async function getPost(slug: string): Promise<Post | null> {
             id
             title
             content {
-              html
               markdown
             }
             brief

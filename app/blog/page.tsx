@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 
+import { JsonLd } from '../components/JsonLd';
+
 import BlogContent from './blog-content';
 
 import { getPosts } from '@/lib/blog';
@@ -51,8 +53,42 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+const blogSchema = (posts: any) => ({
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "MiniFyn Blog",
+  description: "Expert tips on web performance optimization, JavaScript development, code minification, and modern web development techniques.",
+  url: "https://www.minifyn.com/blog",
+  author: {
+    "@type": "Person",
+    name: "Sylvester Das"
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "MiniFyn",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.minifyn.com/logo.png"
+    }
+  },
+  blogPost: posts.map((post: any) => ({
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: {
+      "@type": "Person",
+      name: "Sylvester Das"
+    }
+  })),
+});
+
 export default async function BlogPage() {
   const { posts, nextCursor } = await getPosts();
 
-  return <BlogContent nextCursor={nextCursor} posts={posts} />
+  return <>
+    <JsonLd data={blogSchema(posts)} />
+
+    <BlogContent nextCursor={nextCursor} posts={posts} />
+  </>
 }

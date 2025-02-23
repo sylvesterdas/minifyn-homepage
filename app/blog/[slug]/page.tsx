@@ -13,6 +13,7 @@ import Head from 'next/head';
 import { CodeBlock } from '@/components/CodeBlock';
 import { getPost } from '@/lib/blog';
 import { PageProps } from '@/.next/types/app/blog/page';
+import { JsonLd } from '@/app/components/JsonLd';
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const slug = (await params).slug;
@@ -59,6 +60,35 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+const generateArticleSchema = (article: any) => ({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: article.title,
+  description: article.excerpt,
+  image: `/api/og/blog/${article.slug}`,
+  datePublished: article.publishedAt,
+  dateModified: article.updatedAt,
+  author: {
+    "@type": "Person",
+    name: article.author.name
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "MiniFyn",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.minifyn.com/logo.png"
+    }
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `https://www.minifyn.com/blog/${article.slug}`
+  },
+  keywords: article.tags.join(", "),
+  articleBody: article.content.markdown,
+  wordCount: article.content.markdown.split(/\s+/).length
+});
+
 export default async function ArticlePage({ params }: PageProps) {
   const slug = (await params).slug;
   const article = await getPost(slug);
@@ -72,6 +102,7 @@ export default async function ArticlePage({ params }: PageProps) {
       <Head>
         <link key="canonical" href={article.canonical} rel="canonical" />
       </Head>
+      <JsonLd data={generateArticleSchema(article)} />
       <div className="min-h-screen bg-slate-950">
         <div className="max-w-4xl mx-auto px-4 py-12 aspect-video">
           <div className="mb-8">
