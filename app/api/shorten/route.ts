@@ -59,9 +59,11 @@ export async function POST(req: NextRequest) {
 
     const shortCode = generateId();
 
+    await createShortUrl(shortCode, url, decodedToken.uid);
+
     return NextResponse.json({
       message: "URL validation successful",
-      data: await createShortUrl(shortCode, url, decodedToken.uid)
+      shortUrl: `https://${process.env.BASE_URL}/${shortCode}`,
     });
   } catch {
     return NextResponse.json(

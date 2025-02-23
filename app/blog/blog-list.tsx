@@ -85,7 +85,7 @@ export default function BlogList({ initialPosts, initialCursor }: {
 
       <GoToTop />
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 min-h-[200px] [&>*]:h-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[200px] [&>*]:h-full">
         {posts.map(post => (
           <Link key={post.id} href={`/blog/${post.slug}`}>
             <Card className="group relative bg-slate-900/70 border-slate-800/50 backdrop-blur-sm overflow-hidden cursor-pointer h-full flex flex-col">

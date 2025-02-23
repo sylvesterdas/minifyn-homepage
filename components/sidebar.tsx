@@ -1,9 +1,28 @@
+"use client";
+
 import { ArrowRight, Code2, Terminal } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
 
 export const Sidebar = ({ className, onPress }: { className: string, onPress: (() => void) | undefined }) => {
+  const { push } = useRouter();
+
+  const menuItems = [
+    { label: "API Documentation", icon: Terminal, href: '/docs' },
+    { label: "SDK Libraries", icon: Code2, hide: true },
+  ];
+
+  const resourceItems = [
+    { label: "Features", href: "/", hide: true },
+    { label: "Blog", href: "/blog" },
+    { label: "System Status", href: "/", hide: true },
+    { label: "Support", href: "/", hide: true },
+    { label: "Terms of Service", href: "/legal/terms" },
+    { label: "Privacy Policy", href: "/legal/privacy" },
+  ];
+
   return (
     <div className={"w-max max-md:px-4 max-md:w-full max-md:border-t md:border-r border-default-100 flex flex-col " + className}>
       <div className="max-md:hidden p-6 border-b border-default-100">
@@ -34,25 +53,24 @@ export const Sidebar = ({ className, onPress }: { className: string, onPress: ((
                 &quot;https://example.com&quot; &#125;&apos; \
               </p>
               <p className="text-default-500">
-                &emsp;-H &quot;Content-Type: application/json&quot;
+                &emsp;-H &quot;Authorization: Bearer ...&quot;
               </p>
             </code>
           </div>
 
           <div className="mt-8 max-md:w-60">
-            {["API Documentation", "SDK Libraries"].map((item) => (
+            {menuItems.map((item) => (
               <button
-                key={item}
-                className="flex items-center justify-between w-full p-2 text-small text-default-400 hover:text-foreground group rounded-medium hover:bg-default-100"
-                onClick={onPress}
+                key={item.label}
+                className={`${item.hide ? 'hidden' : 'flex'} items-center justify-between w-full p-2 text-small text-default-400 hover:text-foreground group rounded-medium hover:bg-default-100`}
+                onClick={() => {
+                  item.href && push(item.href);
+                  onPress && onPress();
+                }}
               >
                 <div className="flex items-center space-x-2">
-                  {item === "API Documentation" ? (
-                    <Terminal className="w-4 h-4" />
-                  ) : (
-                    <Code2 className="w-4 h-4" />
-                  )}
-                  <span>{item}</span>
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
                 </div>
                 <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
@@ -63,21 +81,14 @@ export const Sidebar = ({ className, onPress }: { className: string, onPress: ((
             <div className="text-tiny under text-start font-semibold text-default-400 uppercase tracking-wider mb-4">
               Resources
             </div>
-            {[
-              "Features",
-              "Blog",
-              "System Status",
-              "Support",
-              "Terms of Service",
-              "Privacy Policy",
-            ].map((item) => (
+            {resourceItems.map((item) => (
               <Link
-                key={item}
-                className="block px-2 py-1.5 text-small text-start text-default-400 hover:text-foreground rounded-medium hover:bg-default-100"
-                href="/"
+                key={item.label}
+                className={`${item.hide ? 'hidden' : 'block'} px-2 py-1.5 text-small text-start text-default-400 hover:text-foreground rounded-medium hover:bg-default-100`}
+                href={item.href}
                 onClick={onPress}
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </div>
@@ -93,14 +104,7 @@ export const Sidebar = ({ className, onPress }: { className: string, onPress: ((
               href={siteConfig.links.github}
               target="_blank"
             >
-              GitHub
-            </Link>
-            <Link
-              className="hover:text-foreground"
-              href={siteConfig.links.twitter}
-              target="_blank"
-            >
-              Twitter
+              Report an Issue
             </Link>
           </div>
         </div>

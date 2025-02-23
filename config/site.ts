@@ -48,7 +48,7 @@ export const siteConfig = {
     },
   ],
   links: {
-    shortenApi: "https://minifyn.com/api/minify",
+    shortenApi: "https://minifyn.com/api/shorten",
     github: "https://github.com/Minifyn/minifyn-issues/issues/new/choose",
     twitter: "https://x.com/minifyncom",
     docs: "https://minifyn.com/api/docs",

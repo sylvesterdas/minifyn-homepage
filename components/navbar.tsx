@@ -13,7 +13,7 @@ import { Link } from "@heroui/link";
 import NextLink from "next/link";
 import { Image } from "@heroui/image";
 import NextImage from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 
 import { SignOut } from "@/components/auth/SignOut";
@@ -92,6 +92,7 @@ const DesktopNav = ({ path }: any) => (
 
 const MobileNav = ({ path, onClose }: { path: string|null, onClose: () => void }) => {
   const { user } = useFirebase();
+  const { push } = useRouter();
 
   return (
     <>
@@ -105,9 +106,11 @@ const MobileNav = ({ path, onClose }: { path: string|null, onClose: () => void }
             <NavbarMenuItem key={item.href}>
               <Link
                 color={path === item.href ? "primary" : "foreground"}
-                href={item.href}
                 size="lg"
-                onPress={onClose}
+                onPress={() => {
+                  push(item.href);
+                  onClose();
+                }}
               >
                 {item.label}
               </Link>
