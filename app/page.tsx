@@ -1,7 +1,49 @@
-"use client";
+import { Metadata } from "next";
 
 import { Sidebar } from "@/components/sidebar";
 import { Shortener } from "@/components/shortner";
+
+const keywords = 'url shortener, link management, analytics, url minification, custom urls';
+const ogImage = `/og.png`;
+
+export const metadata: Metadata = {
+  title: 'MiniFyn - Simple & Secure URL Shortener',
+  description: 'Free URL shortener with advanced analytics, custom URLs, and secure link management. Built for developers, simple for everyone.',
+  keywords,
+  openGraph: {
+    type: 'website',
+    siteName: 'MiniFyn',
+    title: 'MiniFyn - Simple & Secure URL Shortener',
+    description: 'Free URL shortener with advanced analytics, custom URLs, and secure link management. Built for developers, simple for everyone.',
+    locale: 'en_US',
+    images: [{
+      url: ogImage,
+      width: 1200,
+      height: 630,
+      alt: 'MiniFyn - URL Shortener'
+    }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MiniFyn - Simple & Secure URL Shortener',
+    description: 'Free URL shortener with advanced analytics, custom URLs, and secure link management.',
+    images: [ogImage]
+  },
+  authors: [{ name: 'Sylvester Das' }],
+  metadataBase: new URL('https://www.minifyn.com'),
+  alternates: {
+    canonical: 'https://www.minifyn.com'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large'
+    }
+  }
+}
 
 export default function Home() {
   return (

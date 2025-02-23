@@ -3,9 +3,6 @@ import { Suspense } from "react";
 
 const ShortenerComponent = dynamic(
   () => import("@/components/ShortenerComponent"),
-  {
-    ssr: false,
-  }
 );
 
 export const Shortener = () => (
