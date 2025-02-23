@@ -12,7 +12,7 @@ export async function GET() {
           (slug) => `
         <url>
           <loc>https://www.minifyn.com/blog/${slug}</loc>
-          <changefreq>daily</changefreq>
+          <changefreq>monthly</changefreq>
         </url>
       `
         )

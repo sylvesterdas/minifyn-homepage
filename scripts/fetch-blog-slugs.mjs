@@ -11,7 +11,10 @@ async function fetchAllBlogSlugs(cursor = null, allSlugs = []) {
         edges {
           cursor
           node {
-            slug
+            url
+            canonicalUrl
+            publishedAt
+            updatedAt
           }
         }
         pageInfo {
@@ -28,7 +31,11 @@ async function fetchAllBlogSlugs(cursor = null, allSlugs = []) {
   });
 
   const posts = data.publication.posts;
-  const newSlugs = posts.edges.map((edge) => edge.node.slug);
+  const newSlugs = posts.edges.map((edge) => ({
+    loc: edge.node.canonicalUrl || edge.node.url,
+    changefreq: "never",
+    lastmod: edge.node.updatedAt || edge.node.publishedAt
+  }));
   const updatedSlugs = [...allSlugs, ...newSlugs];
 
   if (posts.pageInfo.hasNextPage) {

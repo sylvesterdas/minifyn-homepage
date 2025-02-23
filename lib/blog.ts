@@ -35,8 +35,7 @@ export interface Response {
   }
 }
 
-// @returns {Promise<Response>}
-async function gqlFetch<Response>(query: string, variables = {}) {
+export async function gqlFetch(query: string, variables = {}) {
   const response = await fetch(HASHNODE_GQL_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -50,7 +49,7 @@ async function gqlFetch<Response>(query: string, variables = {}) {
 
   if (errors) throw new Error(errors[0].message);
 
-  return data as Response;
+  return data;
 }
 
 export async function getPosts(cursor?: string): Promise<{
@@ -236,10 +235,33 @@ export async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-let blogSlugs: string[] = process.env.BLOG_SLUGS ?
+export async function fetchBlogSitemapData(id: string) {
+  const query = `
+    query Post($id: ID!) {
+      post(id: $id) {
+        id
+        url
+        canonicalUrl
+        publishedAt
+      }
+    }
+  `;
+
+  const data = await gqlFetch(query, { id });
+
+  const post = data.post;
+
+  return {
+    loc: post.canonicalUrl || post.url,
+    changefreq: "never",
+    lastmod: post.publishedAt
+  }
+}
+
+let blogSlugs: object[] = process.env.BLOG_SLUGS ?
   JSON.parse(process.env.BLOG_SLUGS) : []
 
-export function addBlogSlug(slug: string) {
+export function addBlogSlug(slug: object) {
   if (!blogSlugs.includes(slug)) {
     blogSlugs = [...blogSlugs, slug]
   }
