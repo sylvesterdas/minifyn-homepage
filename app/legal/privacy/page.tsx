@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
       <section className="p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
         <p className="mb-4">
-          MiniFyn ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
+          MiniFyn (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
         </p>
         <h2 className="text-2xl font-semibold mb-4">2. Information We Collect</h2>
         <p className="mb-4">
@@ -72,7 +72,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <h2 className="text-2xl font-semibold mb-4">11. Changes to This Privacy Policy</h2>
         <p className="mb-4">
-          We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date at the top of this Privacy Policy.
+          We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date at the top of this Privacy Policy.
         </p>
         <h2 className="text-2xl font-semibold mb-4">12. Contact Us</h2>
         <p>

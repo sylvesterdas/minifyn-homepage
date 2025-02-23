@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Calendar, Clock, Share2, Bookmark, ArrowLeft, Facebook, Linkedin, Send } from 'lucide-react';
-import { FaXTwitter } from 'react-icons/fa6';
+import { Calendar, Clock, ArrowLeft, Send } from 'lucide-react';
+import { FaFacebookF, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 import { Image } from '@heroui/image';
 import NextImage from 'next/image';
 import ReactMarkdown from 'react-markdown';
@@ -9,6 +9,8 @@ import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
 import { notFound } from 'next/navigation';
 import Head from 'next/head';
+
+import ShareBlog from './share';
 
 import { CodeBlock } from '@/components/CodeBlock';
 import { getPost } from '@/lib/blog';
@@ -187,25 +189,7 @@ export default async function ArticlePage({ params }: PageProps) {
               </main>
 
               <footer className="pt-6 border-t border-slate-800">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    <span className="p-2 text-slate-400">
-                      <Bookmark className="w-5 h-5" />
-                    </span>
-                    <span className="p-2 text-slate-400">
-                      <Share2 className="w-5 h-5" />
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    <span className="p-2 text-slate-400">
-                      <FaXTwitter className="w-5 h-5" />
-                    </span>
-                    <span className="p-2 text-slate-400">
-                      <Share2 className="w-5 h-5" />
-                    </span>
-                  </div>
-                </div>
+                <ShareBlog post={article} />
               </footer>
 
               <div className="py-8 mt-8 border-t border-slate-800">
@@ -213,23 +197,23 @@ export default async function ArticlePage({ params }: PageProps) {
                   <h3 className="text-lg font-semibold text-white">Connect with MiniFyn</h3>
                   <p className="text-sm text-slate-400 mt-1">Join our community for updates and discussions</p>
                 </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 justify-center gap-8">
-                  <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://x.com/minifyn" rel="noopener noreferrer" 
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 justify-center gap-8">
+                  <a className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://x.com/minifyncom" rel="noopener noreferrer" 
                     target="_blank">
                     <FaXTwitter className="w-5 h-5" />
-                    <span>X (Twitter)</span>
+                    <span>X (formerly Twitter)</span>
                   </a>
-                  <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://facebook.com/minifyn" rel="noopener noreferrer" 
+                  <a className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://facebook.com/minifyncom" rel="noopener noreferrer" 
                     target="_blank">
-                    <Facebook className="w-5 h-5" />
+                    <FaFacebookF className="w-5 h-5" />
                     <span>Facebook</span>
                   </a>
-                  <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://linkedin.com/company/minifyn" rel="noopener noreferrer" 
+                  <a className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://linkedin.com/company/minifyn" rel="noopener noreferrer" 
                     target="_blank">
-                    <Linkedin className="w-5 h-5" />
+                    <FaLinkedinIn className="w-5 h-5" />
                     <span>LinkedIn</span>
                   </a>
-                  <a className="flex justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://t.me/minifyn" rel="noopener noreferrer" 
+                  <a className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors" href="https://t.me/minifyn" rel="noopener noreferrer" 
                     target="_blank">
                     <Send className="w-5 h-5" />
                     <span>Telegram</span>
