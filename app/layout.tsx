@@ -32,11 +32,7 @@ const websiteSchema = {
   "@type": "WebSite",
   name: "MiniFyn",
   url: "https://www.minifyn.com",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://www.minifyn.com/search?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
+  description: "Free URL shortener with advanced analytics and custom URLs"
 };
 
 const organizationSchema = {
@@ -46,7 +42,10 @@ const organizationSchema = {
   url: "https://www.minifyn.com",
   logo: "https://www.minifyn.com/logo.png",
   sameAs: [
-    "https://twitter.com/minifyn",
+    "https://x.com/minifyncom",
+    "https://www.linkedin.com/company/minifyn",
+    "https://www.instagram.com/minifyn",
+    "https://www.facebook.com/minifyncom",
     "https://github.com/minifyn"
   ]
 };
