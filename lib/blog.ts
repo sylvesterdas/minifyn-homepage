@@ -10,6 +10,7 @@ export interface Post {
   readTime: string;
   date: string;
   slug: string;
+  canonical?: string;
   content: { html: string, markdown: string };
   author: { name: string, profilePicture: string };
   brief: string;
@@ -196,6 +197,8 @@ export async function getPost(slug: string): Promise<Post | null> {
               markdown
             }
             brief
+            url
+            canonicalUrl
             coverImage {
               url
             }
@@ -214,7 +217,7 @@ export async function getPost(slug: string): Promise<Post | null> {
     `;
 
     const data = await gqlFetch(query, { slug }) as Response;
-    const post = data.publication.post;
+    const post = data.publication.post as any;
 
     if (!post) return null;
 
@@ -224,6 +227,7 @@ export async function getPost(slug: string): Promise<Post | null> {
       excerpt: post.brief,
       content: post.content,
       slug,
+      canonical: post.canonicalUrl || post.url,
       date: new Date(post.publishedAt).toLocaleDateString(),
       readTime: `${post.readTimeInMinutes} min`,
       tags: post.tags.map((t: any) => t.name),
