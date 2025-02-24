@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuth } from "firebase-admin/auth";
-import { User } from "firebase/auth";
+
+import { authenticate } from "./auth-middleware";
 
 import { checkLimits, getRemainingLimits } from "@/lib/rate-limits";
 import { validateURL } from "@/lib/url-validator";
@@ -8,16 +8,20 @@ import { initAdmin } from "@/app/firebase/admin";
 import { createShortUrl, generateId } from "@/lib/shorten";
 
 export async function POST(req: NextRequest) {
-  const token = req.headers.get('Authorization')?.replace('Bearer ', '');
-  const ip = req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for") || "unknown";
-
-  if (!token) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const ip =
+    req.headers.get("x-real-ip") ||
+    req.headers.get("x-forwarded-for") ||
+    "unknown";
 
   try {
-    const body = await req.json();
-    const { url } = body;
+    initAdmin();
+    const user = await authenticate(req);
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { url } = await req.json();
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
@@ -29,45 +33,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: urlValidation.error }, { status: 400 });
     }
 
-    initAdmin();
-    const decodedToken = await getAuth().verifyIdToken(token);
-    const allowed = await checkLimits(
-      {
-        uid: decodedToken.uid,
-        isAnonymous: decodedToken.provider_id === "anonymous",
-      } as User,
-      ip
-    );
+    const allowed = await checkLimits(user, ip);
 
     if (!allowed) {
-      const limits = await getRemainingLimits(
-        {
-          uid: decodedToken.uid,
-          isAnonymous: decodedToken.provider_id === "anonymous",
-        } as User,
-        ip
-      );
+      const limits = await getRemainingLimits(user, ip);
 
       return NextResponse.json(
-        {
-          error: "Rate limit exceeded",
-          limits,
-        },
+        { error: "Rate limit exceeded", limits },
         { status: 429 }
       );
     }
 
     const shortCode = generateId();
 
-    await createShortUrl(shortCode, url, decodedToken.uid);
+    await createShortUrl(shortCode, url, user.uid);
 
     return NextResponse.json({
-      message: "URL validation successful",
-      shortUrl: `https://${process.env.BASE_URL}/${shortCode}`,
+      shortUrl: `${process.env.BASE_URL}/${shortCode}`,
+      remaining: await getRemainingLimits(user, ip),
     });
-  } catch {
+  } catch (error: any) {
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error: " + error.message },
       { status: 500 }
     );
   }
