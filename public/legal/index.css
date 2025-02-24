@@ -1,0 +1,32 @@
+body {
+  font-family: system-ui;
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+a {
+  color: lightblue;
+}
+
+/* Media query for mobile view */
+@media (max-width: 600px) {
+  body {
+    font-size: 12px; /* Adjust the font size as needed */
+  }
+
+  h1 {
+    font-size: 1.25rem; /* Adjust the font size as needed */
+  }
+
+  h2 {
+    font-size: 1rem; /* Adjust the font size as needed */
+  }
+
+  p, li {
+    font-size: 0.875rem; /* Adjust the font size as needed */
+  }
+}
