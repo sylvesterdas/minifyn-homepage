@@ -1,5 +1,3 @@
-import { createHash } from "crypto";
-
 import { NextRequest } from "next/server";
 import { getAuth } from "firebase-admin/auth";
 import { getDatabase } from "firebase-admin/database";

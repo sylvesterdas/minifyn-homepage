@@ -121,8 +121,8 @@ const ShortenerComponent = () => {
         return;
       }
 
-      if (data?.data?.shortCode) {
-        const shortUrl = new URL(data?.data?.shortCode, process.env.NEXT_PUBLIC_BASE_URL);
+      if (data?.shortUrl) {
+        const shortUrl = new URL(data.shortUrl);
 
         setShortUrl(shortUrl.href);
         setUrl("");
