@@ -19,8 +19,8 @@ export const Sidebar = ({ className, onPress }: { className: string, onPress: ((
     { label: "Blog", href: "/blog" },
     { label: "System Status", href: "/", hide: true },
     { label: "Support", href: "/", hide: true },
-    { label: "Terms of Service", href: "/legal/terms" },
-    { label: "Privacy Policy", href: "/legal/privacy" },
+    { label: "Terms of Service", href: "/legal/terms.html" },
+    { label: "Privacy Policy", href: "/legal/privacy.html" },
   ];
 
   return (

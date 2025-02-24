@@ -8,6 +8,8 @@ import { JsonLd } from "./components/JsonLd";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import AnalyticsProvider from "@/components/AnalyticsProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -58,6 +60,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
+        <GoogleAnalytics />
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
       </head>
@@ -67,12 +70,14 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="flex flex-col h-screen text-foreground bg-background">
-            <Navbar />
-            {children}
-          </div>
-        </Providers>
+        <AnalyticsProvider>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+            <div className="flex flex-col h-screen text-foreground bg-background">
+              <Navbar />
+              {children}
+            </div>
+          </Providers>
+        </AnalyticsProvider>
       </body>
     </html>
   );

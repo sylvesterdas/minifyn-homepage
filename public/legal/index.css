@@ -1,0 +1,13 @@
+body {
+  font-family: system-ui;
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+a {
+  color: lightblue;
+}

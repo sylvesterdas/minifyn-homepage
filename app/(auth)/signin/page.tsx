@@ -1,9 +1,6 @@
-import SignInForm from "@/components/auth/SignInForm";
+import dynamic from 'next/dynamic'
+const AuthForm = dynamic(() => import('@/components/auth/AuthForm'))
 
 export default function SignInPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <SignInForm />
-    </div>
-  )
+  return <AuthForm mode="signin" />
 }

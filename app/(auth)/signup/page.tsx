@@ -1,9 +1,6 @@
-import SignUpForm from '@/components/auth/SignUpForm'
+import dynamic from 'next/dynamic'
+const AuthForm = dynamic(() => import('@/components/auth/AuthForm'))
 
 export default function SignUpPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <SignUpForm />
-    </div>
-  )
+  return <AuthForm mode="signup" />
 }

@@ -8,8 +8,7 @@
       "init.ts": "Firebase services initialization"
     },
     "components": {
-      "SignInForm": "/components/auth/SignInForm.tsx",
-      "SignUpForm": "/components/auth/SignUpForm.tsx",
+      "AuthForm": "/components/auth/AuthForm.tsx",
       "SignOut": "/components/auth/SignOut.tsx"
     },
     "pages": {
