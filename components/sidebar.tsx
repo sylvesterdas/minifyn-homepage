@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Code2, Terminal } from "lucide-react";
+import { ArrowRight, Code2, Terminal, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -12,15 +12,19 @@ export const Sidebar = ({ className, onPress }: { className: string, onPress: ((
   const menuItems = [
     { label: "API Documentation", icon: Terminal, href: '/docs' },
     { label: "SDK Libraries", icon: Code2, hide: true },
+    { label: "Blog", icon: BookOpen, href: '/blog' },
   ];
 
   const resourceItems = [
     { label: "Features", href: "/", hide: true },
-    { label: "Blog", href: "/blog" },
     { label: "System Status", href: "/", hide: true },
     { label: "Support", href: "/", hide: true },
-    { label: "Terms of Service", href: "/legal/terms.html" },
     { label: "Privacy Policy", href: "/legal/privacy.html" },
+    { label: "Terms of Service", href: "/legal/terms.html" },
+    { label: "Cookie Policy", href: "/legal/cookies.html" },
+    { label: "Acceptable Use Policy", href: "/legal/acceptable-use.html" },
+    { label: "DMCA Policy", href: "/legal/dmca.html" },
+    { label: "Refund and Cancellation Policy", href: "/legal/refund.html" }
   ];
 
   return (
