@@ -1,11 +1,34 @@
 {
-  "dev": {
-    "driver": "pg",
-    "user": {"ENV": "POSTGRES_USER"},
-    "password": {"ENV": "POSTGRES_PASSWORD"},
-    "host": {"ENV": "POSTGRES_HOST"},
-    "database": {"ENV": "POSTGRES_DATABASE"},
-    "port": {"ENV": "POSTGRES_PORT"},
-    "ssl": true
+  "firebaseAuth": {
+    "providers": ["email/password", "anonymous"],
+    "files": {
+      "admin.ts": "Firebase admin initialization",
+      "client.ts": "Client-side Firebase initialization",
+      "config.ts": "Firebase configuration",
+      "init.ts": "Firebase services initialization"
+    },
+    "components": {
+      "AuthForm": "/components/auth/AuthForm.tsx",
+      "SignOut": "/components/auth/SignOut.tsx"
+    },
+    "pages": {
+      "signin": "/app/(auth)/signin/page.tsx",
+      "signup": "/app/(auth)/signup/page.tsx"
+    },
+    "utils": {
+      "auth.ts": "/lib/auth.ts",
+      "middleware.ts": "Route protection"
+    },
+    "env": [
+      "NEXT_PUBLIC_FIREBASE_API_KEY",
+      "NEXT_PUBLIC_FIREBASE_APP_ID",
+      "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
+      "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
+      "NEXT_PUBLIC_FIREBASE_PROJECT_ID",
+      "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET",
+      "FIREBASE_PROJECT_ID",
+      "FIREBASE_CLIENT_EMAIL",
+      "FIREBASE_PRIVATE_KEY"
+    ]
   }
 }
