@@ -2,9 +2,7 @@
 
 import BlogList from "./blog-list";
 
-import { Post } from "@/lib/blog";
-
-export default function BlogContent({ posts, nextCursor }: { posts: Post[], nextCursor: string | null }) {
+export default function BlogContent() {
   return (
     <div className="min-h-screen bg-slate-950">
       <div className="max-w-7xl mx-auto p-8">
@@ -17,7 +15,7 @@ export default function BlogContent({ posts, nextCursor }: { posts: Post[], next
               Built for developers. Simple for everyone.
             </p>
           </div>
-          <BlogList initialCursor={nextCursor} initialPosts={posts} />
+          <BlogList />
         </div>
       </div>
     </div>

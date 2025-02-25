@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getBlogSlugs } from "@/lib/blog";
+import { getBlogSlugs } from "@/lib/blogSlugs";
 
 export async function GET() {
   const slugs = getBlogSlugs();

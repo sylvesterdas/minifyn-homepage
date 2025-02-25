@@ -12,12 +12,9 @@ import { SearchBar } from './SearchBar';
 import { Post, getPosts, searchPosts } from "@/lib/blog";
 import { GoToTop } from "@/components/ui/GoToTop";
 
-export default function BlogList({ initialPosts, initialCursor }: {
-  initialPosts: Post[],
-  initialCursor: string | null
-}) {
-  const [posts, setPosts] = useState(initialPosts);
-  const [cursor, setCursor] = useState(initialCursor);
+export default function BlogList() {
+  const [posts, setPosts] = useState([] as Post[]);
+  const [cursor, setCursor] = useState(null as string | null);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -55,6 +52,20 @@ export default function BlogList({ initialPosts, initialCursor }: {
     }, 500),
     []
   );
+
+  useEffect(() => {
+    setLoading(true);
+
+    getPosts()
+      .then(result => {
+        setPosts(prev => [...prev, ...result.posts]);
+        setCursor(result.nextCursor);
+      }).finally(() => {
+        setLoading(false);
+      });
+
+    return () => {}
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

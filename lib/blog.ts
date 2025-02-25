@@ -1,6 +1,6 @@
-const HASHNODE_GQL_ENDPOINT = 'https://gql.hashnode.com';
-const HASHNODE_HOST = 'www.minifyn.com/blog';
-const HASHNODE_PUBLICATION_ID = '671cb196d70e912325b7ff84';
+export const HASHNODE_GQL_ENDPOINT = 'https://gql.hashnode.com';
+export const HASHNODE_HOST = 'www.minifyn.com/blog';
+export const HASHNODE_PUBLICATION_ID = '671cb196d70e912325b7ff84';
 
 export interface Post {
   id: string;
@@ -96,7 +96,7 @@ export async function getPosts(cursor?: string): Promise<{
     const posts = data.publication.posts.edges.map(({ node }: any) => ({
       id: node.id,
       title: node.title,
-      excerpt: node.brief,
+      excerpt: node.brief.replace('Introduction', '').trim(),
       slug: node.slug,
       date: new Date(node.publishedAt).toLocaleDateString(),
       readTime: `${node.readTimeInMinutes} min`,
@@ -238,38 +238,46 @@ export async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-export async function fetchBlogSitemapData(id: string) {
-  const query = `
-    query Post($id: ID!) {
-      post(id: $id) {
-        id
-        url
-        canonicalUrl
-        publishedAt
+export async function getPostsStructuredData(cursor?: string): Promise<{
+  posts: Post[],
+  nextCursor: string | null
+}> {
+  try {
+    const query = `
+      query Publication($first: Int!, $after: String) {
+        publication(host: "${HASHNODE_HOST}") {
+          posts(first: $first, after: $after) {
+            edges {
+              node {
+                id
+                title
+                brief
+                publishedAt
+              }
+            }
+          }
+        }
       }
-    }
-  `;
+    `;
 
-  const data = await gqlFetch(query, { id });
+    const data = await gqlFetch(query, {
+      first: 10,
+      after: cursor
+    }) as Response;
 
-  const post = data.post;
+    const posts = data.publication.posts.edges.map(({ node }: any) => ({
+      title: node.title,
+      excerpt: node.brief.replace('Introduction', '').trim(),
+      date: new Date(node.publishedAt).toISOString(),
+    })) as Post[];
 
-  return {
-    loc: post.canonicalUrl || post.url,
-    changefreq: "never",
-    lastmod: post.publishedAt
+    return {
+      posts,
+      nextCursor: data.publication.posts.pageInfo.hasNextPage
+        ? data.publication.posts.pageInfo.endCursor
+        : null
+    };
+  } catch {
+    return { posts: [], nextCursor: null };
   }
-}
-
-let blogSlugs: any[] = process.env.BLOG_SLUGS ?
-  JSON.parse(process.env.BLOG_SLUGS) : []
-
-export function addBlogSlug(slug: object) {
-  if (!blogSlugs.includes(slug)) {
-    blogSlugs = [...blogSlugs, slug]
-  }
-}
-
-export function getBlogSlugs() {
-  return blogSlugs
 }

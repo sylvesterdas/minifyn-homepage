@@ -4,7 +4,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Shortener } from "@/components/shortner";
 
 const keywords = 'url shortener, link management, analytics, url minification, custom urls';
-const ogImage = `/og.png`;
+const ogImage = `https://www.minifyn.com/images/og.png`;
 
 export const metadata: Metadata = {
   title: 'MiniFyn - Simple & Secure URL Shortener',

@@ -4,14 +4,14 @@ import { JsonLd } from '../components/JsonLd';
 
 import BlogContent from './blog-content';
 
-import { getPosts } from '@/lib/blog';
+import { getPostsStructuredData } from '@/lib/blog';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 export async function generateMetadata(): Promise<Metadata> {
   const keywords = 'web performance, web development, performance tips';
-  const ogImage = `/blog/og?title=${encodeURIComponent("Minifyn Blog")}&tags=${encodeURIComponent(keywords.split(', ').join(','))}}`;
+  const ogImage = `https://www.minifyn.com/images/og-blog.png`;
 
   return {
     title: 'MiniFyn Blog - Web Performance & Development Tips',
@@ -84,11 +84,11 @@ const blogSchema = (posts: any) => ({
 });
 
 export default async function BlogPage() {
-  const { posts, nextCursor } = await getPosts();
+  const { posts } = await getPostsStructuredData();
 
   return <>
     <JsonLd data={blogSchema(posts)} />
 
-    <BlogContent nextCursor={nextCursor} posts={posts} />
+    <BlogContent />
   </>
 }
