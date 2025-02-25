@@ -13,7 +13,9 @@ function verifySignature(req: Request, secret: string): boolean {
 
   if (!signature) return false;
 
-  const [timestamp, hash] = signature.split(",")[1].split("=");
+  const [timestampPart, hashPart] = signature.split(",");
+  const timestamp = timestampPart.split("=")[1];
+  const hash = hashPart.split("=")[1];
 
   const body = JSON.stringify(req.body);
   const hmac = createHmac("sha256", secret);
