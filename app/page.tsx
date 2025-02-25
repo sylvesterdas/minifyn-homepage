@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   keywords,
   openGraph: {
     type: 'website',
+    url: 'https://www.minifyn.com',
     siteName: 'MiniFyn',
     title: 'MiniFyn - Simple & Secure URL Shortener',
     description: 'Free URL shortener with advanced analytics, custom URLs, and secure link management. Built for developers, simple for everyone.',
