@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Allow: /blog
+Allow: /blog/*
+Allow: /docs
+Allow: /about
+Allow: /pricing
+
+Disallow: /api/
+Disallow: /legal/
+Disallow: /legal/*
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /dashboard/*
+Disallow: /signin
+Disallow: /signup
+
+# Sitemap location
+Sitemap: https://www.minifyn.com/sitemap.xml
+Sitemap: https://www.minifyn.com/website.xml
+Sitemap: https://www.minifyn.com/blog.xml
