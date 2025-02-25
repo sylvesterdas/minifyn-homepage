@@ -11,7 +11,7 @@ export const fetchCache = 'force-no-store';
 
 export async function generateMetadata(): Promise<Metadata> {
   const keywords = 'web performance, web development, performance tips';
-  const ogImage = `/blog/og?title=${encodeURIComponent("Minifyn Blog")}&tags=${encodeURIComponent(keywords.split(', ').join(','))}}`;
+  const ogImage = `https://www.minifyn.com/images/og-blog.png`;
 
   return {
     title: 'MiniFyn Blog - Web Performance & Development Tips',
