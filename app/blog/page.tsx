@@ -4,7 +4,7 @@ import { JsonLd } from '../components/JsonLd';
 
 import BlogContent from './blog-content';
 
-import { getPosts } from '@/lib/blog';
+import { gqlFetch, HASHNODE_HOST, Post, Response } from '@/lib/blog';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -84,11 +84,55 @@ const blogSchema = (posts: any) => ({
 });
 
 export default async function BlogPage() {
-  const { posts, nextCursor } = await getPosts();
+  const { posts } = await getPosts();
 
   return <>
     <JsonLd data={blogSchema(posts)} />
 
-    <BlogContent nextCursor={nextCursor} posts={posts} />
+    <BlogContent />
   </>
+}
+
+export async function getPosts(cursor?: string): Promise<{
+  posts: Post[],
+  nextCursor: string | null
+}> {
+  try {
+    const query = `
+      query Publication($first: Int!, $after: String) {
+        publication(host: "${HASHNODE_HOST}") {
+          posts(first: $first, after: $after) {
+            edges {
+              node {
+                id
+                title
+                brief
+                publishedAt
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const data = await gqlFetch(query, {
+      first: 10,
+      after: cursor
+    }) as Response;
+
+    const posts = data.publication.posts.edges.map(({ node }: any) => ({
+      title: node.title,
+      excerpt: node.brief.replace('Introduction', '').trim(),
+      date: new Date(node.publishedAt).toISOString(),
+    })) as Post[];
+
+    return {
+      posts,
+      nextCursor: data.publication.posts.pageInfo.hasNextPage
+        ? data.publication.posts.pageInfo.endCursor
+        : null
+    };
+  } catch {
+    return { posts: [], nextCursor: null };
+  }
 }

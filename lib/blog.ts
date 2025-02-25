@@ -1,6 +1,6 @@
-const HASHNODE_GQL_ENDPOINT = 'https://gql.hashnode.com';
-const HASHNODE_HOST = 'www.minifyn.com/blog';
-const HASHNODE_PUBLICATION_ID = '671cb196d70e912325b7ff84';
+export const HASHNODE_GQL_ENDPOINT = 'https://gql.hashnode.com';
+export const HASHNODE_HOST = 'www.minifyn.com/blog';
+export const HASHNODE_PUBLICATION_ID = '671cb196d70e912325b7ff84';
 
 export interface Post {
   id: string;
@@ -96,7 +96,7 @@ export async function getPosts(cursor?: string): Promise<{
     const posts = data.publication.posts.edges.map(({ node }: any) => ({
       id: node.id,
       title: node.title,
-      excerpt: node.brief,
+      excerpt: node.brief.replace('Introduction', '').trim(),
       slug: node.slug,
       date: new Date(node.publishedAt).toLocaleDateString(),
       readTime: `${node.readTimeInMinutes} min`,
@@ -236,40 +236,4 @@ export async function getPost(slug: string): Promise<Post | null> {
   } catch {
     return null;
   }
-}
-
-export async function fetchBlogSitemapData(id: string) {
-  const query = `
-    query Post($id: ID!) {
-      post(id: $id) {
-        id
-        url
-        canonicalUrl
-        publishedAt
-      }
-    }
-  `;
-
-  const data = await gqlFetch(query, { id });
-
-  const post = data.post;
-
-  return {
-    loc: post.canonicalUrl || post.url,
-    changefreq: "never",
-    lastmod: post.publishedAt
-  }
-}
-
-let blogSlugs: any[] = process.env.BLOG_SLUGS ?
-  JSON.parse(process.env.BLOG_SLUGS) : []
-
-export function addBlogSlug(slug: object) {
-  if (!blogSlugs.includes(slug)) {
-    blogSlugs = [...blogSlugs, slug]
-  }
-}
-
-export function getBlogSlugs() {
-  return blogSlugs
 }
