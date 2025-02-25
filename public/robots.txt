@@ -1,0 +1,34 @@
+# Global rules
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+# Public content
+Allow: /blog
+Allow: /blog/*
+Allow: /docs
+Allow: /about
+Allow: /pricing
+
+# Protected areas
+Disallow: /api/
+Disallow: /legal/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /account/
+Disallow: /user/
+Disallow: /signin
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /analytics/
+
+# Fast crawlers
+User-agent: Googlebot
+Crawl-delay: 0.5
+
+# Sitemaps
+Sitemap: https://www.minifyn.com/sitemap.xml
+
+# Host preference
+Host: www.minifyn.com

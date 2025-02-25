@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: article.title,
       description: article.excerpt,
+      url: article.canonical,
       type: 'article',
       authors: [article.author.name],
       tags: article.tags,

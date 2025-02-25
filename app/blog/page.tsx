@@ -19,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords,
     openGraph: {
       type: 'website',
+      url: 'https://www.minifyn.com/blog',
       siteName: 'MiniFyn Blog',
       title: 'MiniFyn Blog - Web Performance & Development Tips',
       description: 'Expert tips on web performance optimization, JavaScript development, code minification, and modern web development techniques for faster, better websites.',
