@@ -33,7 +33,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.473.0",
     "nanoid": "^5.0.9",
-    "next": "15.0.4",
+    "next": "^15.2.2",
     "next-themes": "^0.4.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -79,6 +79,9 @@
     ],
     "onlyBuiltDependencies": [
       "protobufjs"
-    ]
+    ],
+    "overrides": {
+      "@babel/runtime": ">=7.26.10"
+    }
   }
 }
