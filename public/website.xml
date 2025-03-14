@@ -1,0 +1,33 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://www.minifyn.com</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1</priority>
+    <lastmod>2025-02-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.minifyn.com/docs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2025-02-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.minifyn.com/about</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2025-02-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.minifyn.com/blog</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2025-02-23</lastmod>
+  </url>
+
+</urlset>

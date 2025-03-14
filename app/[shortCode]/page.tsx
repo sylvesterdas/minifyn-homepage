@@ -5,6 +5,7 @@ import { getDatabase } from "firebase-admin/database";
 
 import { RedirectClient } from "@/app/[shortCode]/redirect-client";
 import { initAdmin } from "@/app/firebase/admin";
+import { PageProps } from "@/.next/types/app/[shortCode]/page";
 
 export const dynamic = "force-dynamic";
 
@@ -31,11 +32,7 @@ const getUrlData = cache(async (shortCode: string) => {
   return snapshot.val();
 });
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { shortCode: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const shortCode = (await params).shortCode;
   const urlData = await getUrlData(shortCode);
 
@@ -85,11 +82,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function RedirectPage({
-  params,
-}: {
-  params: { shortCode: string };
-}) {
+export default async function RedirectPage({ params }: PageProps) {
   const shortCode = (await params).shortCode;
   const urlData = await getUrlData(shortCode);
 
