@@ -1,3 +1,4 @@
+"use client";
 import { Card } from "@heroui/card"
 
 export default function TopURLsTable() {

@@ -1,8 +1,8 @@
-import * as React from "react";
+import { FC } from "react";
 
 import { IconSvgProps } from "@/types";
 
-export const Logo: React.FC<IconSvgProps> = ({
+export const Logo: FC<IconSvgProps> = ({
   size = 36,
   width,
   height,
@@ -24,7 +24,7 @@ export const Logo: React.FC<IconSvgProps> = ({
   </svg>
 );
 
-export const DiscordIcon: React.FC<IconSvgProps> = ({
+export const DiscordIcon: FC<IconSvgProps> = ({
   size = 24,
   width,
   height,
@@ -45,7 +45,7 @@ export const DiscordIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-export const TwitterIcon: React.FC<IconSvgProps> = ({
+export const TwitterIcon: FC<IconSvgProps> = ({
   size = 24,
   width,
   height,
@@ -66,7 +66,7 @@ export const TwitterIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-export const GithubIcon: React.FC<IconSvgProps> = ({
+export const GithubIcon: FC<IconSvgProps> = ({
   size = 24,
   width,
   height,

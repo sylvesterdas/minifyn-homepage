@@ -4,7 +4,7 @@ export default function AboutLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="max-w-5xl text-center mx-auto p-6">
+    <section className="text-start mx-auto p-6">
       {children}
     </section>
   );

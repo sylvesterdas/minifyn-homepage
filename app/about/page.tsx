@@ -1,9 +1,9 @@
 export default function AboutPage() {
   return (
-    <div className="md:p-6 min-h-screen text-white">
-      <section className="p-6 rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto bg-slate-800 rounded-2xl text-white">
+      <section className="p-8 sm:p-12 md:p-24">
         <h1 className="text-3xl font-bold mb-4">About MiniFyn</h1>
-        <hr /><br />
+        <hr className="mb-12" />
         <p className="mb-4">
           MiniFyn is a cutting-edge URL shortening service designed with simplicity and efficiency in mind. Our mission is to simplify link sharing and provide powerful analytics, making web navigation more efficient for everyone.
         </p>
