@@ -24,9 +24,17 @@ async function getPageMetadata(url: string) {
   }
 }
 
+async function generateExpiresAt(userId: string) {
+  if (userId === process.env.SUPER_USER_ID) {
+    return -1;
+  }
+
+  return Date.now() + (userId.startsWith('anon') ? 7 : 90) * 24 * 60 * 60 * 1000;
+}
+
 export async function createShortUrl(shortCode: string, longUrl: string, userId: string) {
   const metadata = await getPageMetadata(longUrl);
-  const expiresAt = Date.now() + (userId.startsWith('anon') ? 7 : 90) * 24 * 60 * 60 * 1000;
+  const expiresAt = await generateExpiresAt(userId);
 
   initAdmin()
   const db = getDatabase();
