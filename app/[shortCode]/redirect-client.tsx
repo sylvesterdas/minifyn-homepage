@@ -7,10 +7,15 @@ interface URLData {
   longUrl: string;
   title: string;
   description: string;
+  expiresAt: number;
 }
 
-export function RedirectClient({ urlData }: { urlData: URLData }) {
-  const [countdown, setCountdown] = useState(7);
+interface RedirectClientProps {
+  urlData: URLData;
+}
+
+export function RedirectClient({ urlData }: RedirectClientProps) {
+  const [countdown, setCountdown] = useState(urlData.expiresAt === -1 ? 3 : 7);
 
   useEffect(() => {
     if (countdown > 0) {

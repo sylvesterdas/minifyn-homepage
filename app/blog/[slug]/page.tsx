@@ -25,7 +25,7 @@ export async function generateMetadata({
   const article = await getPost(slug);
 
   if (!article) return {};
-  const ogImage = `/blog/og?title=${encodeURIComponent(article.title)}&tags=${encodeURIComponent(article.tags.join(","))}}`;
+  const ogImage = `https://www.minifyn.com/blog/og?title=${encodeURIComponent(article.title)}&tags=${encodeURIComponent(article.tags.join(","))}}`;
 
   return {
     title: article.title,
