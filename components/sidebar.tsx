@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
-import { fontMono } from "@/config/fonts";
 
 export const Sidebar = ({ className, onPress }: { className: string, onPress: (() => void) | undefined }) => {
   const { push } = useRouter();
