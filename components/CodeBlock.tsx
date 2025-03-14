@@ -33,7 +33,7 @@ export function CodeBlock({ children }: { children: ReactNode }) {
         )}
       </button>
       <pre className="bg-slate-900 p-4 rounded-lg overflow-x-auto my-4">
-        <code ref={codeRef} className="text-sm font-mono text-slate-200">{children}</code>
+        <code ref={codeRef} className="text-sm text-slate-200">{children}</code>
       </pre>
     </div>
   );

@@ -1,15 +1,27 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import clsx from "clsx";
+// import clsx from "clsx";
+import { Inter } from "next/font/google";
 
 import { Providers } from "./providers";
 import { JsonLd } from "./components/JsonLd";
 
 import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
+// import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import AnalyticsProvider from "@/components/AnalyticsProvider";
+import { LayoutProps } from "@/.next/types/app/page";
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap'
+})
+
+const mono = Inter({
+  subsets: ['latin'],
+  display: 'optional'
+})
 
 export const metadata: Metadata = {
   title: {
@@ -52,23 +64,16 @@ const organizationSchema = {
   ]
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning className={inter.className + ' ' + mono.className} lang="en">
       <head>
         <GoogleAnalytics />
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
       </head>
       <body
-        className={clsx(
-          "min-h-screen bg-slate-950 font-sans antialiased",
-          fontSans.variable
-        )}
+        className="min-h-screen bg-slate-950 antialiased"
       >
         <AnalyticsProvider>
           <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

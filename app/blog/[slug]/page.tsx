@@ -225,7 +225,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
                       return (
                         <code
-                          className="bg-slate-700 px-1.5 py-0.5 rounded text-sm font-mono"
+                          className="bg-slate-700 px-1.5 py-0.5 rounded text-sm"
                           {...props}
                         >
                           {children}

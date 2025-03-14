@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
+import { fontMono } from "@/config/fonts";
 
 export const Sidebar = ({ className, onPress }: { className: string, onPress: (() => void) | undefined }) => {
   const { push } = useRouter();
@@ -50,7 +51,7 @@ export const Sidebar = ({ className, onPress }: { className: string, onPress: ((
                 POST
               </span>
             </div>
-            <code className="text-small text-white font-mono">
+            <code className="text-small text-white">
               <p>$ curl {siteConfig.links.shortenApi} \</p>
               <p className="mt-2 text-default-500">
                 &emsp;-d &apos;&#123; &quot;url&quot;:
