@@ -281,3 +281,20 @@ export async function getPostsStructuredData(cursor?: string): Promise<{
     return { posts: [], nextCursor: null };
   }
 }
+
+export async function slugExists(slug: string): Promise<boolean> {
+  const query = `
+    query Post($slug: String!) {
+      publication(host: "${HASHNODE_HOST}") {
+        post(slug: $slug) {
+          id
+        }
+      }
+    }
+  `;
+
+  const data
+    = await gqlFetch(query, { slug }) as Response;
+
+  return !!data.publication.post;
+}

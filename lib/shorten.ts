@@ -51,3 +51,16 @@ export async function createShortUrl(shortCode: string, longUrl: string, userId:
 
   return { shortCode };
 }
+
+export async function getShortCodeFromUrl (url: string) {
+  try {
+    initAdmin()
+    const db = getDatabase();
+    const snapshot = await db.ref('urls').orderByChild('longUrl').equalTo(url).limitToFirst(1).get();
+    const shortCode = Object.keys(snapshot.val())[0];
+
+    return shortCode;
+  } catch {
+    return false
+  }
+}

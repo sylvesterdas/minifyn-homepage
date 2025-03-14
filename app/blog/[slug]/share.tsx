@@ -1,13 +1,42 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Bookmark, Share2 } from "lucide-react";
-import { FaXTwitter, FaFacebookF, FaLinkedinIn, FaTelegram, FaPinterestP, FaSlack } from "react-icons/fa6";
+import {
+  FaXTwitter,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaTelegram,
+  FaPinterestP,
+  FaSlack,
+} from "react-icons/fa6";
 
 import { Button } from "@/components/ui/button";
 
 export default function ShareBlog({ post }: { post: any }) {
   const url = encodeURIComponent(post.canonical);
   const text = encodeURIComponent(`Check out this article: ${post.title}`);
+  let [shortUrl, setShortUrl] = useState("");
+
+  useEffect(() => {
+    fetch("/api/shareBlog", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: post.canonical }),
+    })
+    .then((res: any) => res.json())
+    .then(({ url }) => setShortUrl(url));
+  }, []);
+
+  const share = () => {
+    navigator.share({
+      title: post.title,
+      text: post.excerpt,
+      url: shortUrl,
+    });
+  }
 
   const shareOnTwitter = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
@@ -53,28 +82,70 @@ export default function ShareBlog({ post }: { post: any }) {
           <span className="hidden p-2 text-slate-400">
             <Bookmark className="w-5 h-5" />
           </span>
-          <span className="hidden p-2 text-slate-400">
+          <Button
+            className="p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={share}
+          >
             <Share2 className="w-5 h-5" />
-          </span>
+          </Button>
         </div>
 
         <div className="flex items-center gap-0 sm:gap-1">
-          <Button className="p-2 text-slate-400" role="button" tabIndex={0} variant="ghost" onPress={shareOnTwitter}>
+          <Button
+            className="p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={shareOnTwitter}
+          >
             <FaXTwitter className="w-5 h-5" />
           </Button>
-          <Button className="p-2 text-slate-400" role="button" tabIndex={0} variant="ghost" onPress={shareOnFacebook}>
+          <Button
+            className="p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={shareOnFacebook}
+          >
             <FaFacebookF className="w-5 h-5" />
           </Button>
-          <Button className="p-2 text-slate-400" role="button" tabIndex={0} variant="ghost" onPress={shareOnLinkedIn}>
+          <Button
+            className="p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={shareOnLinkedIn}
+          >
             <FaLinkedinIn className="w-5 h-5" />
           </Button>
-          <Button className="p-2 text-slate-400" role="button" tabIndex={0} variant="ghost" onPress={shareOnTelegram}>
+          <Button
+            className="p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={shareOnTelegram}
+          >
             <FaTelegram className="w-5 h-5" />
           </Button>
-          <Button className="hidden p-2 text-slate-400" role="button" tabIndex={0} variant="ghost" onPress={shareOnPinterest}>
+          <Button
+            className="hidden p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={shareOnPinterest}
+          >
             <FaPinterestP className="w-5 h-5" />
           </Button>
-          <Button className="hidden p-2 text-slate-400" role="button" tabIndex={0} variant="ghost" onPress={shareOnSlack}>
+          <Button
+            className="hidden p-2 text-slate-400"
+            role="button"
+            tabIndex={0}
+            variant="ghost"
+            onPress={shareOnSlack}
+          >
             <FaSlack className="w-5 h-5" />
           </Button>
         </div>
