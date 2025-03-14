@@ -9,6 +9,8 @@ interface Limits {
 }
 
 export async function checkLimits(user: User, ip: string): Promise<boolean> {
+  if (!user.isAnonymous && user.uid === process.env.SUPER_USER_ID) return true;
+
   initAdmin();
   const db = getDatabase();
   const date = new Date().toISOString().split("T")[0];
