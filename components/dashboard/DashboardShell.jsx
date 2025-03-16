@@ -14,7 +14,7 @@ export default function DashboardShell({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-slate-950">
+    <div className="flex bg-slate-950">
       {/* Mobile sidebar toggle */}
       <button
         className="lg:hidden fixed z-20 bottom-4 right-4 p-3 rounded-full bg-blue-600 text-white"
