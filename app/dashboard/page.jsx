@@ -1,9 +1,32 @@
+"use client";
+
+import { Suspense, lazy } from "react";
 import NextLink from "next/link";
 import { ArrowUpRight, Link, Clock, Globe } from "lucide-react";
 import { Card } from "@heroui/card";
 
-import ClicksChart from "@/components/dashboard/ClicksChart";
-import TopURLsTable from "@/components/dashboard/TopURLsTable";
+// Lazy load expensive components
+const ClicksChart = lazy(() => import("@/components/dashboard/ClicksChart"));
+const TopURLsTable = lazy(() => import("@/components/dashboard/TopURLsTable"));
+
+function MetricCard({ title, value, change, icon }) {
+  const isPositive = change.startsWith("+");
+
+  return (
+    <Card className="p-6 bg-slate-900/70 border-slate-800/50">
+      <div className="flex justify-between items-start">
+        <div className="text-slate-400">{title}</div>
+        <div className="p-2 bg-slate-800/50 rounded-lg">{icon}</div>
+      </div>
+      <div className="mt-4 text-2xl font-bold text-white">{value}</div>
+      <div
+        className={`mt-2 text-sm ${isPositive ? "text-green-500" : "text-red-500"}`}
+      >
+        {change} from last week
+      </div>
+    </Card>
+  );
+}
 
 export default function Dashboard() {
   return (
@@ -47,29 +70,14 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <ClicksChart />
-          <TopURLsTable />
+          <Suspense fallback={<div className="h-96 bg-slate-900/50 rounded-lg animate-pulse" />}>
+            <ClicksChart />
+          </Suspense>
+          <Suspense fallback={<div className="h-96 bg-slate-900/50 rounded-lg animate-pulse" />}>
+            <TopURLsTable />
+          </Suspense>
         </div>
       </div>
     </div>
-  );
-}
-
-function MetricCard({ title, value, change, icon }) {
-  const isPositive = change.startsWith("+");
-
-  return (
-    <Card className="p-6 bg-slate-900/70 border-slate-800/50">
-      <div className="flex justify-between items-start">
-        <div className="text-slate-400">{title}</div>
-        <div className="p-2 bg-slate-800/50 rounded-lg">{icon}</div>
-      </div>
-      <div className="mt-4 text-2xl font-bold text-white">{value}</div>
-      <div
-        className={`mt-2 text-sm ${isPositive ? "text-green-500" : "text-red-500"}`}
-      >
-        {change} from last week
-      </div>
-    </Card>
   );
 }

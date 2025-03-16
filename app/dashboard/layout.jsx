@@ -1,28 +1,23 @@
 "use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import dynamic from 'next/dynamic';
 
-import { useFirebase } from "../providers/firebase-provider";
-
+import { Suspense, lazy } from "react";
+import { FirebaseProvider } from "@/app/providers/firebase-provider";
 import LoadingState from "@/components/dashboard/LoadingState";
 
-const DashboardContent = dynamic(() => import('@/components/dashboard/DashboardContent'), {
-  loading: () => <LoadingState />
-});
+// Lazy load authentication
+const AuthGuard = lazy(() => import('@/components/auth/AuthGuard'));
+const DashboardShell = lazy(() => import('@/components/dashboard/DashboardShell'));
 
 export default function DashboardLayout({ children }) {
-  const router = useRouter();
-  const { user, isLoading, isAnonymous } = useFirebase();
-
-  useEffect(() => {
-    if (!isLoading && (isAnonymous || !user)) {
-      router.push("/signin");
-    }
-  }, [user, isLoading, isAnonymous, router]);
-
-  if (isLoading) return <LoadingState />;
-  if (!user || isAnonymous) return null;
-
-  return <DashboardContent>{children}</DashboardContent>;
+  return (
+    <FirebaseProvider>
+      <Suspense fallback={<LoadingState />}>
+        <AuthGuard>
+          <Suspense fallback={<LoadingState />}>
+            <DashboardShell>{children}</DashboardShell>
+          </Suspense>
+        </AuthGuard>
+      </Suspense>
+    </FirebaseProvider>
+  );
 }

@@ -1,22 +1,15 @@
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 
-import { Providers } from "./providers";
 import { JsonLd } from "./components/JsonLd";
-
+import { ClientProviders } from "./client-providers";
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/navbar";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import AnalyticsProvider from "@/components/AnalyticsProvider";
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap'
-})
-
-const mono = Inter({
-  subsets: ['latin'],
-  display: 'optional'
 })
 
 export const metadata = {
@@ -62,7 +55,7 @@ const organizationSchema = {
 
 export default function RootLayout({ children }) {
   return (
-    <html suppressHydrationWarning className={inter.className + ' ' + mono.className} lang="en">
+    <html suppressHydrationWarning className={inter.className} lang="en">
       <head>
         <GoogleAnalytics />
         <JsonLd data={websiteSchema} />
@@ -71,14 +64,12 @@ export default function RootLayout({ children }) {
       <body
         className="min-h-screen bg-slate-950 antialiased"
       >
-        <AnalyticsProvider>
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            <div className="flex flex-col h-screen text-foreground bg-background">
-              <Navbar />
-              {children}
-            </div>
-          </Providers>
-        </AnalyticsProvider>
+        <ClientProviders>
+          <div className="flex flex-col h-screen text-foreground bg-background">
+            <Navbar />
+            {children}
+          </div>
+        </ClientProviders>
       </body>
     </html>
   );
