@@ -100,7 +100,7 @@ export default function BlogList() {
         {posts.map((post, index) => (
           <Link key={index} href={`/blog/${post.slug}`}>
             <Card className="group relative bg-slate-900/70 border-slate-800/50 backdrop-blur-sm overflow-hidden cursor-pointer h-full flex flex-col">
-              <div className="w-full mb-4 aspect-[1200/630]">
+              <div className="w-full aspect-[1200/630]">
                 <Image
                   alt={post.title}
                   as={NextImage}
@@ -109,7 +109,7 @@ export default function BlogList() {
                   isBlurred={true}
                   quality={100}
                   shadow="sm"
-                  src={`/blog/og?title=${encodeURIComponent(post.title)}&tags=${encodeURIComponent(post.tags.join(','))}`}
+                  src={`https://www.minifyn.com/blog/og?title=${encodeURIComponent(post.title)}&tags=${encodeURIComponent(post.tags.join(','))}`}
                   width={885}
                 />
               </div>
@@ -132,8 +132,8 @@ export default function BlogList() {
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
-                  <div className="flex items-center gap-4 text-sm text-slate-400">
+                <div className="flex w-full lg:flex-col xl:flex-row gap-y-2 items-center justify-between pt-4 border-t border-slate-800/50">
+                  <div className="flex w-full lg:justify-between xl:justify-normal items-center gap-4 text-sm text-slate-400">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
                       {post.date}
@@ -143,8 +143,8 @@ export default function BlogList() {
                       {post.readTime}
                     </div>
                   </div>
-                  <div className="flex items-center text-sm text-blue-400">
-                    Read Article
+                  <div className="flex xl:w-max lg:w-full items-center lg:justify-end xl:justify-normal text-sm text-blue-400">
+                    Read&nbsp;Article
                     <ArrowUpRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </div>
                 </div>

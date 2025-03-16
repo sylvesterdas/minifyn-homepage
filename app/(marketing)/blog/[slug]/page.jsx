@@ -99,7 +99,7 @@ export default async function ArticlePage({ params }) {
 
   if (!article) return notFound();
 
-  const coverImage = `/blog/og?title=${encodeURIComponent(article.title)}&tags=${encodeURIComponent(article.tags.join(","))}}`;
+  const coverImage = `https://www.minifyn.com/blog/og?title=${encodeURIComponent(article.title)}&tags=${encodeURIComponent(article.tags.join(","))}}`;
 
   return (
     <>

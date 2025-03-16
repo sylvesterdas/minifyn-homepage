@@ -27,6 +27,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.hashnode.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.minifyn.com",
+      },
     ],
   },
   async redirects() {
