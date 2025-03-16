@@ -1,7 +1,6 @@
 "use client";
 
-import { Button as HeroButton } from "@heroui/react";
-
+import { Button as HeroButton } from "@heroui/button";
 import { cn } from "@/lib/utils";
 
 export function Button({

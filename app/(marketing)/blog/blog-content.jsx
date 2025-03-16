@@ -1,6 +1,8 @@
 'use client';
 
-import BlogList from "./blog-list";
+import { lazy } from "react";
+
+const BlogList = lazy(() => import("./blog-list"));
 
 export default function BlogContent() {
   return (

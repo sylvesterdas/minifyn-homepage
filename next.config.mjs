@@ -1,7 +1,13 @@
+import Analyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = Analyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const allowedOrigins = ["https://www.minifyn.com", "https://www.mnfy.in"];
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withBundleAnalyzer({
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx'],
   serverRuntimeConfig: {
@@ -93,6 +99,6 @@ const nextConfig = {
       },
     ];
   },
-};
+});
 
 export default nextConfig;

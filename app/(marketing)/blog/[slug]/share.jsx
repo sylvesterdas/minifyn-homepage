@@ -116,9 +116,9 @@ export default function ShareBlog({ post }) {
     <>
       <div className="flex max-sm:flex-col items-center justify-between">
         <div className="flex items-center gap-1">
-          <p className="text-slate-400 w-max">Share this article</p>
+          <p className="text-slate-400 w-max" id="share-article-label">Share this article</p>
           <span className="hidden p-2 text-slate-400">
-            <Bookmark className="w-5 h-5" />
+            <Bookmark className="w-5 h-5" aria-hidden="true" />
           </span>
           <Button
             className="p-2 text-slate-400"
@@ -126,8 +126,10 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={share}
+            aria-labelledby="share-article-label"
           >
-            <Share2 className="w-5 h-5" />
+            <Share2 className="w-5 h-5" aria-hidden="true" />
+            <span className="sr-only">Share</span>
           </Button>
         </div>
 
@@ -138,8 +140,9 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={shareOnTwitter}
+            aria-label="Share on Twitter"
           >
-            <FaXTwitter className="w-5 h-5" />
+            <FaXTwitter className="w-5 h-5" aria-hidden="true" />
           </Button>
           <Button
             className="p-2 text-slate-400"
@@ -147,8 +150,9 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={shareOnFacebook}
+            aria-label="Share on Facebook"
           >
-            <FaFacebookF className="w-5 h-5" />
+            <FaFacebookF className="w-5 h-5" aria-hidden="true" />
           </Button>
           <Button
             className="p-2 text-slate-400"
@@ -156,8 +160,9 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={shareOnLinkedIn}
+            aria-label="Share on LinkedIn"
           >
-            <FaLinkedinIn className="w-5 h-5" />
+            <FaLinkedinIn className="w-5 h-5" aria-hidden="true" />
           </Button>
           <Button
             className="p-2 text-slate-400"
@@ -165,8 +170,9 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={shareOnTelegram}
+            aria-label="Share on Telegram"
           >
-            <FaTelegram className="w-5 h-5" />
+            <FaTelegram className="w-5 h-5" aria-hidden="true" />
           </Button>
           <Button
             className="hidden p-2 text-slate-400"
@@ -174,8 +180,9 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={shareOnPinterest}
+            aria-label="Share on Pinterest"
           >
-            <FaPinterestP className="w-5 h-5" />
+            <FaPinterestP className="w-5 h-5" aria-hidden="true" />
           </Button>
           <Button
             className="hidden p-2 text-slate-400"
@@ -183,8 +190,9 @@ export default function ShareBlog({ post }) {
             tabIndex={0}
             variant="ghost"
             onPress={shareOnSlack}
+            aria-label="Share on Slack"
           >
-            <FaSlack className="w-5 h-5" />
+            <FaSlack className="w-5 h-5" aria-hidden="true" />
           </Button>
         </div>
 
@@ -213,8 +221,9 @@ export default function ShareBlog({ post }) {
                   size="sm"
                   variant="ghost"
                   onPress={() => setShowModal(false)}
+                  aria-label="Close"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-4 w-4" aria-hidden="true" />
                   <span className="sr-only">Close</span>
                 </Button>
               </div>
@@ -223,11 +232,12 @@ export default function ShareBlog({ post }) {
                 className="w-full flex items-center justify-center gap-2"
                 variant="primary"
                 onPress={copyLink}
+                aria-label={copied ? "Link copied" : "Copy link"}
               >
                 {copied ? (
-                  <Check className="h-5 w-5" />
+                  <Check className="h-5 w-5" aria-hidden="true" />
                 ) : (
-                  <Copy className="h-5 w-5" />
+                  <Copy className="h-5 w-5" aria-hidden="true" />
                 )}
                 <span>{copied ? "Copied!" : "Copy Link"}</span>
               </Button>

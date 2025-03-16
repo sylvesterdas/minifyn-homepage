@@ -2,7 +2,8 @@
 
 import { Calendar, Clock, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Image, Card } from "@heroui/react";
+import { Image } from "@heroui/image";
+import { Card } from "@heroui/card";
 import NextImage from "next/image";
 import { useEffect, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';

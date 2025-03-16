@@ -35,7 +35,7 @@ export default function DashboardShell({ children }) {
 
         <nav className="p-4 space-y-2">
           <NavItem href="/dashboard" icon={<Home size={18} />} label="Overview" />
-          <NavItem href="/dashboard/urls" icon={<LinkIcon size={18} />} label="URLs" />
+          {/* <NavItem href="/dashboard/urls" icon={<LinkIcon size={18} />} label="URLs" /> */}
           <NavItem href="/dashboard/api-key" icon={<Settings size={18} />} label="API Keys" />
         </nav>
       </div>

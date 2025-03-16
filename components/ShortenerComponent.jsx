@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Card, Alert } from "@heroui/react";
+import { Card } from "@heroui/card";
+import { Alert } from "@heroui/alert";
 import { Clipboard, Copy, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";

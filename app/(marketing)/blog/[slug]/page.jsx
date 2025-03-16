@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, Send } from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
@@ -10,11 +11,11 @@ import { notFound } from "next/navigation";
 import Head from "next/head";
 import rehypeRaw from "rehype-raw";
 
-import ShareBlog from "./share";
-
 import { CodeBlock } from "@/components/CodeBlock";
 import { getPost } from "@/lib/blog";
 import { JsonLd } from "@/app/components/JsonLd";
+
+const ShareBlog = lazy(() => import('./share'));
 
 export async function generateMetadata({ params }) {
   const slug = (await params).slug;

@@ -1,11 +1,11 @@
-import { cache } from "react";
+import { cache, lazy } from "react";
 import { notFound } from "next/navigation";
 import { getDatabase } from "firebase-admin/database";
 
-import { RedirectClient } from "@/app/[shortCode]/redirect-client";
 import { initAdmin } from "@/app/firebase/admin";
 
 export const dynamic = "force-dynamic";
+const RedirectClient = lazy(() => import("@/app/[shortCode]/redirect-client"));
 
 const getUrlData = cache(async (shortCode) => {
   initAdmin();

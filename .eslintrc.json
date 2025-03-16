@@ -65,13 +65,12 @@
             "group": "external",
             "position": "after"
           }
-        ],
-        "newlines-between": "always"
+        ]
       }
     ],
     "react/self-closing-comp": "warn",
     "react/jsx-sort-props": [
-      "warn",
+      "off",
       {
         "callbacksLast": true,
         "shorthandFirst": true,

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card } from "@heroui/react";
+import { Card } from "@heroui/card";
 
-export function RedirectClient({ urlData }) {
+export default function RedirectClient({ urlData }) {
   const [countdown, setCountdown] = useState(urlData.expiresAt === -1 ? 3 : 7);
 
   useEffect(() => {
