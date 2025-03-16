@@ -3,6 +3,7 @@ const allowedOrigins = ["https://www.minifyn.com", "https://www.mnfy.in"];
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  pageExtensions: ['js', 'jsx'],
   serverRuntimeConfig: {
     BASE_URL: process.env.BASE_URL,
     NEXT_RECAPTCHA_SECRET_KEY: process.env.NEXT_RECAPTCHA_SECRET_KEY,
