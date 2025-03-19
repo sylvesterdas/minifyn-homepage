@@ -10,6 +10,7 @@ import "highlight.js/styles/github-dark.css";
 import { notFound } from "next/navigation";
 import Head from "next/head";
 import rehypeRaw from "rehype-raw";
+import remarkGfm from 'remark-gfm';
 
 import { CodeBlock } from "@/components/CodeBlock";
 import { getPost } from "@/lib/blog";
@@ -246,6 +247,7 @@ export default async function ArticlePage({ params }) {
                     ),
                   }}
                   rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                  remarkPlugins={[remarkGfm]}
                 >
                   {article.content.markdown?.replace(
                     /!\[(.*?)\]\((.*?)(?:\s+[^)]*?)?\)/g,
