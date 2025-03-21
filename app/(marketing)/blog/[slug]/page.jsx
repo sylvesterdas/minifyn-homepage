@@ -245,6 +245,38 @@ export default async function ArticlePage({ params }) {
                         {...props}
                       />
                     ),
+                    table: ({ children, ...props }) => (
+                      <div className="overflow-x-auto my-6">
+                        <table className="min-w-full bg-slate-800 rounded-lg overflow-hidden" {...props}>
+                          {children}
+                        </table>
+                      </div>
+                    ),
+                    thead: ({ children, ...props }) => (
+                      <thead className="bg-slate-700" {...props}>
+                        {children}
+                      </thead>
+                    ),
+                    tbody: ({ children, ...props }) => (
+                      <tbody className="divide-y divide-slate-600" {...props}>
+                        {children}
+                      </tbody>
+                    ),
+                    tr: ({ children, ...props }) => (
+                      <tr className="hover:bg-slate-700 transition-colors" {...props}>
+                        {children}
+                      </tr>
+                    ),
+                    th: ({ children, ...props }) => (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider" {...props}>
+                        {children}
+                      </th>
+                    ),
+                    td: ({ children, ...props }) => (
+                      <td className="px-6 py-4 whitespace-nowrap text-slate-300" {...props}>
+                        {children}
+                      </td>
+                    )
                   }}
                   rehypePlugins={[rehypeRaw, rehypeHighlight]}
                   remarkPlugins={[remarkGfm]}
