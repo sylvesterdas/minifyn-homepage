@@ -29,8 +29,7 @@ export default function ShareBlog({ post }) {
       body: JSON.stringify({ url: post.canonical }),
     })
       .then((res) => res.json())
-      .then(({ url }) => setShortUrl(url))
-      .catch(err => console.error("Error fetching short URL:", err));
+      .then(({ url }) => setShortUrl(url));
   }, [post.canonical]);
 
   const share = () => {
@@ -60,6 +59,7 @@ export default function ShareBlog({ post }) {
       });
     } else {
       const tempInput = document.createElement("input");
+
       tempInput.value = linkToCopy;
       document.body.appendChild(tempInput);
       tempInput.select();
@@ -99,6 +99,7 @@ export default function ShareBlog({ post }) {
       window.external.AddFavorite(bookmarkUrl, title);
     } else if (window.opera && window.print) {
       document.title = title;
+
       return true;
     } else {
       alert("Press " + (navigator.userAgent.toLowerCase().indexOf("mac") !== -1 ? "Cmd" : "Ctrl") + "+D to bookmark this page.");
@@ -198,14 +199,14 @@ export default function ShareBlog({ post }) {
       {showModal && (
         <div
           className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
+          role="presentation"
           aria-labelledby="share-dialog-title"
           onClick={() => setShowModal(false)}
           onKeyDown={(e) => e.key === "Escape" && setShowModal(false)}
         >
           <div
             className="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-sm w-full shadow-lg"
+            role="presentation"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
           >

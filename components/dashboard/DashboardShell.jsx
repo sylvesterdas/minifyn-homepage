@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   Home,
-  Link as LinkIcon,
   Settings,
   Menu,
   X

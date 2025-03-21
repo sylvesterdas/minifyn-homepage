@@ -277,7 +277,7 @@ export default async function ArticlePage({ params }) {
                         {children}
                       </td>
                     ),
-                    hr: ({ children, ...props }) => (
+                    hr: ({ ...props }) => (
                       <hr className="mb-3" {...props} />
                     )
                   }}
