@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import Link from "next/link";
-import { Calendar, Clock, ArrowLeft, Send } from "lucide-react";
-import { FaFacebookF, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import { Image } from "@heroui/image";
 import NextImage from "next/image";
 import ReactMarkdown from "react-markdown";
@@ -15,6 +14,7 @@ import remarkGfm from 'remark-gfm';
 import { CodeBlock } from "@/components/CodeBlock";
 import { getPost } from "@/lib/blog";
 import { JsonLd } from "@/app/components/JsonLd";
+import BlogConnect from "./connect";
 
 const ShareBlog = lazy(() => import('./share'));
 
@@ -136,7 +136,7 @@ export default async function ArticlePage({ params }) {
               />
             </div>
 
-            <div className="max-w-3xl mx-auto">
+            <div className="mx-auto">
               <header className="mb-12">
                 <div className="flex flex-wrap justify-center gap-2 mb-6">
                   {article.tags.map((tag) => (
@@ -291,60 +291,14 @@ export default async function ArticlePage({ params }) {
                 </ReactMarkdown>
               </main>
 
-              <footer className="pt-6 border-t border-slate-800">
-                <ShareBlog post={article} />
-              </footer>
-
-              <div className="py-8 mt-8 border-t border-slate-800">
-                <div className="text-center mb-4">
-                  <h3 className="text-lg font-semibold text-white">
-                    Connect with MiniFyn
-                  </h3>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Join our community for updates and discussions
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 justify-center gap-8">
-                  <a
-                    className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors"
-                    href="https://x.com/minifyncom"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <FaXTwitter className="w-5 h-5" />
-                    <span>X (formerly Twitter)</span>
-                  </a>
-                  <a
-                    className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors"
-                    href="https://facebook.com/minifyncom"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <FaFacebookF className="w-5 h-5" />
-                    <span>Facebook</span>
-                  </a>
-                  <a
-                    className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors"
-                    href="https://linkedin.com/company/minifyn"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <FaLinkedinIn className="w-5 h-5" />
-                    <span>LinkedIn</span>
-                  </a>
-                  <a
-                    className="flex max-md:flex-col justify-center items-center gap-2 text-slate-400 hover:text-white transition-colors"
-                    href="https://t.me/minifyn"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <Send className="w-5 h-5" />
-                    <span>Telegram</span>
-                  </a>
-                </div>
-              </div>
             </div>
           </article>
+
+          <footer className="py-6 border-y border-slate-800">
+            <ShareBlog post={article} />
+          </footer>
+
+          <BlogConnect />
         </div>
       </div>
     </>
