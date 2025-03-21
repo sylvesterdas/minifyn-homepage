@@ -276,6 +276,9 @@ export default async function ArticlePage({ params }) {
                       <td className="px-6 py-4 whitespace-nowrap text-slate-300" {...props}>
                         {children}
                       </td>
+                    ),
+                    hr: ({ children, ...props }) => (
+                      <hr className="mb-3" {...props} />
                     )
                   }}
                   rehypePlugins={[rehypeRaw, rehypeHighlight]}

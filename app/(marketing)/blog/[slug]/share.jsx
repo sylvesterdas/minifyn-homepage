@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 export default function ShareBlog({ post }) {
   const url = encodeURIComponent(post.canonical);
   const text = encodeURIComponent(`Check out this article: ${post.title}`);
-  let [shortUrl, setShortUrl] = useState("");
+  const [shortUrl, setShortUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -29,14 +29,15 @@ export default function ShareBlog({ post }) {
       body: JSON.stringify({ url: post.canonical }),
     })
       .then((res) => res.json())
-      .then(({ url }) => setShortUrl(url));
-  }, []);
+      .then(({ url }) => setShortUrl(url))
+      .catch(err => console.error("Error fetching short URL:", err));
+  }, [post.canonical]);
 
   const share = () => {
     const data = {
       title: post.title,
       text: post.excerpt,
-      url: shortUrl,
+      url: shortUrl || post.canonical,
     };
 
     if (navigator.canShare && navigator.canShare(data)) {
@@ -49,7 +50,6 @@ export default function ShareBlog({ post }) {
   const copyLink = () => {
     const linkToCopy = shortUrl || post.canonical;
 
-    // Try modern clipboard API first
     if (navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(linkToCopy).then(() => {
         setCopied(true);
@@ -59,9 +59,7 @@ export default function ShareBlog({ post }) {
         }, 1500);
       });
     } else {
-      // Fallback with execCommand
       const tempInput = document.createElement("input");
-
       tempInput.value = linkToCopy;
       document.body.appendChild(tempInput);
       tempInput.select();
@@ -76,54 +74,59 @@ export default function ShareBlog({ post }) {
     }
   };
 
-  const shareOnTwitter = () => {
-    const twitterUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+  const socialShare = (platform) => {
+    const shareUrls = {
+      twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}&title=${text}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${text}&summary=${text}`,
+      telegram: `https://t.me/share/url?url=${url}&text=${text}`,
+      pinterest: `https://pinterest.com/pin/create/button/?url=${url}&description=${text}`,
+      slack: `https://slack.com/share?text=${text}&url=${url}`
+    };
 
-    window.open(twitterUrl, "_blank");
+    if (shareUrls[platform]) {
+      window.open(shareUrls[platform], "_blank");
+    }
   };
 
-  const shareOnFacebook = () => {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&title=${text}`;
+  const bookmarkLink = () => {
+    const title = post.title;
+    const bookmarkUrl = post.canonical;
 
-    window.open(facebookUrl, "_blank");
-  };
-
-  const shareOnLinkedIn = () => {
-    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${text}&summary=${text}`;
-
-    window.open(linkedInUrl, "_blank");
-  };
-
-  const shareOnTelegram = () => {
-    const telegramUrl = `https://t.me/share/url?url=${url}&text=${text}`;
-
-    window.open(telegramUrl, "_blank");
-  };
-
-  const shareOnPinterest = () => {
-    const pinterestUrl = `https://pinterest.com/pin/create/button/?url=${url}&description=${text}`;
-
-    window.open(pinterestUrl, "_blank");
-  };
-
-  const shareOnSlack = () => {
-    const slackUrl = `https://slack.com/share?text=${text}&url=${url}`;
-
-    window.open(slackUrl, "_blank");
+    if (window.sidebar && window.sidebar.addPanel) {
+      window.sidebar.addPanel(title, bookmarkUrl, "");
+    } else if (window.external && ("AddFavorite" in window.external)) {
+      window.external.AddFavorite(bookmarkUrl, title);
+    } else if (window.opera && window.print) {
+      document.title = title;
+      return true;
+    } else {
+      alert("Press " + (navigator.userAgent.toLowerCase().indexOf("mac") !== -1 ? "Cmd" : "Ctrl") + "+D to bookmark this page.");
+    }
   };
 
   return (
-    <>
-      <div className="flex max-sm:flex-col items-center justify-between">
-        <div className="flex items-center gap-1">
-          <p className="text-slate-400 w-max" id="share-article-label">Share this article</p>
-          <span className="hidden p-2 text-slate-400">
-            <Bookmark className="w-5 h-5" aria-hidden="true" />
-          </span>
+    <div className="p-4">
+      <div className="flex max-sm:flex-col items-center justify-between gap-4">
+        {/* Label */}
+        <h2 className="text-slate-400 font-medium" id="share-article-label">
+          Share this article
+        </h2>
+
+        {/* Primary actions */}
+        <div className="flex items-center gap-2">
           <Button
-            className="p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
+            variant="ghost"
+            onPress={bookmarkLink}
+            aria-label="Bookmark this article"
+          >
+            <Bookmark className="w-5 h-5" aria-hidden="true" />
+            <span className="sr-only">Bookmark</span>
+          </Button>
+
+          <Button
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
             onPress={share}
             aria-labelledby="share-article-label"
@@ -133,118 +136,114 @@ export default function ShareBlog({ post }) {
           </Button>
         </div>
 
-        <div className="flex items-center gap-0 sm:gap-1">
+        {/* Social sharing - Grid Layout */}
+        <div className="grid grid-cols-3 gap-2" aria-label="Share on social media">
           <Button
-            className="p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
-            onPress={shareOnTwitter}
+            onPress={() => socialShare('twitter')}
             aria-label="Share on Twitter"
           >
             <FaXTwitter className="w-5 h-5" aria-hidden="true" />
           </Button>
+
           <Button
-            className="p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
-            onPress={shareOnFacebook}
+            onPress={() => socialShare('facebook')}
             aria-label="Share on Facebook"
           >
             <FaFacebookF className="w-5 h-5" aria-hidden="true" />
           </Button>
+
           <Button
-            className="p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
-            onPress={shareOnLinkedIn}
+            onPress={() => socialShare('linkedin')}
             aria-label="Share on LinkedIn"
           >
             <FaLinkedinIn className="w-5 h-5" aria-hidden="true" />
           </Button>
+
           <Button
-            className="p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
-            onPress={shareOnTelegram}
+            onPress={() => socialShare('telegram')}
             aria-label="Share on Telegram"
           >
             <FaTelegram className="w-5 h-5" aria-hidden="true" />
           </Button>
+
           <Button
-            className="hidden p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
-            onPress={shareOnPinterest}
+            onPress={() => socialShare('pinterest')}
             aria-label="Share on Pinterest"
           >
             <FaPinterestP className="w-5 h-5" aria-hidden="true" />
           </Button>
+
           <Button
-            className="hidden p-2 text-slate-400"
-            role="button"
-            tabIndex={0}
+            className="flex items-center justify-center p-3 rounded-full hover:bg-slate-800 text-slate-200"
             variant="ghost"
-            onPress={shareOnSlack}
+            onPress={() => socialShare('slack')}
             aria-label="Share on Slack"
           >
             <FaSlack className="w-5 h-5" aria-hidden="true" />
           </Button>
         </div>
+      </div>
 
-        {showModal && (
+      {/* Share Modal */}
+      {showModal && (
+        <div
+          className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="share-dialog-title"
+          onClick={() => setShowModal(false)}
+          onKeyDown={(e) => e.key === "Escape" && setShowModal(false)}
+        >
           <div
-            className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50 backdrop-blur-sm"
-            role="presentation"
-            onClick={() => setShowModal(false)}
-            onKeyDown={(e) => e.key === "Escape" && setShowModal(false)}
+            className="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-sm w-full shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
           >
-            <div
-              aria-labelledby="share-dialog-title"
-              className="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-sm w-full"
-              role="presentation"
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h3
-                  className="text-slate-200 text-lg font-medium"
-                  id="share-dialog-title"
-                >
-                  Share this article
-                </h3>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onPress={() => setShowModal(false)}
-                  aria-label="Close"
-                >
-                  <X className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">Close</span>
-                </Button>
-              </div>
-
-              <Button
-                className="w-full flex items-center justify-center gap-2"
-                variant="primary"
-                onPress={copyLink}
-                aria-label={copied ? "Link copied" : "Copy link"}
+            <div className="flex justify-between items-center mb-6">
+              <h3
+                className="text-slate-200 text-lg font-medium"
+                id="share-dialog-title"
               >
-                {copied ? (
-                  <Check className="h-5 w-5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-5 w-5" aria-hidden="true" />
-                )}
-                <span>{copied ? "Copied!" : "Copy Link"}</span>
+                Share this article
+              </h3>
+              <Button
+                size="sm"
+                variant="ghost"
+                onPress={() => setShowModal(false)}
+                aria-label="Close dialog"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">Close</span>
               </Button>
             </div>
+
+            <Button
+              className={`w-full flex items-center justify-center gap-2 p-4 ${copied ? 'bg-green-600 text-white' : 'bg-slate-700 hover:bg-slate-600 text-white'
+                }`}
+              variant="primary"
+              onPress={copyLink}
+              aria-label={copied ? "Link copied to clipboard" : "Copy link to clipboard"}
+            >
+              {copied ? (
+                <Check className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Copy className="h-5 w-5" aria-hidden="true" />
+              )}
+              <span>{copied ? "Copied!" : "Copy Link"}</span>
+            </Button>
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }
