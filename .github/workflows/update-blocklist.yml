@@ -3,7 +3,7 @@ name: Update Blocklist
 on:
   schedule:
     - cron: "0 0 * * 0" # Weekly at midnight on Sunday
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual trigger
 
 jobs:
   update-blocklist:
@@ -15,16 +15,30 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: "pnpm"
+          cache: 'pnpm'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8 # Specify the pnpm version you want to use
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm store
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Fetch blocklist from sources
-        run: pnpm exec node scripts/update-blocklist.js
+        run: node scripts/update-blocklist.js
 
       - name: Commit changes if blocklist was updated
         run: |
