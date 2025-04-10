@@ -31,14 +31,18 @@ jobs:
       - name: Fetch blocklist from sources
         run: node scripts/update-blocklist.js
 
-      - name: Commit changes if blocklist was updated
+      - name: Commit and create pull request if blocklist was updated
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           if git diff --quiet data/moderation/blocked-domains.json; then
             echo "No changes to blocklist"
           else
+            git checkout -b update-blocklist-$(date +%Y%m%d%H%M%S)
             git add data/moderation/blocked-domains.json
             git commit -m "Update blocked domains list"
-            git push
+            git push origin HEAD
+            gh pr create --title "Update blocked domains list" --body "Automated PR to update the blocked domains list." --base main
           fi
