@@ -1,0 +1,70 @@
+name: Report Abuse
+description: Report a harmful or abusive URL
+title: "[ABUSE]: "
+labels: ["abuse", "moderation"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this link. We take all abuse reports seriously and will investigate promptly.
+
+  - type: input
+    id: short-url
+    attributes:
+      label: Short URL
+      description: The MiniFyn short URL that is being reported
+      placeholder: e.g., minifyn.com/abc123
+    validations:
+      required: true
+
+  - type: input
+    id: long-url
+    attributes:
+      label: Destination URL
+      description: The full URL that the short link redirects to (if known)
+      placeholder: e.g., https://example.com/some-page
+    validations:
+      required: false
+
+  - type: dropdown
+    id: reason
+    attributes:
+      label: Reason for Report
+      description: Why is this URL being reported?
+      options:
+        - Phishing/Scam
+        - Malware/Virus
+        - Adult Content
+        - Hate Speech
+        - Violence
+        - Illegal Content
+        - Copyright Violation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Additional Details
+      description: Please provide any additional details about this report
+      placeholder: Describe what makes this URL problematic...
+
+  - type: input
+    id: email
+    attributes:
+      label: Contact Email (Optional)
+      description: Email to reach you for additional information (optional)
+      placeholder: email@example.com
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgement
+      description: By submitting this report, you agree to our Acceptable Use Policy
+      options:
+        - label: I confirm this is a good-faith report of actual abuse
+          required: true

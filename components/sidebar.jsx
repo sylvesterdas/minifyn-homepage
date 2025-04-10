@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Code2, Terminal, BookOpen } from "lucide-react";
+import { ArrowRight, Code2, Terminal, BookOpen, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -95,6 +95,16 @@ export const Sidebar = ({ className, onPress }) => {
                 {item.label}
               </Link>
             ))}
+
+            <Link
+              className="px-2 py-1.5 text-small text-start text-default-400 hover:text-foreground rounded-medium hover:bg-default-100 flex items-center"
+              href={siteConfig.links.github}
+              target="_blank"
+              onClick={onPress}
+            >
+              <AlertCircle className="w-3.5 h-3.5 mr-1.5" />
+              Report Abuse
+            </Link>
           </div>
         </div>
       </div>
