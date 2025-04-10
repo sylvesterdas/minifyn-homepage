@@ -42,7 +42,7 @@ export async function POST(req) {
     if (!shortCode) {
       shortCode = generateId();
 
-      await createShortUrl(shortCode, ogUrl.toString(), process.env.SUPER_USER_ID);
+      await createShortUrl(shortCode, ogUrl.toString(), process.env.SUPER_USER_ID, true);
     }
 
     const shortUrl = new URL(shortCode, process.env.BASE_URL);

@@ -9,61 +9,85 @@
 
 <body>
   <main>
-    <div className="p-6 min-h-screen text-white">
-      <a href="/" className="text-blue-400 hover:underline mb-4 inline-block">← Back to Home</a>
-      <h1 className="text-3xl font-bold mb-4">Acceptable Use Policy</h1>
-      <p className="mb-4">Last updated: October 25, 2024</p>
-      <section className="p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-2">Purpose</h2>
-        <p className="mb-4">
-          This policy outlines acceptable usage of MiniFyn&apos;s URL shortening service.
-          We&apos;re committed to providing reliable service while ensuring user safety
+    <div class="p-6 min-h-screen text-white">
+      <a href="/" class="text-blue-400 hover:underline mb-4 inline-block">← Back to Home</a>
+      <h1 class="text-3xl font-bold mb-4">Acceptable Use Policy</h1>
+      <p class="mb-4">Last updated: April 10, 2025</p>
+      <section class="p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-2">Purpose</h2>
+        <p class="mb-4">
+          This policy outlines acceptable usage of MiniFyn's URL shortening service.
+          We're committed to providing reliable service while ensuring user safety
           and maintaining trust.
         </p>
 
-        <h2 className="text-2xl font-bold mb-2">URL Content Guidelines</h2>
-        <p className="mb-4 font-semibold">
-          When using MiniFyn, don&apos;t create shortened URLs that:
+        <h2 class="text-2xl font-bold mb-2">URL Content Guidelines</h2>
+        <p class="mb-4 font-semibold">
+          When using MiniFyn, don't create shortened URLs that:
         </p>
-        <ul className='list-disc m-6 mt-0'>
+        <ul class='list-disc m-6 mt-0'>
           <li>Impersonate others or mislead users</li>
           <li>Distribute malware or harmful code</li>
           <li>Promote unauthorized access to systems</li>
           <li>Share copyrighted content without permission</li>
           <li>Link to phishing or scam websites</li>
+          <li>Contain pornographic or sexually explicit content</li>
+          <li>Promote hate speech or discrimination</li>
           <li>Violate any applicable laws</li>
         </ul>
 
-        <h2 className="text-2xl font-bold mb-2">Service Usage</h2>
-        <p className="mb-4 font-semibold">Users must:</p>
-        <ul className='list-disc m-6 mt-0'>
-          <li>Stay within their plan&apos;s usage limits</li>
+        <h2 class="text-2xl font-bold mb-2">Content Moderation</h2>
+        <p class="mb-4">
+          MiniFyn employs an automated domain blocklist system to prevent the creation of shortened URLs 
+          that point to known malicious, phishing, or otherwise harmful websites. This blocklist is 
+          regularly updated from trusted security sources.
+        </p>
+        <p class="mb-4">
+          If you encounter a MiniFyn URL that violates our guidelines, please report it using our 
+          <a href="/report-abuse" class="text-blue-400 hover:underline">abuse reporting form</a>. 
+          All reports are reviewed promptly, and appropriate action will be taken within 48 hours 
+          of verification.
+        </p>
+
+        <h2 class="text-2xl font-bold mb-2">Service Usage</h2>
+        <p class="mb-4 font-semibold">Users must:</p>
+        <ul class='list-disc m-6 mt-0'>
+          <li>Stay within their plan's usage limits</li>
           <li>Use appropriate rate limiting for API requests</li>
           <li>Maintain secure password practices</li>
           <li>Report security vulnerabilities responsibly</li>
           <li>Keep API credentials confidential</li>
         </ul>
 
-        <h2 className="text-2xl font-bold mb-2">Business Usage</h2>
-        <p className="mb-4 font-semibold">
+        <h2 class="text-2xl font-bold mb-2">Metadata Handling</h2>
+        <p class="mb-4">
+          For free and anonymous users, MiniFyn does not fetch or store metadata from destination URLs. 
+          Paid users have the option to copy metadata (title, description, image) from destination URLs 
+          to their shortened links, but must use this feature responsibly and not in a way that misleads 
+          users about the destination content.
+        </p>
+
+        <h2 class="text-2xl font-bold mb-2">Business Usage</h2>
+        <p class="mb-4 font-semibold">
           Business users should:
         </p>
-        <ul className='list-disc m-6 mt-0'>
+        <ul class='list-disc m-6 mt-0'>
           <li>Use custom domains for branded links</li>
           <li>Implement proper error handling</li>
           <li>Monitor their URL performance</li>
           <li>Keep their contact information updated</li>
         </ul>
 
-        <h2 className="text-2xl font-bold mb-2">Enforcement</h2>
-        <p className="mb-4 font-semibold">
+        <h2 class="text-2xl font-bold mb-2">Enforcement</h2>
+        <p class="mb-4 font-semibold">
           MiniFyn reserves the right to:
         </p>
-        <ul className='list-disc m-6 mt-0'>
+        <ul class='list-disc m-6 mt-0'>
           <li>Investigate potential violations</li>
-          <li>Remove URLs that violate this policy</li>
-          <li>Suspend or terminate accounts</li>
+          <li>Remove URLs that violate this policy within 48 hours of verification</li>
+          <li>Suspend or terminate accounts without prior notice</li>
           <li>Cooperate with legal authorities when required</li>
+          <li>Block domains or IP addresses associated with repeated abuse</li>
         </ul>
       </section>
     </div>

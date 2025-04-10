@@ -54,8 +54,8 @@ export async function POST(req) {
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal server error: " + error.message },
-      { status: 500 }
+      { error: "Error: " + error.message },
+      { status: error.code ? (error.code < 500 ? error.code : 500) : 500 }
     );
   }
 }
