@@ -98,7 +98,7 @@ export const Sidebar = ({ className, onPress }) => {
 
             <Link
               className="px-2 py-1.5 text-small text-start text-default-400 hover:text-foreground rounded-medium hover:bg-default-100 flex items-center"
-              href={siteConfig.links.github}
+              href={`${siteConfig.links.github}?template=abuse-report.yml`}
               target="_blank"
               onClick={onPress}
             >
