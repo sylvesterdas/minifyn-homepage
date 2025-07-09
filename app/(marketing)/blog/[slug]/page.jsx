@@ -332,8 +332,24 @@ export default async function ArticlePage({ params }) {
                         className="text-blue-500 hover:text-blue-700 focus:outline-none focus:underline relative hover:opacity-90 transition-all delay-200 duration-500"
                         href={href}
                         {...props}
-                        rel={href?.startsWith('http') && !href?.includes('minifyn.com') ? "noopener noreferrer" : undefined}
-                        target={href?.startsWith('http') && !href?.includes('minifyn.com') ? "_blank" : undefined}
+                        rel={(() => {
+                          try {
+                            const url = new URL(href);
+                            const allowedHosts = ['minifyn.com', 'www.minifyn.com'];
+                            return url.host && !allowedHosts.includes(url.host) ? "noopener noreferrer" : undefined;
+                          } catch {
+                            return undefined;
+                          }
+                        })()}
+                        target={(() => {
+                          try {
+                            const url = new URL(href);
+                            const allowedHosts = ['minifyn.com', 'www.minifyn.com'];
+                            return url.host && !allowedHosts.includes(url.host) ? "_blank" : undefined;
+                          } catch {
+                            return undefined;
+                          }
+                        })()}
                       >
                         {children}
                       </a>
