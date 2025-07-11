@@ -4,7 +4,6 @@ import { authenticate } from "./auth-middleware";
 
 import { checkLimits, getRemainingLimits } from "@/lib/rate-limits";
 import { validateURL } from "@/lib/url-validator";
-import { initAdmin } from "@/app/firebase/admin";
 import { createShortUrl, generateId } from "@/lib/shorten";
 
 export async function POST(req) {
@@ -14,14 +13,18 @@ export async function POST(req) {
     "unknown";
 
   try {
-    initAdmin();
     const user = await authenticate(req);
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { url } = await req.json();
+    let url;
+    try {
+      ({ url } = await req.json());
+    } catch (error) {
+      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
@@ -53,9 +56,13 @@ export async function POST(req) {
       remaining: await getRemainingLimits(user, ip),
     });
   } catch (error) {
+    if (error.code === "auth/id-token-expired") {
+      return NextResponse.json({ error: "Token expired" }, { status: 401 });
+    }
+    
     return NextResponse.json(
       { error: "Error: " + error.message },
-      { status: error.code ? (error.code < 500 ? error.code : 500) : 500 }
+      { status: error.status || 500 }
     );
   }
 }

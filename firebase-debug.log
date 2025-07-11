@@ -1,0 +1,41 @@
+[debug] [2025-07-11T17:33:08.384Z] ----------------------------------------------------------------------
+[debug] [2025-07-11T17:33:08.386Z] Command:       /nix/store/rbdrkcs5kkwpalxcd7c6bnm33lk2955n-nodejs-20.19.0/bin/node /nix/store/fprgfkwna33crhc86jqbf5878piivvgw-firebase-tools-14.7.0/lib/node_modules/firebase-tools/lib/bin/firebase.js init hosting
+[debug] [2025-07-11T17:33:08.387Z] CLI Version:   14.7.0
+[debug] [2025-07-11T17:33:08.387Z] Platform:      linux
+[debug] [2025-07-11T17:33:08.387Z] Node Version:  v20.19.0
+[debug] [2025-07-11T17:33:08.388Z] Time:          Fri Jul 11 2025 17:33:08 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-07-11T17:33:08.388Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-11T17:33:08.394Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-07-11T17:33:08.395Z] > authorizing via signed-in user (sylvester.das@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/user/minifyn-homepage
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-07-11T17:33:12.243Z] Checked if tokens are valid: true, expires at: 1752258535627
+[debug] [2025-07-11T17:33:12.244Z] Checked if tokens are valid: true, expires at: 1752258535627
+[debug] [2025-07-11T17:33:12.249Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-07-11T17:33:12.760Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-07-11T17:33:12.760Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project minifyn-db (minifyn) 
+[info] 
+=== Hosting Setup
+[debug] [2025-07-11T17:33:14.555Z] Checked if tokens are valid: true, expires at: 1752258535627
+[debug] [2025-07-11T17:33:14.555Z] Checked if tokens are valid: true, expires at: 1752258535627
+[debug] [2025-07-11T17:33:14.555Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/minifyn-db [none]
+[debug] [2025-07-11T17:33:14.810Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/minifyn-db 200
+[debug] [2025-07-11T17:33:14.810Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/minifyn-db {"projectId":"minifyn-db","projectNumber":"855937453203","displayName":"minifyn","name":"projects/minifyn-db","resources":{"hostingSite":"minifyn-db","realtimeDatabaseInstance":"minifyn-db-default-rtdb"},"state":"ACTIVE","etag":"1_03205ecf-2521-4c7d-b8a8-e6e42444edb6"}
